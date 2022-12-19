@@ -13,7 +13,9 @@ export default function Home() {
       <main>
         <section>
           <div className='container'>
-            <h1>section 1</h1>
+            <h1 className="py-20 text-3xl font-bold text-center">
+              Section 1
+            </h1>
           </div>
         </section>
       </main>
