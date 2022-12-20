@@ -1,7 +1,18 @@
 // libs
 import Head from 'next/head'
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
+// components
+import { routes } from "../utility/routes";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(routes.vessels)
+  }, [])
+
   return (
     <>
       <Head>
@@ -12,11 +23,7 @@ export default function Home() {
       </Head>
       <main>
         <section>
-          <div className='container'>
-            <h1 className="py-20 text-3xl font-bold text-center">
-              Section 1
-            </h1>
-          </div>
+          <div className='container' />
         </section>
       </main>
     </>
