@@ -1,3 +1,8 @@
+export { H2 } from './H2/H2'
 export { H4 } from './H4/H4'
+export { H5 } from './H5/H5'
+export { H6 } from './H6/H6'
 export { Button } from './Button/Button'
 export { Paragraph } from './Paragraph/Paragraph'
+export { Layout } from './Layout/Layout'
+export { SideBar } from './SideBar/SideBar'
