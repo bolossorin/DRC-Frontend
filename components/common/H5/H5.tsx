@@ -4,7 +4,7 @@ import { FC } from "react";
 import cn from "classnames";
 
 interface IH5 {
-  children: string
+  children: any
   classname?: string
 }
 

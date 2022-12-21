@@ -1,0 +1,14 @@
+.sideBar {
+  ul {
+    li {
+      &:hover, &:active, &.active {
+        a {
+          @apply bg-[#3C3C3C];
+        }
+        path {
+          @apply fill-[#88E207];
+        }
+      }
+    }
+  }
+}
