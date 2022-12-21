@@ -1,5 +1,6 @@
 // components
 import { H2, Layout, Paragraph, Input } from "../components/common";
+import { Table } from "../components/pages";
 
 export default function Vessels() {
   return (
@@ -16,6 +17,7 @@ export default function Vessels() {
             <div className='max-w-[286px]'>
               <Input icon='/search.svg' type='search' placeholder='Search for vessels by attribute...' />
             </div>
+            <Table />
           </div>
         </div>
       </section>
