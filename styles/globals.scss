@@ -5,8 +5,7 @@
 * {
   outline:    none;
   box-sizing: border-box;
-  color:      #F6F6F6;
-  @apply m-0 p-0;
+  @apply m-0 p-0 text-[#F6F6F6];
 }
 
 img, svg, video {
@@ -14,10 +13,9 @@ img, svg, video {
 }
 
 body {
-  background: #212121;
+  @apply bg-[#212121];
 }
 
 .container {
-  @apply px-4 mx-auto;
-  max-width: 1440px;
+  @apply px-4 mx-auto max-w-[1440px];
 }
