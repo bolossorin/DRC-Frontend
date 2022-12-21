@@ -8,10 +8,13 @@
         @apply max-w-[160px];
       }
       &:nth-child(8) {
-        @apply max-w-[80px];
+        @apply max-w-[90px];
       }
       &:nth-child(9), &:nth-child(10) {
         @apply max-w-[120px];
+      }
+      &:nth-child(11) {
+        @apply max-w-[220px];
       }
     }
   }
