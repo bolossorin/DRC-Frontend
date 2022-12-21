@@ -19,3 +19,39 @@ body {
 .container {
   @apply px-4 max-w-[2500px];
 }
+
+.basic-single {
+  @apply min-w-[120px];
+  .select__control {
+    @apply bg-[#212121] rounded-[3px] border-[#A4A4A4] hover:bg-[#2F2F2F] cursor-pointer;
+    &:hover {
+      @apply border-[#A4A4A4];
+    }
+    &--is-focused {
+      @apply shadow-none;
+    }
+    &--menu-is-open {
+      border-radius: 3px 3px 0 0;
+    }
+  }
+  .select__single-value {
+    @apply text-[#F6F6F6] text-base;
+  }
+  .select__menu {
+    box-shadow:    none;
+    @apply mt-0 border-b border-r border-l border-[#A4A4A4];
+    border-radius: 0 0 3px 3px;
+  }
+  .select__menu-list {
+    @apply p-0;
+  }
+  .select__option {
+    @apply bg-[#212121] hover:bg-[#2F2F2F] cursor-pointer;
+    &:not(:last-child) {
+      @apply border-b border-[#A4A4A4];
+    }
+  }
+  .select__indicator-separator {
+    @apply hidden;
+  }
+}
