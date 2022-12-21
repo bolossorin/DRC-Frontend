@@ -10,7 +10,7 @@ interface ICel {
 
 export const Cel: FC<ICel> = ({ children, classname }) => {
   return (
-    <div className={cn('w-full px-2 py-4 text-sm text-[#D9D9D9] overflow-hidden text-ellipsis', classname)}>
+    <div className={cn('w-full px-2 py-4 text-sm text-[#D9D9D9] overflow-hidden text-ellipsis cell', classname)}>
       {children}
     </div>
   )

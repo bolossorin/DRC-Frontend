@@ -1,0 +1,98 @@
+.state {
+  &.requested {
+    span {
+      @apply text-[#9390FF];
+    }
+    .icon {
+      @apply bg-[#9390FF];
+    }
+  }
+  &.pulling_container {
+    span {
+      @apply text-[#FF94D4];
+    }
+    .icon {
+      @apply bg-[#FF94D4];
+    }
+  }
+  &.starting {
+    span {
+      @apply text-[#CBFFCA];
+    }
+    .icon {
+      @apply bg-[#CBFFCA];
+    }
+  }
+  &.running {
+    span {
+      @apply text-[#6CF202];
+    }
+    .icon {
+      @apply bg-[#6CF202];
+    }
+  }
+  &.stopping {
+    span {
+      @apply text-[#FF9294];
+    }
+    .icon {
+      @apply bg-[#FF9294];
+    }
+  }
+  &.stopped {
+    span {
+      @apply text-[#FF5A5B];
+    }
+    .icon {
+      @apply bg-[#FF5A5B];
+    }
+  }
+  &.idle {
+    span {
+      @apply text-[#E0DCDC];
+    }
+    .icon {
+      @apply bg-[#E0DCDC];
+    }
+  }
+  &.tailscale_cooking {
+    span {
+      @apply text-[#A1FF9F];
+    }
+    .icon {
+      @apply bg-[#A1FF9F];
+    }
+  }
+  &.warn_send {
+    span {
+      @apply text-[#FFC107];
+    }
+    .icon {
+      @apply bg-[#FFC107];
+    }
+  }
+  &.freed {
+    span {
+      @apply text-[#72DDFF];
+    }
+    .icon {
+      @apply bg-[#72DDFF];
+    }
+  }
+  &.gpu_lost {
+    span {
+      @apply text-[#F2F226];
+    }
+    .icon {
+      @apply bg-[#F2F226];
+    }
+  }
+  &.crashed {
+    span {
+      @apply text-[#FF5A5B];
+    }
+    .icon {
+      @apply bg-[#FF5A5B];
+    }
+  }
+}

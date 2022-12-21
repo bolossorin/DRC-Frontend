@@ -1,5 +1,13 @@
 .layout {
   main {
-    @apply ml-80 p-10;
+    @apply ml-80;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .layout {
+    main {
+      @apply ml-0;
+    }
   }
 }

@@ -9,15 +9,19 @@ export default function Vessels() {
       description='Vessels | Deep Render Cloud'>
       <section>
         <div className='container'>
-          <div className='flex items-center mb-6'>
-            <H2 classname='mb-0'>Vessels</H2>
-            <Paragraph classname='text-xl ml-4 mb-0 relative top-0.5'>(25)</Paragraph>
-          </div>
-          <div className='border border-[#535353] bg-[#282828] p-6'>
-            <div className='max-w-[286px]'>
-              <Input icon='/search.svg' type='search' placeholder='Search for vessels by attribute...' />
+          <div className='flex flex-col min-h-screen py-10 md:px-10'>
+            <div className='flex items-center mb-6'>
+              <H2 classname='mb-0'>Vessels</H2>
+              <Paragraph classname='text-xl ml-4 !mb-0 relative top-0.5'>(25)</Paragraph>
             </div>
-            <Table />
+            <div className='border border-[#535353] bg-[#282828] flex-1 flex flex-col'>
+              <div className='p-6'>
+                <div className='max-w-[286px]'>
+                  <Input icon='/search.svg' type='search' placeholder='Search for vessels by attribute...' />
+                </div>
+              </div>
+              <Table />
+            </div>
           </div>
         </div>
       </section>
