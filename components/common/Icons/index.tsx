@@ -1,0 +1,5 @@
+export { AdminIcon } from './AdminIcon'
+export { ExperimentsIcon } from './ExperimentsIcon'
+export { HardwareIcon } from './HardwareIcon'
+export { LogOutIcon } from './LogOutIcon'
+export { VesselIcon } from './VesselIcon'

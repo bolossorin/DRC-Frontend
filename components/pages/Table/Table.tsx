@@ -215,7 +215,7 @@ export const Table = () => {
               <Checkbox onChange={handleAllSelected} checked={selectAll} />
             </Cel>
             {headers.map(header =>
-              <Cel key={header} classname='flex items-center text-white font-medium text-base group cursor-pointer'>
+              <Cel key={header} classname='flex items-center text-white font-medium text-base group select-none cursor-pointer'>
                 {header}
                 <img
                   className='ml-2 w-3.5 opacity-50 group-hover:opacity-100 transition-all' src='/sort-arrow.svg'
