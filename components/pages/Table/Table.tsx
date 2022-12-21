@@ -1,8 +1,14 @@
 import { useState } from "react";
 
+// libs
+import cn from "classnames";
+
 // components
 import { Cel, Row } from "../";
-import { Checkbox } from "../../common";
+import { Checkbox, List, State } from "../../common";
+
+// assets
+import styles from './Table.module.scss'
 
 interface IRows {
   selected: boolean,
@@ -36,7 +42,115 @@ const rowsInitial: IRows[] = [
     selected: true,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
-    state: 'Requested',
+    state: 'Pulling Container',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Starting',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Running',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Stopping',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Stopped',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: true,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Idle',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Tailscale Cooking',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Warn Send',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Freed',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'GPU Lost',
     queue: 'Super Super Long Queue Name',
     docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
     gpu: '1',
@@ -60,19 +174,7 @@ const rowsInitial: IRows[] = [
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
-    state: 'Requested',
-    queue: 'Super Super Long Queue Name',
-    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
-    gpu: '1',
-    gpu_util: '100%',
-    gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
-  },
-  {
-    selected: false,
-    versel_id: '68333578-13a5-43df-a839-49ffed149988',
-    name: 'Super Super Long Vessel Name!!',
-    state: 'Requested',
+    state: 'Crashed',
     queue: 'Super Super Long Queue Name',
     docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
     gpu: '1',
@@ -102,29 +204,40 @@ export const Table = () => {
   }
 
   return (
-    <div className='overflow-auto'>
+    <div className={cn('overflow-y-auto flex-1', styles.table)}>
       <div className='min-w-[1240px]'>
         <div>
           <Row>
-            <Cel classname='min-w-[40px] w-[40px]'>
+            <Cel classname='w-14'>
+              <img className='opacity-50' src='/dots.svg' alt='' />
+            </Cel>
+            <Cel>
               <Checkbox onChange={handleAllSelected} checked={selectAll} />
             </Cel>
             {headers.map(header =>
-              <Cel key={header} classname='flex items-center text-white font-medium text-base'>
+              <Cel key={header} classname='flex items-center text-white font-medium text-base group cursor-pointer'>
                 {header}
-                <img className='ml-2 w-3.5' src='/sort-arrow.svg' alt='' />
+                <img
+                  className='ml-2 w-3.5 opacity-50 group-hover:opacity-100 transition-all' src='/sort-arrow.svg'
+                  alt='' />
               </Cel>)}
           </Row>
         </div>
-        <div>
+        <div className={styles.body}>
           {rows.map((row, index) => (
-            <Row key={index}>
-              <Cel classname='min-w-[40px] w-[40px]'>
+            <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
+              <Cel classname='w-14 cursor-pointer relative overflow-visible group'>
+                <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
+                <List classname='group-hover:block' />
+              </Cel>
+              <Cel>
                 <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
               </Cel>
               <Cel>{row.versel_id}</Cel>
               <Cel>{row.name}</Cel>
-              <Cel>{row.state}</Cel>
+              <Cel>
+                <State state={row.state} />
+              </Cel>
               <Cel>{row.queue}</Cel>
               <Cel>{row.docker_image}</Cel>
               <Cel>{row.gpu}</Cel>

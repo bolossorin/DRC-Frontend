@@ -3,6 +3,7 @@ import Head from "next/head";
 
 // components
 import { SideBar } from "../SideBar/SideBar";
+import { useWindowSize } from "../../../utility/useWindowSize";
 
 // assets
 import styles from './Layout.module.scss'
@@ -14,6 +15,8 @@ interface ILayout {
 }
 
 export const Layout = ({ title, description, children }: ILayout) => {
+  const { width } = useWindowSize();
+
   return (
     <>
       <Head>
@@ -23,7 +26,7 @@ export const Layout = ({ title, description, children }: ILayout) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.layout}>
-        <SideBar />
+        {width > 1024 && <SideBar />}
         <main>
           {children}
         </main>
