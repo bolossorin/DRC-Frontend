@@ -205,7 +205,7 @@ export const Table = () => {
 
   return (
     <div className={cn('overflow-y-auto flex-1', styles.table)}>
-      <div className='min-w-[1240px]'>
+      <div className='min-w-[1900px]'>
         <div>
           <Row>
             <Cel classname='w-14'>
@@ -215,7 +215,8 @@ export const Table = () => {
               <Checkbox onChange={handleAllSelected} checked={selectAll} />
             </Cel>
             {headers.map(header =>
-              <Cel key={header} classname='flex items-center text-white font-medium text-base group select-none cursor-pointer'>
+              <Cel key={header}
+                   classname='flex items-center text-white font-medium text-base group select-none cursor-pointer'>
                 {header}
                 <img
                   className='ml-2 w-3.5 opacity-50 group-hover:opacity-100 transition-all' src='/sort-arrow.svg'
@@ -223,7 +224,7 @@ export const Table = () => {
               </Cel>)}
           </Row>
         </div>
-        <div className={styles.body}>
+        <div>
           {rows.map((row, index) => (
             <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
               <Cel classname='w-14 cursor-pointer relative overflow-visible group'>
