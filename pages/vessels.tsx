@@ -1,24 +1,8 @@
 import { useState } from "react";
 
-// libs
-import Select, { components } from "react-select";
-
 // components
-import { H2, Layout, Paragraph, Input } from "../components/common";
-import { Actions, Pagination, Table } from "../components/pages";
-
-const locations: any = [
-  { value: 'Europe', label: 'Europe' },
-  { value: 'USA', label: 'USA' },
-];
-
-const DropdownIndicator = (props: any) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <img className='w-3' src={'/sort-arrow.svg'} alt='' />
-    </components.DropdownIndicator>
-  );
-};
+import { H2, Layout, Paragraph } from "../components/common";
+import { Actions, Location, Pagination, Search, Table } from "../components/pages/vessels";
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -38,15 +22,7 @@ export default function Vessels() {
               </div>
               <div className='flex items-center'>
                 <div className='ml-2'>
-                  <Select
-                    controlShouldRenderValue={true}
-                    components={{ DropdownIndicator }}
-                    className="basic-single"
-                    classNamePrefix="select"
-                    defaultValue={locations[0]}
-                    name="color"
-                    options={locations}
-                  />
+                  <Location />
                 </div>
                 <div className='ml-6 relative w-4 cursor-pointer opacity-50 hover:opacity-100 transition-all'>
                   <span className='absolute z-10 -right-1.5 -top-1.5 w-2 h-2 rounded-full bg-[#CA3C3C]' />
@@ -56,10 +32,10 @@ export default function Vessels() {
             </div>
             <div className='border border-[#535353] bg-[#282828] flex-1 flex flex-col'>
               <div className='p-6 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
-                <div className='sm:max-w-[286px] w-full'>
-                  <Input icon='/search.svg' type='search' placeholder='Search for vessels by attribute...' />
+                <div className='sm:max-w-[300px] w-full'>
+                  <Search />
                 </div>
-                <div className='flex flex-wrap items-center gap-8'>
+                <div className='flex flex-wrap items-center gap-4 md:gap-8'>
                   <Actions currentSelected={currentSelected} />
                   <Pagination />
                   <div className='w-6 cursor-pointer transition-all opacity-50 hover:opacity-100'>

@@ -4,8 +4,8 @@ import { useState } from "react";
 import cn from "classnames";
 
 // components
-import { Cel, Row } from "../";
-import { Checkbox, List, State } from "../../common";
+import { Cel, Row } from "../index";
+import { Checkbox, List, State } from "../../../common";
 
 // assets
 import styles from './Table.module.scss'
