@@ -42,7 +42,7 @@ const rowsInitial: IRows[] = [
   },
   {
     id: 2,
-    selected: true,
+    selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
     state: 'Pulling Container',
@@ -107,7 +107,7 @@ const rowsInitial: IRows[] = [
   },
   {
     id: 7,
-    selected: true,
+    selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
     state: 'Idle',
