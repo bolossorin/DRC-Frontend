@@ -3,3 +3,11 @@ export interface IFilter {
   value: string,
   condition: string
 }
+
+export interface INotification {
+  status: string,
+  message: string,
+  state: string,
+  subMessage: string,
+  icon: string
+}
