@@ -38,8 +38,8 @@ export default function Vessels() {
                 <div className='flex flex-wrap items-center gap-4 md:gap-8'>
                   <Actions currentSelected={currentSelected} />
                   <Pagination />
-                  <div className='relative z-10 w-6 cursor-pointer group'>
-                    <img className='transition-all opacity-50 group-hover:opacity-100' src='/setting.svg' alt='' />
+                  <div className='relative z-10 w-6 group'>
+                    <img className='opacity-50 group-hover:opacity-100 cursor-pointer transition-all' src='/setting.svg' alt='' />
                     <TableSetting classname='group-hover:block' />
                   </div>
                 </div>
