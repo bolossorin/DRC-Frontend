@@ -1,96 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // libs
-import Select, { components, ControlProps, StylesConfig } from "react-select";
+import { Input, List } from "../../../common";
 
-const searchValuesFilters: ({ label: string; value: string })[] = [
-  { value: 'Vessel ID', label: 'Vessel ID' },
-  { value: 'Name', label: 'Name' },
-  { value: 'State', label: 'State' },
-  { value: 'Queue', label: 'Queue' },
-  { value: 'Docker Image', label: 'Docker Image' },
-  { value: 'GPUs', label: 'GPUs' },
-  { value: 'GPU Utilisation', label: 'GPU Utilisation' },
-  { value: 'GPU Memory', label: 'GPU Memory' },
-  { value: 'Created At', label: 'Created At' },
+const searchValuesFilters: ({ title: string; value: string })[] = [
+  { value: 'Vessel ID', title: 'Vessel ID' },
+  { value: 'Name', title: 'Name' },
+  { value: 'State', title: 'State' },
+  { value: 'Queue', title: 'Queue' },
+  { value: 'Docker Image', title: 'Docker Image' },
+  { value: 'GPUs', title: 'GPUs' },
+  { value: 'GPU Utilisation', title: 'GPU Utilisation' },
+  { value: 'GPU Memory', title: 'GPU Memory' },
+  { value: 'Created At', title: 'Created At' },
 ];
-
-const searchValuesCondition: ({ label: string; value: string })[] = [
-  { value: '=', label: 'Equals' },
-  { value: '!=', label: 'Does not equal' },
-  { value: ':', label: 'Contains' },
-  { value: '!:', label: 'Does not contain' },
-];
-
-const Control = ({ children, ...props }: ControlProps) => {
-  return (
-    <components.Control
-      {...props}>
-      {/*@ts-ignore*/}
-      <div className='flex itemd-center' onClick={props.selectProps.handleOpenMenu}>
-        <img className='w-4' src='/search.svg' alt='' />
-        {children}
-      </div>
-    </components.Control>
-  );
-};
-
-const MenuList = (props: any) => {
-
-  const style1 = {
-    padding: '11px 16px',
-    background: '#3C3C3C',
-    borderBottom: '1px solid #A4A4A4',
-    fontWeight: 'bold'
-  };
-
-  const style2 = {
-    padding: '11px 16px',
-    background: '#535353',
-    borderBottom: '1px solid #A4A4A4',
-  };
-
-  return (
-    <components.MenuList {...props}>
-      {props.getValue()[0] && props.getValue()[0].label ?
-        <>
-          <div style={style2}>Use: “{props.getValue()[0].label}”</div>
-          <div style={style1}>Operators</div>
-        </>
-        : <div style={style1}>Search Filters</div>}
-      {props.children}
-    </components.MenuList>
-  );
-};
-
-const DropdownIndicator = () => {
-  return null;
-};
-
-const styles: StylesConfig = {
-  control: (css: any) => ({ ...css, paddingLeft: '1rem' }),
-  option: (css: any) => ({ ...css, padding: '11px 12px 11px 48px' }),
-};
-
-const Option = (props: any) => {
-  return (
-    props.getValue()[0] && props.getValue()[0].label
-      ? <div
-        onClick={props.selectProps.handleCloseMenu}
-        className='select__option'
-        style={{ padding: '11px 12px 11px 48px' }}>
-        <div className='text-[#AAFF66]'>
-          {props.getValue()[0].label} <span className='text-[#D9D9D9]'>{props.value}</span>
-        </div>
-        <div className='text-xs text-[#D9D9D9]'>
-          {props.children}
-        </div>
-      </div>
-      : <components.Option {...props}>
-        {props.children}
-      </components.Option>
-  );
-};
 
 interface ISearch {
   filters: { name: string, value: string }[]
@@ -98,42 +21,64 @@ interface ISearch {
 }
 
 export const Search = ({ setFilters, filters }: ISearch) => {
-  const [value, setValue] = useState<any>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [searchValuesCondition, setSearchValuesCondition] = useState<{}[]>([]);
 
-  const handleOpenMenu = () => {
-    setIsOpen(true);
-  }
-
-  const handleCloseMenu = () => {
-    setValue("");
-    setIsOpen(false);
-  }
+  useEffect(() => {
+    setSearchValuesCondition([
+      {
+        value: '=',
+        title: `<span class='text-[#AAFF66]'>${searchValue}</span> =<div class='text-xs text-[#D9D9D9]'>Equals</div>`
+      },
+      {
+        value: '!=',
+        title: `<span class='text-[#AAFF66]'>${searchValue}</span> !=<div class='text-xs text-[#D9D9D9]'>Does not equal</div>`
+      },
+      {
+        value: ':',
+        title: `<span class='text-[#AAFF66]'>${searchValue}</span> :<div class='text-xs text-[#D9D9D9]'>Contains</div>`
+      },
+      {
+        value: '!:',
+        title: `<span class='text-[#AAFF66]'>${searchValue}</span> !:<div class='text-xs text-[#D9D9D9]'>Does not contain</div>`
+      },
+    ])
+  }, [searchValue]);
 
   return (
-    <div className='sm:max-w-[300px] w-full'>
-      <Select
-        styles={styles}
-        menuIsOpen={isOpen}
-        onBlur={handleCloseMenu}
-        components={{ Control, Option, MenuList, DropdownIndicator }}
-        className="basic-single search"
-        classNamePrefix="select"
-        maxMenuHeight={500}
-        name="color"
-        options={value ? searchValuesCondition : searchValuesFilters}
+    <div className='sm:max-w-[300px] w-full relative'>
+      <Input
+        onFocus={() => setCurrentStep(1)}
+        type='text'
+        value={searchValue}
+        setValue={setSearchValue}
         placeholder='Search for vessels by attribute...'
-        value={value}
-        onChange={setValue}
-        closeMenuOnSelect={false}
-        // @ts-ignore
-        handleOpenMenu={handleOpenMenu}
-        handleCloseMenu={() => {
-          filters.push({ name: value.label, value: value.label })
-          setFilters([...filters])
-          handleCloseMenu()
-        }}
-      />
+        icon='/search.svg' />
+      {searchValue.length > 0 && currentStep === 1 &&
+        <List
+          onClick={(name) => {
+            setName(name)
+            setCurrentStep(2);
+          }}
+          size='small'
+          title='Search Filters'
+          list={searchValuesFilters}
+          classname='!block !w-full left-0 top-12' />}
+      {currentStep === 2 &&
+        <List
+          onClick={() => {
+            filters.push({ name: name, value: searchValue })
+            setFilters([...filters])
+            setCurrentStep(0);
+            setSearchValue('')
+          }}
+          size='small'
+          condition={`Use: “${searchValue}”`}
+          title='Operators'
+          list={searchValuesCondition}
+          classname='!block !w-full left-0 top-12' />}
     </div>
   )
 }

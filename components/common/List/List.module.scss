@@ -1,0 +1,25 @@
+.list {
+  &.withTitle {
+    li {
+      &.title {
+        @apply font-bold;
+      }
+      &.condition {
+        @apply bg-[#535353];
+      }
+      &:not(.title, .condition) {
+        @apply pl-12 text-[#D9D9D9];
+      }
+    }
+  }
+  &.small {
+    li {
+      @apply text-sm py-3 px-4;
+    }
+  }
+  &.big {
+    li {
+      @apply text-base p-4;
+    }
+  }
+}
