@@ -11,7 +11,7 @@ interface IInput {
   value: string
   setValue: (value: string) => void
   onKeyPress?: (value:any) => void
-  onFocus: () => void
+  onFocus?: () => void
 }
 
 export const Input: FC<IInput> = (
