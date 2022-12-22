@@ -1,12 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // components
 import { H2, Layout, Paragraph } from "../components/common";
-import { Actions, Location, Pagination, Search, Table } from "../components/pages/vessels";
+import { Actions, Filters, Location, Pagination, Search, Table } from "../components/pages/vessels";
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<{}[]>([]);
+  const [filters, setFilters] = useState<{ name: string, value: string }[]>([]);
 
   return (
     <Layout
@@ -31,10 +32,8 @@ export default function Vessels() {
               </div>
             </div>
             <div className='border border-[#535353] bg-[#282828] flex-1 flex flex-col'>
-              <div className='p-6 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
-                <div className='sm:max-w-[300px] w-full'>
-                  <Search />
-                </div>
+              <div className='px-6 pt-6 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
+                <Search setFilters={setFilters} filters={filters} />
                 <div className='flex flex-wrap items-center gap-4 md:gap-8'>
                   <Actions currentSelected={currentSelected} />
                   <Pagination />
@@ -43,6 +42,7 @@ export default function Vessels() {
                   </div>
                 </div>
               </div>
+              <Filters filters={filters} setFilters={setFilters} />
               <Table
                 selectAll={selectAll}
                 setSelectAll={setSelectAll}
