@@ -1,13 +1,8 @@
 // libs
-import Select, { components, DropdownIndicatorProps } from 'react-select';
+import Select from 'react-select';
 
-const DropdownIndicator = (props: DropdownIndicatorProps) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <img className='w-3' src={'/sort-arrow.svg'} alt='' />
-    </components.DropdownIndicator>
-  );
-};
+// components
+import { DropdownIndicator } from '../../../common'
 
 const locations: ({ label: string; value: string })[] = [
   { value: 'Europe', label: 'Europe' },

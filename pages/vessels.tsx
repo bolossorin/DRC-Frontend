@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // components
 import { H2, Layout, Paragraph } from "../components/common";
-import { Actions, Filters, Location, Pagination, Search, Table } from "../components/pages/vessels";
+import { Actions, Filters, Location, Pagination, Search, Table, TableSetting } from "../components/pages/vessels";
 import { IFilter } from "../utility/types";
 
 export default function Vessels() {
@@ -38,8 +38,9 @@ export default function Vessels() {
                 <div className='flex flex-wrap items-center gap-4 md:gap-8'>
                   <Actions currentSelected={currentSelected} />
                   <Pagination />
-                  <div className='w-6 cursor-pointer transition-all opacity-50 hover:opacity-100'>
-                    <img src='/setting.svg' alt='' />
+                  <div className='relative z-10 w-6 cursor-pointer group'>
+                    <img className='transition-all opacity-50 group-hover:opacity-100' src='/setting.svg' alt='' />
+                    <TableSetting classname='group-hover:block' />
                   </div>
                 </div>
               </div>
