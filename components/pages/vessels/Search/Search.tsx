@@ -26,7 +26,7 @@ export const Search = ({ setFilters, filters }: ISearch) => {
   const [name, setName] = useState<string>('');
   const [condition, setCondition] = useState<string>('');
 
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [searchValuesCondition, setSearchValuesCondition] = useState<{}[]>([]);
 
   useEffect(() => {
@@ -50,11 +50,17 @@ export const Search = ({ setFilters, filters }: ISearch) => {
     ])
   }, [name]);
 
+  useEffect(() => {
+    if (!searchValue.includes(name)) {
+      setCurrentStep(1);
+    } else if (!searchValue.includes(condition)) {
+      setCurrentStep(2);
+    }
+  }, [searchValue])
 
   return (
     <div className='sm:max-w-[300px] w-full relative group'>
       <Input
-        onFocus={() => setCurrentStep(1)}
         type='text'
         value={searchValue}
         setValue={setSearchValue}
@@ -69,7 +75,7 @@ export const Search = ({ setFilters, filters }: ISearch) => {
             setSearchValue('');
           }
         }} />
-      {searchValue.length <= 0 && currentStep === 1 &&
+      {((searchValue.length <= 0 || !searchValue.includes(name)) && currentStep === 1) &&
         <List
           onClick={(target) => {
             setSearchValue(target);
