@@ -1,8 +1,11 @@
 import React from "react";
 
+// components
+import { IFilter } from "../../../../utility/types";
+
 interface IFilters {
-  filters: { name: string, value: string }[]
-  setFilters: (value: { name: string, value: string }[]) => void
+  filters: IFilter[]
+  setFilters: (value: IFilter[]) => void
 }
 
 export const Filters = ({ filters, setFilters }: IFilters) => {
@@ -14,7 +17,7 @@ export const Filters = ({ filters, setFilters }: IFilters) => {
           {filters.map((filter, index) =>
             <div key={index} className='flex bg-[#3C3C3C] px-3 rounded border border-[#A4A4A4] text-sm'>
               <div className='flex items-center'>
-                <span className='py-[9px] text-[#AAFF66] mr-1'>{filter.name}</span> : “{filter.value}“
+                <span className='py-[9px] text-[#AAFF66] mr-1'>{filter.name}</span> {filter.condition} “{filter.value}“
               </div>
               <div
                 onClick={() => {

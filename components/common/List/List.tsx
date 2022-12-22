@@ -29,7 +29,7 @@ export const List = ({ classname, list, title, condition, size, onClick }: IList
       </li>}
       {list.map(item =>
         <li
-          onClick={()=> onClick ? onClick(item.title) :null}
+          onClick={()=> onClick ? onClick(item.value) :null}
           key={item.title}
           className='flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none'>
           {item.icon && <img className='w-4 mr-3' src={item.icon} alt='' />}

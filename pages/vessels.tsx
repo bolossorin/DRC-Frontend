@@ -3,11 +3,12 @@ import React, { useState } from "react";
 // components
 import { H2, Layout, Paragraph } from "../components/common";
 import { Actions, Filters, Location, Pagination, Search, Table } from "../components/pages/vessels";
+import { IFilter } from "../utility/types";
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<{}[]>([]);
-  const [filters, setFilters] = useState<{ name: string, value: string }[]>([]);
+  const [filters, setFilters] = useState<IFilter[]>([]);
 
   return (
     <Layout
