@@ -217,6 +217,13 @@ interface ITable {
   setCurrentSelected: (value: {}[]) => void
 }
 
+const list = [
+  { icon: '/stop.svg', title: 'Stop' },
+  { icon: '/vs-code.svg', title: 'VS Code' },
+  { icon: '/ssh.svg', title: 'Copy SSH Config' },
+  { icon: '/ssh.svg', title: 'Copy SSH Command' },
+]
+
 export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) => {
   const [rows, setRows] = useState(rowsInitial);
 
@@ -265,7 +272,7 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
             <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
               <Cel classname='w-14 cursor-pointer relative overflow-visible group'>
                 <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
-                <List classname='group-hover:block' />
+                <List size='big' list={list} classname='group-hover:block' />
               </Cel>
               <Cel>
                 <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
