@@ -1,0 +1,31 @@
+.button {
+  &.small {
+    @apply min-w-[124px] py-3 px-4 text-base;
+    img {
+      @apply w-4 mr-2.5;
+    }
+  }
+  &.big {
+    @apply p-4 text-xl;
+    img {
+      @apply w-6 mr-4;
+    }
+  }
+  &.grey {
+    @apply bg-[#3C3C3C] hover:bg-[#5e5c5c];
+  }
+  &.green {
+    @apply bg-[#47A000] text-white hover:bg-[#50B400];
+  }
+  &.red {
+    @apply bg-[#DF4949] text-white hover:bg-[#BE3F3F];
+  }
+
+  &.blue {
+    @apply bg-[#2A63B2] text-white hover:bg-[#3A80E2];
+  }
+  &:disabled {
+    @apply bg-[#474747] text-[#C0C0C0];
+    pointer-events: none;
+  }
+}

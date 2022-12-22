@@ -24,10 +24,10 @@ export default function Home() {
                   Login to your account
                 </Paragraph>
                 <div className='mt-12'>
-                  <Button icon='/google.svg' classname="w-full mb-8">
+                  <Button size='big' color='grey' icon='/google.svg' classname="w-full mb-8">
                     Login with Google
                   </Button>
-                  <Button icon='/github.svg' classname="w-full">
+                  <Button size='big' color='grey' icon='/github.svg' classname="w-full">
                     Login with Github
                   </Button>
                 </div>

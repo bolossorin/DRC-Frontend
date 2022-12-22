@@ -3,18 +3,36 @@ import { FC } from "react";
 // libs
 import cn from "classnames";
 
+// assets
+import styles from './Button.module.scss'
+
 interface IButton {
   children: string
   classname?: string
   icon?: string
+  disabled?: boolean
+  size: 'small' | 'big'
+  color: 'green' | 'grey' | 'red' | 'blue'
+  onClick?: () => void
 }
 
-export const Button: FC<IButton> = ({ icon, classname, children }) => {
+export const Button: FC<IButton> = (
+  {
+    icon,
+    classname,
+    children,
+    size,
+    onClick,
+    color,
+    disabled
+  }) => {
   return (
     <button
+      disabled={disabled}
       type='button'
-      className={cn('text-xl font-medium flex items-center justify-center p-4 bg-[#3C3C3C] rounded hover:bg-[#5e5c5c] transition-all', classname)}>
-      {icon && <img className='w-6 mr-4' src={icon} alt='' />}
+      onClick={onClick}
+      className={cn('font-medium flex items-center justify-center rounded transition-all select-none', styles.button, styles[size], styles[color], classname)}>
+      {icon && <img src={icon} alt='' />}
       {children}
     </button>
   )

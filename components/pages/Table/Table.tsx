@@ -11,6 +11,7 @@ import { Checkbox, List, State } from "../../common";
 import styles from './Table.module.scss'
 
 interface IRows {
+  id: number,
   selected: boolean,
   versel_id: string,
   name: string,
@@ -27,6 +28,7 @@ const headers = ['Vessel ID', 'Name', 'State', 'Queue', 'Docker Image', 'GPU’s
 
 const rowsInitial: IRows[] = [
   {
+    id: 1,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -39,6 +41,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 2,
     selected: true,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -51,6 +54,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 3,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -63,6 +67,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 4,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -75,6 +80,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 5,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -87,6 +93,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 6,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -99,6 +106,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 7,
     selected: true,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -111,6 +119,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 8,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -123,6 +132,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 9,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -135,6 +145,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 10,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -147,6 +158,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 11,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -159,6 +171,7 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 12,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -171,6 +184,20 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
   {
+    id: 13,
+    selected: false,
+    versel_id: '68333578-13a5-43df-a839-49ffed149988',
+    name: 'Super Super Long Vessel Name!!',
+    state: 'Crashed',
+    queue: 'Super Super Long Queue Name',
+    docker_image: 'vessel:v2.7.0.wdbiweubqoubdwwk',
+    gpu: '1',
+    gpu_util: '100%',
+    gpu_memory: '100%',
+    created_at: '2022-09-05T06:36:01.205Z'
+  },
+  {
+    id: 14,
     selected: false,
     versel_id: '68333578-13a5-43df-a839-49ffed149988',
     name: 'Super Super Long Vessel Name!!',
@@ -183,13 +210,22 @@ const rowsInitial: IRows[] = [
     created_at: '2022-09-05T06:36:01.205Z'
   },
 ]
-export const Table = () => {
+
+interface ITable {
+  selectAll: boolean
+  setSelectAll: (value: boolean) => void
+  setCurrentSelected: (value: {}[]) => void
+}
+
+export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) => {
   const [rows, setRows] = useState(rowsInitial);
-  const [selectAll, setSelectAll] = useState(false);
 
   const isSelected = (index: number) => {
     rows[index].selected = !rows[index].selected;
     setRows([...rows]);
+
+    const filteredBySelected = rows.filter(row => row.selected)
+    setCurrentSelected(filteredBySelected);
   }
 
   const handleAllSelected = () => {

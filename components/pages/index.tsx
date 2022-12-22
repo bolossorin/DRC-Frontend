@@ -1,3 +1,5 @@
 export { Table } from './Table/Table'
+export { Pagination } from './Pagination/Pagination'
+export { Actions } from './Actions/Actions'
 export { Cel } from './Table/components/Cel/Cel'
 export { Row } from './Table/components/Row/Row'
