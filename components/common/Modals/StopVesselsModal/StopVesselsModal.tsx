@@ -11,7 +11,7 @@ interface IStopVesselsModal {
 
 export const StopVesselsModal = ({ setIsOpen }: IStopVesselsModal) => {
   return (
-    <ModalLayout icon='/stop.svg' setIsOpen={setIsOpen}>
+    <ModalLayout title='Stop Vessels' icon='/stop.svg' setIsOpen={setIsOpen}>
       <div className='text-center'>
         <Paragraph>Are you sure you want to stop vessels</Paragraph>
         <ul className='list-disc max-w-[206px] mx-auto text-left'>

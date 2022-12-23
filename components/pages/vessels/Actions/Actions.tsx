@@ -6,9 +6,10 @@ import { Button } from "../../../common";
 interface IActions {
   currentSelected: {}[]
   setIsStopModal: (value: boolean) => void
+  setIsAddedModal: (value: boolean) => void
 }
 
-export const Actions = ({ currentSelected, setIsStopModal }: IActions) => {
+export const Actions = ({ currentSelected, setIsStopModal, setIsAddedModal }: IActions) => {
   return (
     <>
       <Button
@@ -28,6 +29,7 @@ export const Actions = ({ currentSelected, setIsStopModal }: IActions) => {
         Stop
       </Button>
       <Button
+        onClick={() => setIsAddedModal(true)}
         size='medium'
         classname='text-[#C0C0C0] w-full sm:w-auto'
         icon='/plus.svg'
