@@ -1,5 +1,11 @@
 .button {
   &.small {
+    @apply min-w-[124px] py-1.5 px-3 text-sm;
+    img {
+      @apply w-3 mr-2;
+    }
+  }
+  &.medium {
     @apply min-w-[124px] py-3 px-4 text-base;
     img {
       @apply w-4 mr-2.5;
@@ -13,6 +19,9 @@
   }
   &.grey {
     @apply bg-[#3C3C3C] hover:bg-[#5e5c5c];
+  }
+  &.lightGrey {
+    @apply bg-[#535353] hover:bg-[#5e5c5c];
   }
   &.green {
     @apply bg-[#47A000] text-white hover:bg-[#50B400];

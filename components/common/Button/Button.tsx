@@ -11,8 +11,8 @@ interface IButton {
   classname?: string
   icon?: string
   disabled?: boolean
-  size: 'small' | 'big'
-  color: 'green' | 'grey' | 'red' | 'blue'
+  size: 'small' | 'medium' | 'big'
+  color: 'green' | 'grey' | 'red' | 'blue' | 'lightGrey'
   onClick?: () => void
 }
 
