@@ -1,4 +1,5 @@
 export { Cel } from './Table/components/Cel/Cel'
+export { CelHeader } from './Table/components/CelHeader/CelHeader'
 export { Row } from './Table/components/Row/Row'
 export { Table } from './Table/Table'
 export { Pagination } from './Pagination/Pagination'

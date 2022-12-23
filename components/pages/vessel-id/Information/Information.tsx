@@ -14,7 +14,7 @@ export const Information = () => {
   const [isStopModal, setIsStopModal] = useState(false);
 
   return (
-    <div className={cn('p-6', styles.information)}>
+    <div className={cn('p-6 pb-0 w-full', styles.information)}>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
       <div className='p-6 bg-[#2F2F2F] rounded'>
         <div className='flex flex-wrap gap-4 items-center justify-between mb-6'>

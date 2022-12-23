@@ -31,6 +31,14 @@
       @apply bg-[#6CF202];
     }
   }
+  &.failed {
+    span {
+      @apply text-[#FFC107];
+    }
+    .icon {
+      @apply bg-[#FFC107];
+    }
+  }
   &.stopping {
     span {
       @apply text-[#FF9294];
@@ -41,10 +49,10 @@
   }
   &.stopped {
     span {
-      @apply text-[#FF5A5B];
+      @apply text-[#FFA1A2];
     }
     .icon {
-      @apply bg-[#FF5A5B];
+      @apply bg-[#FFA1A2];
     }
   }
   &.idle {

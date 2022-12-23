@@ -19,9 +19,10 @@ const searchValuesFilters: ({ title: string; value: string })[] = [
 interface ISearch {
   filters: { name: string, value: string, condition: string }[]
   setFilters: (value: IFilter[]) => void
+  placeholder: string
 }
 
-export const Search = ({ setFilters, filters }: ISearch) => {
+export const Search = ({ setFilters, filters, placeholder }: ISearch) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [condition, setCondition] = useState<string>('');
@@ -64,7 +65,7 @@ export const Search = ({ setFilters, filters }: ISearch) => {
         type='text'
         value={searchValue}
         setValue={setSearchValue}
-        placeholder='Search for vessels by attribute...'
+        placeholder={placeholder}
         icon='/search.svg'
         onKeyPress={(event) => {
           // If the user presses the "Enter" key on the keyboard
@@ -85,7 +86,7 @@ export const Search = ({ setFilters, filters }: ISearch) => {
           size='small'
           title='Search Filters'
           list={searchValuesFilters}
-          classname='group-hover:block !w-full left-0 top-11' />}
+          classname='group-hover:block !w-full left-0 top-auto bottom-0 translate-y-full' />}
       {currentStep === 2 &&
         <List
           onClick={(target) => {
@@ -97,7 +98,7 @@ export const Search = ({ setFilters, filters }: ISearch) => {
           condition={`Use: “${searchValue}”`}
           title='Operators'
           list={searchValuesCondition}
-          classname='!block !w-full left-0 top-12' />}
+          classname='!block !w-full left-0 top-auto bottom-0 translate-y-full' />}
     </div>
   )
 }
