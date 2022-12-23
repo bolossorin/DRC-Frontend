@@ -34,7 +34,7 @@ export const Notifications = ({ classname, notifications, setNotifications }: IN
       <div className='overflow-auto'>
         <div className='max-h-[540px]'>
           {notifications.length > 0 ? notifications.map((notification, index) => (
-              <div className='p-4 border-b border-[#686868]'>
+              <div key={index} className='p-4 border-b border-[#686868]'>
                 <div className='flex items-center'>
                   <div className='w-8'>
                     <img src={notification.icon} alt='' />
