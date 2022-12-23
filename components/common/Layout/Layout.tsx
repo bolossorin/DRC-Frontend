@@ -1,8 +1,10 @@
+import React from "react";
+
 // libs
 import Head from "next/head";
 
 // components
-import { SideBar } from "../SideBar/SideBar";
+import { SideBar, Header } from "../../common";
 import { useWindowSize } from "../../../utility/useWindowSize";
 
 // assets
@@ -28,7 +30,14 @@ export const Layout = ({ title, description, children }: ILayout) => {
       <div className={styles.layout}>
         {width > 1024 && <SideBar />}
         <main>
-          {children}
+          <div className='container'>
+            <div className='flex flex-col min-h-screen py-10 md:px-10'>
+              <Header />
+              <section className='border border-[#535353] bg-[#282828] flex-1 flex flex-col'>
+                {children}
+              </section>
+            </div>
+          </div>
         </main>
       </div>
     </>
