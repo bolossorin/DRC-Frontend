@@ -251,10 +251,10 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
       <div className='min-w-[1900px]'>
         <div>
           <Row>
-            <Cel classname='w-14'>
+            <Cel classname='w-12'>
               <img className='opacity-50' src='/dots.svg' alt='' />
             </Cel>
-            <Cel>
+            <Cel classname='flex'>
               <Checkbox onChange={handleAllSelected} checked={selectAll} />
             </Cel>
             {headers.map(header =>
@@ -270,11 +270,11 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
         <div>
           {rows.map((row, index) => (
             <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
-              <Cel classname='w-14 cursor-pointer relative overflow-visible group'>
+              <Cel classname='w-12 cursor-pointer relative overflow-visible group'>
                 <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
                 <List size='big' list={list} classname='group-hover:block' />
               </Cel>
-              <Cel>
+              <Cel classname='flex'>
                 <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
               </Cel>
               <Cel>{row.versel_id}</Cel>
