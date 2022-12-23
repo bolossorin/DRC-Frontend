@@ -13,7 +13,7 @@ import {
   TableSetting
 } from "../components/pages/vessels";
 import { IFilter } from "../utility/types";
-import { StopVesselsModal } from "../components/common/Modals";
+import { StopVesselsModal, VesselAddedModal } from "../components/common/Modals";
 
 const notificationsInitial = [
   {
@@ -65,12 +65,14 @@ export default function Vessels() {
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [notifications, setNotifications] = useState(notificationsInitial);
   const [isStopModal, setIsStopModal] = useState(false);
+  const [isAddedModal, setIsAddedModal] = useState(true);
 
   return (
     <Layout
       title='Vessels | Deep Render Cloud'
       description='Vessels | Deep Render Cloud'>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
+      {isAddedModal && <VesselAddedModal setIsOpen={setIsAddedModal} />}
       <section>
         <div className='container'>
           <div className='flex flex-col min-h-screen py-10 md:px-10'>
@@ -100,7 +102,10 @@ export default function Vessels() {
               <div className='px-6 pt-6 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
                 <Search setFilters={setFilters} filters={filters} />
                 <div className='flex flex-wrap items-center gap-4 md:gap-8'>
-                  <Actions currentSelected={currentSelected} setIsStopModal={setIsStopModal} />
+                  <Actions
+                    currentSelected={currentSelected}
+                    setIsStopModal={setIsStopModal}
+                    setIsAddedModal={setIsAddedModal} />
                   <Pagination />
                   <div className='relative z-10 w-6 group'>
                     <img className='opacity-50 group-hover:opacity-100 cursor-pointer transition-all' src='/setting.svg'
