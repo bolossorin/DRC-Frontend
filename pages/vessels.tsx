@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { H2, Layout, Paragraph } from "../components/common";
 import {
   Actions,
+  CreateVessels,
   Filters,
   Location,
   Notifications,
@@ -65,14 +66,22 @@ export default function Vessels() {
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [notifications, setNotifications] = useState(notificationsInitial);
   const [isStopModal, setIsStopModal] = useState(false);
-  const [isAddedModal, setIsAddedModal] = useState(true);
+  const [isAddedModal, setIsAddedModal] = useState(false);
+  const [isCreateVessels, setIsCreateVessels] = useState(false);
+  const [countVessels, setCountVessels] = useState(0);
 
   return (
     <Layout
       title='Vessels | Deep Render Cloud'
       description='Vessels | Deep Render Cloud'>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
-      {isAddedModal && <VesselAddedModal setIsOpen={setIsAddedModal} />}
+      {isAddedModal && <VesselAddedModal countVessels={countVessels} setIsOpen={setIsAddedModal} />}
+      {isCreateVessels &&
+        <CreateVessels
+          countVessels={countVessels}
+          setCountVessels={setCountVessels}
+          setIsOpen={setIsCreateVessels}
+          setIsAddedModal={setIsAddedModal} />}
       <section>
         <div className='container'>
           <div className='flex flex-col min-h-screen py-10 md:px-10'>
@@ -105,7 +114,7 @@ export default function Vessels() {
                   <Actions
                     currentSelected={currentSelected}
                     setIsStopModal={setIsStopModal}
-                    setIsAddedModal={setIsAddedModal} />
+                    setIsCreateVessels={setIsCreateVessels} />
                   <Pagination />
                   <div className='relative z-10 w-6 group'>
                     <img className='opacity-50 group-hover:opacity-100 cursor-pointer transition-all' src='/setting.svg'

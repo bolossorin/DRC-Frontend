@@ -5,16 +5,19 @@ import { Button } from "../../Button/Button";
 
 interface IVesselAddedModal {
   setIsOpen: (value: boolean) => void
+  countVessels: number
 }
 
-export const VesselAddedModal = ({ setIsOpen }: IVesselAddedModal) => {
+export const VesselAddedModal = ({ setIsOpen, countVessels }: IVesselAddedModal) => {
   return (
     <ModalLayout
       title='Vessel Added'
       icon='/checkbox-green.svg'
       setIsOpen={setIsOpen}>
       <div className='text-center'>
-        <Paragraph classname='!text-base text-[#D9D9D9]'>5 vessels have been added</Paragraph>
+        <Paragraph classname='!text-base text-[#D9D9D9]'>
+          {countVessels} vessels have been added
+        </Paragraph>
         <Button
           onClick={() => setIsOpen(false)}
           size='small'

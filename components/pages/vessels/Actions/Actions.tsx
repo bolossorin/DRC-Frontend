@@ -6,10 +6,10 @@ import { Button } from "../../../common";
 interface IActions {
   currentSelected: {}[]
   setIsStopModal: (value: boolean) => void
-  setIsAddedModal: (value: boolean) => void
+  setIsCreateVessels: (value: boolean) => void
 }
 
-export const Actions = ({ currentSelected, setIsStopModal, setIsAddedModal }: IActions) => {
+export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels }: IActions) => {
   return (
     <>
       <Button
@@ -29,7 +29,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsAddedModal }: IA
         Stop
       </Button>
       <Button
-        onClick={() => setIsAddedModal(true)}
+        onClick={() => setIsCreateVessels(true)}
         size='medium'
         classname='text-[#C0C0C0] w-full sm:w-auto'
         icon='/plus.svg'

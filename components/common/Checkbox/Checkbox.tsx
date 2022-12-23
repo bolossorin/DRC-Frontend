@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 interface ICheckbox {
   classname?: any
-  onChange: () => void
+  onChange?: () => void
   checked: boolean
 }
 
