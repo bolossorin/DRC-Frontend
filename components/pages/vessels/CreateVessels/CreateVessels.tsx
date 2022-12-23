@@ -49,8 +49,8 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
               <Paragraph classname='!mb-0'>Number of Vessels</Paragraph>
               <PlusMinusInput value={countVessels} setValue={setCountVessels} />
             </div>
-            {Array.from(Array(countVessels).keys()).map(() =>
-              <Input classname='mb-6' type='text' placeholder='Vessel Name' />
+            {Array.from(Array(countVessels).keys()).map((index) =>
+              <Input key={index} classname='mb-6' type='text' placeholder='Vessel Name' />
             )}
           </div>
           <div className='mb-4'>
@@ -59,8 +59,8 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
               <Paragraph classname='!mb-0'>Number of GPUs</Paragraph>
               <PlusMinusInput value={countGPUs} setValue={setCountGPUs} />
             </div>
-            {Array.from(Array(countGPUs).keys()).map(() =>
-              <div className='flex items-center gap-4 mb-6'>
+            {Array.from(Array(countGPUs).keys()).map((index) =>
+              <div key={index} className='flex items-center gap-4 mb-6'>
                 <Paragraph classname='!mb-0'>Queue</Paragraph>
                 <Select
                   className="basic-single light w-full"

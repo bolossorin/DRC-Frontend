@@ -4,7 +4,7 @@ interface IPlusMinusInput {
 }
 
 export const PlusMinusInput = ({ value, setValue }: IPlusMinusInput) => {
-  console.log(value, 'value')
+
   return (
     <div className='flex'>
       <div
