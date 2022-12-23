@@ -21,7 +21,6 @@ body {
 }
 
 .basic-single {
-  @apply min-w-[120px];
   &.search {
     .select__control {
       @apply bg-[#3C3C3C] text-sm;

@@ -1,0 +1,22 @@
+.tableSetting {
+  :global {
+    .select__control {
+      @apply bg-[#535353] min-h-[30px] border-none;
+    }
+    .select__menu {
+      @apply border-none;
+    }
+    .select__single-value, .select__option {
+      @apply text-sm;
+    }
+    .select__value-container {
+      @apply px-1.5 leading-none;
+    }
+    .select__dropdown-indicator {
+      @apply p-1.5 pl-0;
+      img {
+        @apply w-2;
+      }
+    }
+  }
+}
