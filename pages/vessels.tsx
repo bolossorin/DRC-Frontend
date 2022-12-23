@@ -2,13 +2,67 @@ import React, { useState } from "react";
 
 // components
 import { H2, Layout, Paragraph } from "../components/common";
-import { Actions, Filters, Location, Pagination, Search, Table, TableSetting } from "../components/pages/vessels";
+import {
+  Actions,
+  Filters,
+  Location,
+  Notifications,
+  Pagination,
+  Search,
+  Table,
+  TableSetting
+} from "../components/pages/vessels";
 import { IFilter } from "../utility/types";
 
+const notificationsInitial = [
+  {
+    status: 'success',
+    message: 'Super Super Long Vessel Name!!',
+    state: 'Tailscale Cooking',
+    subMessage: '',
+    icon: '/cube.svg'
+  },
+  {
+    status: 'warning',
+    message: 'Super Super Long Vessel Name!!',
+    state: 'Warn Send',
+    subMessage: '',
+    icon: '/cube.svg'
+  },
+  {
+    status: 'error',
+    message: 'Super Super Long Vessel Name!!',
+    state: 'Crashed',
+    subMessage: 'Admin has been notified',
+    icon: '/cube.svg'
+  },
+  {
+    status: 'success',
+    message: 'GPU allowance increased from 8 to 12',
+    state: '',
+    subMessage: '',
+    icon: '/user.svg'
+  },
+  {
+    status: 'error',
+    message: 'Super Super Long Vessel Name!!',
+    state: 'Crashed',
+    subMessage: 'Admin has been notified',
+    icon: '/cube.svg'
+  },
+  {
+    status: 'success',
+    message: 'GPU allowance increased from 8 to 12',
+    state: '',
+    subMessage: '',
+    icon: '/user.svg'
+  }
+]
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<{}[]>([]);
   const [filters, setFilters] = useState<IFilter[]>([]);
+  const [notifications, setNotifications] = useState(notificationsInitial);
 
   return (
     <Layout
@@ -26,9 +80,16 @@ export default function Vessels() {
                 <div className='ml-2'>
                   <Location />
                 </div>
-                <div className='ml-6 relative w-4 cursor-pointer opacity-50 hover:opacity-100 transition-all'>
-                  <span className='absolute z-10 -right-1.5 -top-1.5 w-2 h-2 rounded-full bg-[#CA3C3C]' />
-                  <img src='/bell.svg' alt='' />
+                <div className='ml-6 relative w-4 group'>
+                  {notifications.length > 0 && <span
+                    className='absolute z-10 -right-1.5 -top-1.5 w-2 h-2 rounded-full bg-[#CA3C3C]' />}
+                  <img
+                    className='cursor-pointer opacity-50 group-hover:opacity-100 transition-all' src='/bell.svg'
+                    alt='' />
+                  <Notifications
+                    setNotifications={setNotifications}
+                    notifications={notifications}
+                    classname='group-hover:block' />
                 </div>
               </div>
             </div>
@@ -39,7 +100,8 @@ export default function Vessels() {
                   <Actions currentSelected={currentSelected} />
                   <Pagination />
                   <div className='relative z-10 w-6 group'>
-                    <img className='opacity-50 group-hover:opacity-100 cursor-pointer transition-all' src='/setting.svg' alt='' />
+                    <img className='opacity-50 group-hover:opacity-100 cursor-pointer transition-all' src='/setting.svg'
+                         alt='' />
                     <TableSetting classname='group-hover:block' />
                   </div>
                 </div>

@@ -1,0 +1,20 @@
+.success {
+  @apply text-[#88E207];
+  path {
+    @apply fill-[#88E207]
+  }
+}
+
+.warning {
+  @apply text-[#FFC107];
+  path {
+    @apply fill-[#FFC107]
+  }
+}
+
+.error {
+  @apply text-[#FF5A5B];
+  path {
+    @apply fill-[#FF5A5B]
+  }
+}
