@@ -24,11 +24,11 @@ export const Notifications = ({ classname, notifications, setNotifications }: IN
       className={cn('hidden absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border border-[#686868]', classname)}>
       <div className='flex items-center p-4 border-b border-[#686868]'>
         <H5 classname='!mb-0'>Notifications</H5>
-        <Paragraph classname='!mb-0 text-sm ml-4'>({notifications.length})</Paragraph>
+        <Paragraph classname='!mb-0 ml-4'>({notifications.length})</Paragraph>
         <div
           className='ml-auto cursor-pointer hover:opacity-50 select-none transition-all'
           onClick={() => setNotifications([])}>
-          <Paragraph classname='!mb-0 text-sm whitespace-nowrap'>Read All</Paragraph>
+          <Paragraph classname='!mb-0 whitespace-nowrap'>Read All</Paragraph>
         </div>
       </div>
       <div className='overflow-auto'>
@@ -52,18 +52,18 @@ export const Notifications = ({ classname, notifications, setNotifications }: IN
                         <img src='/close.svg' alt='' />
                       </div>
                     </div>
-                    <Paragraph classname='!text-sm'>{notification.message}</Paragraph>
+                    <Paragraph>{notification.message}</Paragraph>
                     {notification.state && <div className='flex flex-wrap items-center gap-3'>
-                      <Paragraph classname='!mb-0 !text-sm text-[#D9D9D9]'>has entered state</Paragraph>
+                      <Paragraph classname='!mb-0 text-[#D9D9D9]'>has entered state</Paragraph>
                       <State fontSize='text-sm' state={notification.state} />
                     </div>}
                     {notification.subMessage &&
-                      <Paragraph classname='!mb-0 !text-sm text-[#D9D9D9] mt-2'>{notification.subMessage}</Paragraph>}
+                      <Paragraph classname='!mb-0 text-[#D9D9D9] mt-2'>{notification.subMessage}</Paragraph>}
                   </div>
                 </div>
               </div>
             ))
-            : <Paragraph classname='!mb-0 !text-sm text-[#D9D9D9] p-4 text-center'>Empty</Paragraph>}
+            : <Paragraph classname='!mb-0 text-[#D9D9D9] p-4 text-center'>Empty</Paragraph>}
         </div>
       </div>
     </div>

@@ -42,7 +42,7 @@ export const TableSetting = ({ classname }: ITableSetting) => {
       className={cn('hidden absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border border-[#686868] min-w-[216px] rounded', styles.tableSetting, classname)}>
       <H5 classname='p-4 !mb-0 !text-white border-b border-[#686868]'>Table Settings</H5>
       <div className='flex items-center justify-between p-4 border-b border-[#686868]'>
-        <Paragraph classname='!mb-0 !text-sm !text-white'>
+        <Paragraph classname='!mb-0 !text-white'>
           Vessels per Page
         </Paragraph>
         <div className='max-w-[80px]'>
