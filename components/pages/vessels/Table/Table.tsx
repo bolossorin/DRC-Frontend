@@ -2,10 +2,12 @@ import { useState } from "react";
 
 // libs
 import cn from "classnames";
+import Link from "next/link";
 
 // components
 import { Cel, Row } from "../index";
 import { Checkbox, List, State } from "../../../common";
+import { routes } from "../../../../utility/routes";
 
 // assets
 import styles from './Table.module.scss'
@@ -277,7 +279,11 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
               <Cel classname='flex'>
                 <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
               </Cel>
-              <Cel>{row.versel_id}</Cel>
+              <Cel>
+                <Link href={`${routes.vessels}/${row.versel_id}`} legacyBehavior>
+                  <a className="hover:underline">{row.versel_id}</a>
+                </Link>
+              </Cel>
               <Cel>{row.name}</Cel>
               <Cel>
                 <State state={row.state} />
