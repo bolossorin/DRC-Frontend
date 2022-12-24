@@ -47,7 +47,6 @@ export const TableSetting = ({ classname }: ITableSetting) => {
         </Paragraph>
         <div className='max-w-[80px]'>
           <Select
-            controlShouldRenderValue={true}
             // @ts-ignore
             components={{ DropdownIndicator }}
             className="basic-single"

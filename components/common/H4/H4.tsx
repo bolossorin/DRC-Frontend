@@ -1,11 +1,16 @@
 import { FC } from "react";
 
+// libs
+import cn from "classnames";
+
 interface IH4 {
-  children: string
+  children: any
+  classname?: string
+  onClick?: () => void
 }
 
-export const H4: FC<IH4> = ({ children }) => {
+export const H4: FC<IH4> = ({ children, classname, onClick }) => {
   return (
-    <h4 className='text-2xl font-bold mb-2'>{children}</h4>
+    <h4 onClick={onClick} className={cn('text-2xl font-bold mb-2', classname)}>{children}</h4>
   )
 }

@@ -6,11 +6,11 @@ import cn from "classnames";
 interface IInput {
   classname?: any
   type: string
-  placeholder: string
-  icon: string
-  value: string
-  setValue: (value: string) => void
-  onKeyPress?: (value:any) => void
+  placeholder?: string
+  icon?: string
+  value?: string
+  setValue?: (value: string) => void
+  onKeyPress?: (value: any) => void
   onFocus?: () => void
 }
 
@@ -32,7 +32,7 @@ export const Input: FC<IInput> = (
         onFocus={onFocus}
         value={value}
         type={type}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => setValue ? setValue(e.target.value) : null}
         className={cn('text-sm text-white placeholder:text-[#C0C0C0] px-5 py-3 rounded bg-[#3C3C3C] border border-[#686868] w-full', { 'pl-10': icon }, classname)}
         placeholder={placeholder} />
     </label>

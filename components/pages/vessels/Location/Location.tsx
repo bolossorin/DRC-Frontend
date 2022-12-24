@@ -12,13 +12,11 @@ const locations: ({ label: string; value: string })[] = [
 export const Location = () => {
   return (
     <Select
-      controlShouldRenderValue={true}
       // @ts-ignore
       components={{ DropdownIndicator }}
       className="basic-single"
       classNamePrefix="select"
       defaultValue={locations[0]}
-      name="color"
       options={locations}
     />
   )

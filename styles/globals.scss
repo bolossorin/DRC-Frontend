@@ -21,19 +21,25 @@ body {
 }
 
 .basic-single {
-  &.search {
+  &.light {
     .select__control {
-      @apply bg-[#3C3C3C] text-sm;
+      @apply bg-[#3D3C3C] border-[#686868] text-sm h-12;
+      &:hover {
+        @apply border-[#686868];
+      }
     }
     .select__option {
-      @apply bg-[#3C3C3C] text-sm text-[#D9D9D9];
+      @apply bg-[#3D3C3C] text-sm text-[#D9D9D9];
     }
     .select__placeholder {
       @apply text-sm;
     }
+    .select__single-value {
+      @apply text-sm;
+    }
   }
   .select__placeholder {
-    @apply text-[#F6F6F6];
+    @apply text-[#A4A4A4];
   }
   .select__control {
     @apply bg-[#212121] rounded-[3px] border-[#A4A4A4] hover:bg-[#2F2F2F] cursor-pointer;
