@@ -15,15 +15,16 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels }:
       <Button
         disabled={currentSelected.length <= 0}
         size='medium'
-        classname='text-[#C0C0C0] w-full sm:w-auto'
-        icon='/vs-code-white.svg' color='blue'>
+        classname='w-full sm:w-auto'
+        icon='/vs-code-white.svg'
+        color='blue'>
         VS Code
       </Button>
       <Button
         onClick={() => setIsStopModal(true)}
         disabled={currentSelected.length <= 0}
         size='medium'
-        classname='text-[#C0C0C0] w-full sm:w-auto'
+        classname='w-full sm:w-auto'
         icon='/stop-empty.svg'
         color='red'>
         Stop

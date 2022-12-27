@@ -6,6 +6,7 @@ import Link from "next/link";
 // components
 import { Layout, Paragraph } from "../../components/common";
 import { routes } from "../../utility/routes";
+import { Information } from "../../components/pages/vessel-id";
 
 export default function VesselID() {
 
@@ -13,7 +14,7 @@ export default function VesselID() {
     <Layout
       title='Vessel | Deep Render Cloud'
       description='Vessel | Deep Render Cloud'>
-      <div className='p-6'>
+      <div className='p-6 border-b border-[#686868]'>
         <Link href={routes.vessels} legacyBehavior>
           <a className='inline-flex items-center transition-all cursor-pointer hover:opacity-70'>
             <img className='w-2 mr-2.5' src={'/arrow.svg'} alt='' />
@@ -21,6 +22,7 @@ export default function VesselID() {
           </a>
         </Link>
       </div>
+      <Information />
     </Layout>
   )
 }
