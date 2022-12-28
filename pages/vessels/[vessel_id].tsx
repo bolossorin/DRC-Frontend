@@ -6,7 +6,7 @@ import Link from "next/link";
 // components
 import { Layout, Paragraph } from "../../components/common";
 import { routes } from "../../utility/routes";
-import { Information } from "../../components/pages/vessel-id";
+import { Experiments, Information } from "../../components/pages/vessel-id";
 
 export default function VesselID() {
 
@@ -23,6 +23,7 @@ export default function VesselID() {
         </Link>
       </div>
       <Information />
+      <Experiments />
     </Layout>
   )
 }
