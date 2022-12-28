@@ -5,7 +5,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cel, Row } from "../index";
+import { Cel, CelHeader, Row } from "../index";
 import { Checkbox, List, State } from "../../../common";
 import { routes } from "../../../../utility/routes";
 
@@ -251,52 +251,41 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
   return (
     <div className={cn('overflow-y-auto flex-1', styles.table)}>
       <div className='min-w-[1900px]'>
-        <div>
-          <Row>
-            <Cel classname='w-12'>
-              <img className='opacity-50' src='/dots.svg' alt='' />
+        <Row>
+          <Cel classname='w-12'>
+            <img className='opacity-50' src='/dots.svg' alt='' />
+          </Cel>
+          <Cel classname='flex'>
+            <Checkbox onChange={handleAllSelected} checked={selectAll} />
+          </Cel>
+          {headers.map(header => <CelHeader key={header}>{header}</CelHeader>)}
+        </Row>
+        {rows.map((row, index) => (
+          <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
+            <Cel classname='w-12 cursor-pointer relative overflow-visible group'>
+              <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
+              <List size='big' list={list} classname='group-hover:block' />
             </Cel>
             <Cel classname='flex'>
-              <Checkbox onChange={handleAllSelected} checked={selectAll} />
+              <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
             </Cel>
-            {headers.map(header =>
-              <Cel key={header}
-                   classname='flex items-center text-white font-medium text-base group select-none cursor-pointer'>
-                {header}
-                <img
-                  className='ml-2 w-3.5 opacity-50 group-hover:opacity-100 transition-all' src='/sort-arrow.svg'
-                  alt='' />
-              </Cel>)}
+            <Cel>
+              <Link href={`${routes.vessels}/${row.versel_id}`} legacyBehavior>
+                <a className="hover:underline">{row.versel_id}</a>
+              </Link>
+            </Cel>
+            <Cel>{row.name}</Cel>
+            <Cel>
+              <State state={row.state} />
+            </Cel>
+            <Cel>{row.queue}</Cel>
+            <Cel>{row.docker_image}</Cel>
+            <Cel>{row.gpu}</Cel>
+            <Cel>{row.gpu_util}</Cel>
+            <Cel>{row.gpu_memory}</Cel>
+            <Cel>{row.created_at}</Cel>
           </Row>
-        </div>
-        <div>
-          {rows.map((row, index) => (
-            <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
-              <Cel classname='w-12 cursor-pointer relative overflow-visible group'>
-                <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
-                <List size='big' list={list} classname='group-hover:block' />
-              </Cel>
-              <Cel classname='flex'>
-                <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
-              </Cel>
-              <Cel>
-                <Link href={`${routes.vessels}/${row.versel_id}`} legacyBehavior>
-                  <a className="hover:underline">{row.versel_id}</a>
-                </Link>
-              </Cel>
-              <Cel>{row.name}</Cel>
-              <Cel>
-                <State state={row.state} />
-              </Cel>
-              <Cel>{row.queue}</Cel>
-              <Cel>{row.docker_image}</Cel>
-              <Cel>{row.gpu}</Cel>
-              <Cel>{row.gpu_util}</Cel>
-              <Cel>{row.gpu_memory}</Cel>
-              <Cel>{row.created_at}</Cel>
-            </Row>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   )

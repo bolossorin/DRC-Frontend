@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+
+// libs
+import cn from "classnames";
 
 // components
-import { H4, H5, H6, Input } from "../../../common";
+import { H4 } from "../../../common";
+import { Filters, Search } from "../../vessels";
+import { IFilter } from "../../../../utility/types";
+import { TableExperiments } from "../";
+
+// assets
+import styles from './Experiments.module.scss'
 
 export const Experiments = () => {
+  const [filters, setFilters] = useState<IFilter[]>([]);
+
   return (
-    <div className='p-6'>
+    <div className='p-6 pt-4 w-full 2xl:w-8/12'>
       <div className='p-6 bg-[#2F2F2F] rounded'>
-        <H4 classname='flex items-center'>
-          <img className='w-5 mr-4' src={'/link.svg'} alt='' />
-          Connection
+        <H4 classname='!mb-6 flex items-center'>
+          <img className='w-5 mr-4' src={'/pytorch-seek.svg'} alt='' />
+          Experiments
         </H4>
-        <H5 classname='!mb-6'>SSH</H5>
-        <H6>Command</H6>
-        <Input type='text' value='ssh -i ~/.ssh/id_rsa -p 22 alex@100.86.104.174' />
+        <div className='flex items-start'>
+          <div className={cn('max-w-[224px]', styles.search)}>
+            <Search placeholder='Search' setFilters={setFilters} filters={filters} />
+          </div>
+          <div className='px-6'>
+            <Filters filters={filters} setFilters={setFilters} />
+          </div>
+        </div>
+        <TableExperiments />
       </div>
     </div>
   )

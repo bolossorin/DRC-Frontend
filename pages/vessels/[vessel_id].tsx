@@ -6,7 +6,7 @@ import Link from "next/link";
 // components
 import { Layout, Paragraph } from "../../components/common";
 import { routes } from "../../utility/routes";
-import { Experiments, Information } from "../../components/pages/vessel-id";
+import { Connection, Experiments, Information } from "../../components/pages/vessel-id";
 
 export default function VesselID() {
 
@@ -22,8 +22,11 @@ export default function VesselID() {
           </a>
         </Link>
       </div>
-      <Information />
-      <Experiments />
+      <div className='flex flex-wrap'>
+        <Information />
+        <Connection />
+        <Experiments />
+      </div>
     </Layout>
   )
 }
