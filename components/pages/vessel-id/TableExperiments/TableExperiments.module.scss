@@ -1,5 +1,10 @@
 .tableExperiments {
+  @apply min-w-[680px];
   :global {
-
+    .cell {
+      &:nth-child(5) {
+        @apply min-w-[200px];
+      }
+    }
   }
 }

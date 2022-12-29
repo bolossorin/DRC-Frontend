@@ -55,48 +55,50 @@ const rows: { name: string, project: string, state: string, created: string, ite
 
 export const TableExperiments = () => {
   return (
-    <div className={cn('mt-6 border border-[#686868]', styles.tableExperiments)}>
-      <Row>
-        {headers.map(header => <CelHeader classname='!text-base text-[#F6F6F6]' key={header}>{header}</CelHeader>)}
-      </Row>
-      {rows.map((row, index) => (
-        <Row key={index}>
-          <Cel>
-            <Link href={`${routes.vessels}/${row.name}`} legacyBehavior>
-              <a className="underline hover:text-[#F6F6F6]">{row.name}</a>
-            </Link>
-          </Cel>
-          <Cel>{row.project}</Cel>
-          <Cel>
-            <State state={row.state} />
-          </Cel>
-          <Cel>{row.created}</Cel>
-          <Cel>
-            <div className='flex items-center'>
-              <div className='relative w-7 mr-2'>
+    <div className='overflow-auto'>
+      <div className={cn('mt-6 border border-[#686868]', styles.tableExperiments)}>
+        <Row>
+          {headers.map(header => <CelHeader classname='!text-base text-[#F6F6F6]' key={header}>{header}</CelHeader>)}
+        </Row>
+        {rows.map((row, index) => (
+          <Row key={index}>
+            <Cel>
+              <Link href={`${routes.vessels}/${row.name}`} legacyBehavior>
+                <a className="underline hover:text-[#F6F6F6]">{row.name}</a>
+              </Link>
+            </Cel>
+            <Cel>{row.project}</Cel>
+            <Cel>
+              <State state={row.state} />
+            </Cel>
+            <Cel>{row.created}</Cel>
+            <Cel>
+              <div className='flex items-center'>
+                <div className='relative w-7 mr-2'>
                 <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[6px]'>
                 {(row.iteration1 / row.iteration2 * 100).toFixed(0)}
                 </span>
-                <Doughnut
-                  data={{
-                    datasets: [{
-                      data: [row.iteration1, row.iteration2],
-                      backgroundColor: [
-                        '#D9D9D9',
-                        '#88E207',
-                      ],
-                      hoverOffset: 4,
-                      borderWidth: 1,
-                      // @ts-ignore
-                      cutout: '80%'
-                    }]
-                  }} />
+                  <Doughnut
+                    data={{
+                      datasets: [{
+                        data: [row.iteration1, row.iteration2],
+                        backgroundColor: [
+                          '#D9D9D9',
+                          '#88E207',
+                        ],
+                        hoverOffset: 4,
+                        borderWidth: 1,
+                        // @ts-ignore
+                        cutout: '80%'
+                      }]
+                    }} />
+                </div>
+                {new Intl.NumberFormat('en-US').format(row.iteration1)} / {new Intl.NumberFormat('en-US').format(row.iteration2)}
               </div>
-              {new Intl.NumberFormat('en-US').format(row.iteration1)} / {new Intl.NumberFormat('en-US').format(row.iteration2)}
-            </div>
-          </Cel>
-        </Row>
-      ))}
+            </Cel>
+          </Row>
+        ))}
+      </div>
     </div>
   )
 }
