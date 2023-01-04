@@ -13,10 +13,11 @@ import styles from './Layout.module.scss'
 interface ILayout {
   title: string
   description: string
+  label: any
   children: any
 }
 
-export const Layout = ({ title, description, children }: ILayout) => {
+export const Layout = ({ title, description, children, label }: ILayout) => {
   const { width } = useWindowSize();
 
   return (
@@ -32,8 +33,8 @@ export const Layout = ({ title, description, children }: ILayout) => {
         <main>
           <div className='container'>
             <div className='flex flex-col min-h-screen py-10 md:px-10'>
-              <Header />
-              <section className='border border-[#535353] bg-[#282828] flex-1 flex flex-col'>
+              <Header label={label} />
+              <section className='border border-[#535353] bg-[#282828] flex-1 flex flex-col rounded'>
                 {children}
               </section>
             </div>

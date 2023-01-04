@@ -24,7 +24,7 @@ export const SideBar = () => {
   return (
     <div className={cn('bg-[#282828] w-80 fixed left-0 top-0 z-10 h-screen py-10', styles.sideBar)}>
       <img className='w-[116px] mx-10 mb-10' src={'/logo.svg'} alt='' />
-      <div className='mx-10 text-center'>
+      <a href={routes.myProfile} className='mx-10 text-center group hover:opacity-80 transition-all'>
         <div className='w-20 mb-6 rounded-full mb-4 mx-auto'>
           <img src={'/images/avatar.png'} alt='' />
         </div>
@@ -33,7 +33,7 @@ export const SideBar = () => {
           Alexander Lytchier
         </H5>
         <H6 classname='text-[#D9D9D9] font-medium'>VP of Engineering</H6>
-      </div>
+      </a>
       <ul className='py-12'>
         {links.map(link => (
           <li key={link.title} className={cn({ [styles.active]: router.asPath === link.link })}>

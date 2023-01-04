@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 // components
-import { Paragraph, H2 } from "../../common";
 import { Location, Notifications } from "../../pages/vessels";
 
 const notificationsInitial = [
@@ -49,14 +48,17 @@ const notificationsInitial = [
   }
 ]
 
-export const Header = () => {
+interface IHeader {
+  label: string
+}
+
+export const Header: FC<IHeader> = ({ label }) => {
   const [notifications, setNotifications] = useState(notificationsInitial);
 
   return (
     <div className='flex items-center mb-6 w-full justify-between max-w-[1500px]'>
       <div className='flex items-center'>
-        <H2 classname='mb-0'>Vessels</H2>
-        <Paragraph classname='text-xl ml-4 !mb-0 relative top-0.5'>(25)</Paragraph>
+        {label}
       </div>
       <div className='flex items-center'>
         <div className='ml-2'>

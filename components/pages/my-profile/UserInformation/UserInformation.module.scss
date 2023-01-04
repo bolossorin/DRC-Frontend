@@ -1,0 +1,12 @@
+.list {
+  @apply w-full md:w-auto md:mt-4;
+  li {
+    @apply w-full text-[#D9D9D9] mb-3 md:mb-4 text-sm flex flex-col xl:flex-row whitespace-nowrap overflow-hidden text-ellipsis;
+    span {
+      @apply inline-block font-medium w-[120px];
+      &.name {
+        @apply flex items-center font-bold;
+      }
+    }
+  }
+}

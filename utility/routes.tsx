@@ -1,3 +1,4 @@
 export const routes = {
-  vessels: '/vessels'
+  vessels: '/vessels',
+  myProfile: '/my-profile'
 }
