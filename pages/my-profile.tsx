@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 import { H2, Layout } from "../components/common";
-import { UserInformation } from "../components/pages/my-profile";
+import { PublicSSHKeys, UserInformation } from "../components/pages/my-profile";
 
 export default function Vessels() {
 
@@ -13,6 +13,7 @@ export default function Vessels() {
       label={<H2 classname='mb-0'>My Profile</H2>}>
       <div className='p-6'>
         <UserInformation />
+        <PublicSSHKeys />
       </div>
     </Layout>
   )
