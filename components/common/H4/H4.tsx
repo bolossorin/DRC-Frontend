@@ -4,7 +4,7 @@ import { FC } from "react";
 import cn from "classnames";
 
 interface IH4 {
-  children: any
+  children?: any
   classname?: string
   onClick?: () => void
 }

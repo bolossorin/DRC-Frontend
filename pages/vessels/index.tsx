@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // components
-import { Layout } from "../../components/common";
+import { Layout, VesselTitle } from "../../components/common";
 import {
   Actions,
   CreateVessels,
@@ -26,7 +26,8 @@ export default function Vessels() {
   return (
     <Layout
       title='Vessels | Deep Render Cloud'
-      description='Vessels | Deep Render Cloud'>
+      description='Vessels | Deep Render Cloud'
+      label={<VesselTitle />}>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
       {isAddedModal && <VesselAddedModal countVessels={countVessels} setIsOpen={setIsAddedModal} />}
       {isCreateVessels &&
