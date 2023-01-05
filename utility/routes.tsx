@@ -1,4 +1,5 @@
 export const routes = {
   vessels: '/vessels',
-  myProfile: '/my-profile'
+  myProfile: '/my-profile',
+  hardware: '/hardware'
 }

@@ -15,7 +15,7 @@ const links = [
   { icon: <AdminIcon />, title: 'Admin', link: '#' },
   { icon: <VesselIcon />, title: 'Vessels', link: routes.vessels },
   { icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
-  { icon: <HardwareIcon />, title: 'Hardware', link: '#' },
+  { icon: <HardwareIcon />, title: 'Hardware', link: routes.hardware },
   { icon: <LogOutIcon />, title: 'Log Out', link: '#' },
 ]
 export const SideBar = () => {
