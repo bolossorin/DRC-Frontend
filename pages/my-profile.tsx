@@ -4,7 +4,7 @@ import React from "react";
 import { H2, Layout } from "../components/common";
 import { PublicSSHKeys, UserInformation } from "../components/pages/my-profile";
 
-export default function Vessels() {
+export default function MyProfile() {
 
   return (
     <Layout
