@@ -1,17 +1,14 @@
 import React from "react";
 
 // components
-import { H4 } from "../../../common";
-import { Overall } from "../Overall/Overall";
+import { GPUTitle, Overall, Usage } from "../../hardware";
 
 export const GPU = () => {
   return (
-    <div className='py-6 px-3 sm:p-6 bg-[#2F2F2F] rounded'>
-      <H4 classname='!mb-6 flex items-center'>
-        <img className='w-7 mr-4' src={'/gpu.svg'} alt='' />
-        GPU
-      </H4>
+    <div className='flex flex-col w-full 2xl:w-[48%] py-6 px-3 sm:p-6 bg-[#2C2C2C] rounded'>
+      <GPUTitle />
       <Overall />
+      <Usage />
     </div>
   )
 }

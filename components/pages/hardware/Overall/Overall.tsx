@@ -14,7 +14,7 @@ export const Overall = () => {
       <div className='p-4 border-b border-[#414040]'>
         <H5 classname='!mb-0 !font-medium'>Overall</H5>
       </div>
-      <ul className={cn('px-12 py-6 flex items-center justify-between', styles.overall)}>
+      <ul className={cn('px-2 md:px-12 py-6 flex items-center justify-between', styles.overall)}>
         <li><span>{overall.total}</span>Total</li>
         <li><span>{overall.free}</span>Free</li>
         <li><span>{overall.used}</span>Used</li>
