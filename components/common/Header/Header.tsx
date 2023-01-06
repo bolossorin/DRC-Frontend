@@ -56,7 +56,7 @@ export const Header: FC<IHeader> = ({ label }) => {
   const [notifications, setNotifications] = useState(notificationsInitial);
 
   return (
-    <div className='flex items-center mb-3 w-full justify-between max-w-[1540px]'>
+    <div className='flex items-center mb-6 w-full justify-between max-w-[1540px]'>
       <div className='flex items-center'>
         {label}
       </div>
