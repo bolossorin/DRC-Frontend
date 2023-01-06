@@ -1,0 +1,27 @@
+.row {
+  @apply p-0;
+  &.header {
+    :global {
+      .cell {
+        @apply text-[#F6F6F6] text-base;
+      }
+    }
+  }
+  .queueUsage {
+    @apply text-[#A4A4A4] flex items-center;
+  }
+  :global {
+    .cell {
+      @apply overflow-visible text-[#A4A4A4];
+      &:nth-child(1) {
+        @apply text-base;
+      }
+      &:nth-child(2) {
+        @apply w-[200px];
+      }
+      &:nth-child(3) {
+        @apply min-w-[200px] w-[200px];
+      }
+    }
+  }
+}

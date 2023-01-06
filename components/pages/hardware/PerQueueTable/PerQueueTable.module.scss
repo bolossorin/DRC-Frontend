@@ -1,0 +1,18 @@
+.row {
+  @apply p-0;
+  &.header {
+    :global {
+      .cell {
+        @apply text-[#F6F6F6] text-base;
+      }
+    }
+  }
+  :global {
+    .cell {
+      @apply overflow-visible text-[#A4A4A4];
+      &:nth-child(5) {
+        @apply min-w-[160px];
+      }
+    }
+  }
+}
