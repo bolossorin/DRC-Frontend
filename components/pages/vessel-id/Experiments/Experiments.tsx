@@ -16,8 +16,8 @@ export const Experiments = () => {
   const [filters, setFilters] = useState<IFilter[]>([]);
 
   return (
-    <div className='p-6 pt-4 w-full 2xl:w-[65%]'>
-      <div className='p-6 bg-[#2F2F2F] rounded'>
+    <div className='px-2 md:p-6 md:pl-2 md:pt-4 w-full 2xl:w-[66%]'>
+      <div className='p-2 md:p-6 bg-[#2F2F2F] rounded'>
         <H4 classname='!mb-6 flex items-center'>
           <img className='w-5 mr-4' src={'/pytorch-seek.svg'} alt='' />
           Experiments

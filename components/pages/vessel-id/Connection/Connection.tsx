@@ -5,13 +5,13 @@ import { Code, H4, H5 } from "../../../common";
 
 export const Connection = () => {
   return (
-    <div className='p-6 pt-4 w-full 2xl:w-[35%] flex flex-col'>
-      <div className='p-6 bg-[#2F2F2F] rounded flex-1'>
-        <H4 classname='!mb-6 flex items-center'>
+    <div className='p-2 md:p-6 md:pr-2 md:pt-4 w-full 2xl:w-[34%] flex flex-col'>
+      <div className='p-2 md:p-6 bg-[#2F2F2F] rounded flex-1'>
+        <H4 classname='!mb-4 flex items-center'>
           <img className='w-5 mr-4' src={'/link.svg'} alt='' />
           Connection
         </H4>
-        <H5 classname='!mb-6'>SSH</H5>
+        <H5 classname='!mb-5'>SSH</H5>
         <div className='mb-6'>
           <Code title='Command'>
             ssh -i ~/.ssh/id_rsa -p 22 alex@100.86.104.174

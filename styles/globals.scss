@@ -25,6 +25,11 @@ body {
 }
 
 .basic-single {
+  &.per-page {
+    .select__option {
+      @apply bg-[#3D3C3C] text-[#D9D9D9];
+    }
+  }
   &.light {
     .select__control {
       @apply bg-[#3D3C3C] border-[#686868] text-sm h-12;

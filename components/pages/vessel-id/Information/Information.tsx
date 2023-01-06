@@ -14,10 +14,10 @@ export const Information = () => {
   const [isStopModal, setIsStopModal] = useState(false);
 
   return (
-    <div className={cn('p-6 pb-0 w-full', styles.information)}>
+    <div className={cn('p-2 md:p-6 md:pb-0 w-full', styles.information)}>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
-      <div className='p-6 bg-[#2F2F2F] rounded'>
-        <div className='flex flex-wrap gap-4 items-center justify-between mb-6'>
+      <div className='px-2 md:px-6 pt-5 pb-2 bg-[#2F2F2F] rounded'>
+        <div className='flex flex-wrap gap-4 items-center justify-between mb-4'>
           <H4 classname='!mb-0 flex items-center'>
             <img className='w-8 mr-4' src={'/cube-green.svg'} alt='' />
             Super super long vessel name!!
@@ -40,7 +40,7 @@ export const Information = () => {
             </Button>
           </div>
         </div>
-        <div className='flex flex-wrap items-center gap-x-10 xl:gap-x-40 gap-y-5 md:gap-y-10'>
+        <div className='flex flex-wrap items-center gap-x-10 xl:gap-x-32 gap-y-5 md:gap-y-10'>
           <ul className={styles.list}>
             <li className='flex items-center'>
               <span>State :</span> <State state='Running' fontSize='text-sm' />

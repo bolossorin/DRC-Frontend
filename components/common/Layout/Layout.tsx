@@ -32,7 +32,7 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         {width > 1024 && <SideBar />}
         <main>
           <div className='container'>
-            <div className='flex flex-col min-h-screen py-9 md:px-4'>
+            <div className='flex flex-col min-h-screen py-10 md:px-4'>
               <Header label={label} />
               <section className='border border-[#535353] bg-[#282828] flex-1 flex flex-col rounded'>
                 {children}
