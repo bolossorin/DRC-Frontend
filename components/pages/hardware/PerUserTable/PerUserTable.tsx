@@ -65,7 +65,7 @@ export const PerUserTable = () => {
                 <span className='mx-2 text-[#A4A4A4]'>x</span>
                 <div className='overflow-hidden text-ellipsis text-[#A4A4A4]'>{queue.title}</div>
                 <div
-                  className='ml-auto group p-2 min-w[40px] min-w-[40px] w-10 h-10 border-[3px] border-[#2f2f2f] bg-[#535353] rounded-full transition-all hover:border-[#A4A4A4]'>
+                  className='ml-auto group p-2 min-w-[36px] min-w-[40px] w-9 h-9 border-[3px] border-[#2f2f2f] bg-[#535353] rounded-full transition-all hover:border-[#A4A4A4]'>
                   <img className='h-full cursor-pointer' src={'/dots-horizontal.svg'} alt='' />
                   <div
                     className='hidden group-hover:block absolute z-10 right-0 bottom-4 translate-y-full w-max min-w-[200px] rounded bg-[#3C3C3C] max-h-[288px] overflow-auto'>

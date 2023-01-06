@@ -8,12 +8,12 @@ import styles from './UserInformation.module.scss';
 
 export const UserInformation = () => {
   return (
-    <div className='w-full flex flex-wrap items-center gap-x-4 md:gap-x-14'>
+    <div className='w-full flex flex-wrap items-center gap-x-4 md:gap-x-14 mb-8'>
       <div className='relative w-40 mr-6 rounded-full mb-4'>
         <img src={'/images/avatar.png'} alt='' />
         <span className='absolute right-4 bottom-4 w-4 h-4 rounded-full bg-[#88E207]' />
       </div>
-      <div className='w-full flex flex-wrap flex-1 justify-between items-end gap-x-4 max-w-[1000px]'>
+      <div className='w-full flex flex-wrap flex-1 justify-between items-end gap-x-4 max-w-[920px]'>
         <div className='w-full md:w-auto'>
           <H4 classname='text-xl'>Alexander Lytchier</H4>
           <ul className={styles.list}>
