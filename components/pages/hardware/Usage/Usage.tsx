@@ -15,12 +15,12 @@ export const Usage = () => {
         <div className='flex items-center justify-between text-center border-b border-[#414040]'>
           <H5
             onClick={() => setShowTab(1)}
-            classname={cn('!mb-0 w-1/2 p-4 cursor-pointer transition-all', { 'bg-[#414040]/40': showTab === 1 })}>
+            classname={cn('!mb-0 w-1/2 p-4 cursor-pointer transition-all hover:bg-[#414040]/40', { 'bg-[#414040]/40': showTab === 1 })}>
             Usage per Queue
           </H5>
           <H5
             onClick={() => setShowTab(2)}
-            classname={cn('!mb-0 w-1/2 p-4 cursor-pointer transition-all', { 'bg-[#414040]/40': showTab === 2 })}>
+            classname={cn('!mb-0 w-1/2 p-4 cursor-pointer transition-all hover:bg-[#414040]/40', { 'bg-[#414040]/40': showTab === 2 })}>
             Usage per User
           </H5>
         </div>
