@@ -264,7 +264,7 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
           <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
             <Cel classname='w-12 cursor-pointer relative overflow-visible group'>
               <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
-              <List size='big' list={list} classname='group-hover:block' />
+              <List size='small' list={list} classname='group-hover:block' />
             </Cel>
             <Cel classname='flex'>
               <Checkbox onChange={() => isSelected(index)} checked={row.selected} />

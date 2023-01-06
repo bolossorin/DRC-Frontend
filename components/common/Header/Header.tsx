@@ -56,7 +56,7 @@ export const Header: FC<IHeader> = ({ label }) => {
   const [notifications, setNotifications] = useState(notificationsInitial);
 
   return (
-    <div className='flex items-center mb-6 w-full justify-between max-w-[1500px]'>
+    <div className='flex items-center mb-5 w-full justify-between max-w-[1520px]'>
       <div className='flex items-center'>
         {label}
       </div>
@@ -64,7 +64,7 @@ export const Header: FC<IHeader> = ({ label }) => {
         <div className='ml-2'>
           <Location />
         </div>
-        <div className='ml-6 relative w-4 group'>
+        <div className='ml-9 relative w-4 group'>
           {notifications.length > 0 && <span
             className='absolute z-10 -right-1.5 -top-1.5 w-2 h-2 rounded-full bg-[#CA3C3C]' />}
           <img

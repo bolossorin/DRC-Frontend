@@ -38,6 +38,15 @@ body {
       @apply text-sm;
     }
   }
+  &.location {
+    .select__value-container {
+      padding-left: 22px;
+    }
+    .select__indicator {
+      padding-right: 22px;
+      padding-left:  2px;
+    }
+  }
   .select__placeholder {
     @apply text-[#A4A4A4];
   }

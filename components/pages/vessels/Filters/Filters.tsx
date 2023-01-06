@@ -27,12 +27,14 @@ export const Filters = ({ filters, setFilters }: IFilters) => {
               <img className='w-2 opacity-50 group-hover:opacity-100' src={'/close.svg'} alt='' />
             </div>
           </div>)}
-        <button
-          type='button'
-          onClick={() => setFilters([])}
-          className='text-sm px-3 py-[9px] border border-[#A4A4A4] rounded hover:bg-[#3C3C3C] transition-all'>
-          Clear Filters
-        </button>
+        <div className='border-l border-[#686868] pl-4'>
+          <button
+            type='button'
+            onClick={() => setFilters([])}
+            className='text-sm px-3 py-[9px] border border-[#A4A4A4] rounded hover:bg-[#3C3C3C] transition-all'>
+            Clear Filters
+          </button>
+        </div>
       </div> : null
   )
 }
