@@ -14,7 +14,7 @@ export const Location = () => {
     <Select
       // @ts-ignore
       components={{ DropdownIndicator }}
-      className="basic-single"
+      className="basic-single location"
       classNamePrefix="select"
       defaultValue={locations[0]}
       options={locations}

@@ -36,9 +36,9 @@ export default function Vessels() {
           setCountVessels={setCountVessels}
           setIsOpen={setIsCreateVessels}
           setIsAddedModal={setIsAddedModal} />}
-      <div className='px-6 pt-6 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
+      <div className='px-6 pt-6 pb-5 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6'>
         <Search placeholder='Search for vessels by attribute...' setFilters={setFilters} filters={filters} />
-        <div className='flex flex-wrap items-center gap-4 md:gap-8'>
+        <div className='flex flex-wrap items-center gap-4 md:gap-10'>
           <Actions
             currentSelected={currentSelected}
             setIsStopModal={setIsStopModal}
@@ -51,9 +51,9 @@ export default function Vessels() {
           </div>
         </div>
       </div>
-      <div className='px-6 pb-6 pt-4'>
+      {filters.length > 0 && <div className='px-6 pb-6'>
         <Filters filters={filters} setFilters={setFilters} />
-      </div>
+      </div>}
       <Table
         selectAll={selectAll}
         setSelectAll={setSelectAll}

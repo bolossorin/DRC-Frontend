@@ -34,19 +34,19 @@ export const Search = ({ setFilters, filters, placeholder }: ISearch) => {
     setSearchValuesCondition([
       {
         value: '=',
-        title: `<span class='text-[#AAFF66]'>${name}</span> =<div class='text-xs text-[#D9D9D9]'>Equals</div>`
+        title: `<span class='text-[#AAFF66]'>${name}</span> =<div class='text-[10px] text-[#D9D9D9]'>Equals</div>`
       },
       {
         value: '!=',
-        title: `<span class='text-[#AAFF66]'>${name}</span> !=<div class='text-xs text-[#D9D9D9]'>Does not equal</div>`
+        title: `<span class='text-[#AAFF66]'>${name}</span> !=<div class='text-[10px] text-[#D9D9D9]'>Does not equal</div>`
       },
       {
         value: ':',
-        title: `<span class='text-[#AAFF66]'>${name}</span> :<div class='text-xs text-[#D9D9D9]'>Contains</div>`
+        title: `<span class='text-[#AAFF66]'>${name}</span> :<div class='text-[10px] text-[#D9D9D9]'>Contains</div>`
       },
       {
         value: '!:',
-        title: `<span class='text-[#AAFF66]'>${name}</span> !:<div class='text-xs text-[#D9D9D9]'>Does not contain</div>`
+        title: `<span class='text-[#AAFF66]'>${name}</span> !:<div class='text-[10px] text-[#D9D9D9]'>Does not contain</div>`
       },
     ])
   }, [name]);
@@ -60,7 +60,7 @@ export const Search = ({ setFilters, filters, placeholder }: ISearch) => {
   }, [searchValue])
 
   return (
-    <div className='sm:max-w-[300px] w-full relative group'>
+    <div className='sm:max-w-[284px] w-full relative group'>
       <Input
         type='text'
         value={searchValue}
@@ -86,7 +86,7 @@ export const Search = ({ setFilters, filters, placeholder }: ISearch) => {
           size='small'
           title='Search Filters'
           list={searchValuesFilters}
-          classname='group-hover:block !w-full left-0 top-auto bottom-0 translate-y-full' />}
+          classname='group-hover:block !w-full !left-0 !top-auto !bottom-0 translate-y-full' />}
       {currentStep === 2 &&
         <List
           onClick={(target) => {
@@ -98,7 +98,7 @@ export const Search = ({ setFilters, filters, placeholder }: ISearch) => {
           condition={`Use: “${searchValue}”`}
           title='Operators'
           list={searchValuesCondition}
-          classname='!block !w-full left-0 top-auto bottom-0 translate-y-full' />}
+          classname='!block !w-full !left-0 !top-auto !bottom-0 translate-y-full' />}
     </div>
   )
 }
