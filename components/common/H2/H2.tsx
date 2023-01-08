@@ -10,7 +10,7 @@ interface IH2 {
 
 export const H2: FC<IH2> = ({ children, classname }) => {
   return (
-    <h2 className={cn('text-[32px] font-bold mb-6', classname)}>
+    <h2 className={cn('text-2xl ms:text-[32px] font-bold mb-6', classname)}>
       {children}
     </h2>
   )

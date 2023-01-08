@@ -33,19 +33,19 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
   return (
     <div className='fixed z-50 left-0 top-0 h-full w-full'>
       <div onClick={() => setIsOpen(false)} className='bg-black/40 absolute left-0 top-0 z-10 w-full h-full' />
-      <div className='w-full h-full relative z-20 ml-auto max-w-[500px] bg-[#282828] overflow-auto'>
-        <div className='py-4 px-3 md:px-6 flex items-center border-b border-[#686868]'>
-          <img className='w-8 mr-4' src='/cube-green.svg' alt='' />
+      <div className='w-full h-full relative z-20 ml-auto max-w-[478px] bg-[#282828] overflow-auto'>
+        <div className='py-7 px-5 md:px-10 flex items-center border-b border-[#686868]'>
+          <img className='w-8 mr-3 md:mr-7' src='/cube-green.svg' alt='' />
           <H4 classname='!mb-0'>Create Vessels</H4>
           <img
             onClick={() => setIsOpen(false)}
             className='w-4 ml-auto opacity-50 hover:opacity-100 cursor-pointer'
             src='/close.svg' alt='' />
         </div>
-        <div className='py-4 md:py-10 px-3 md:px-6'>
+        <div className='py-4 md:py-9 px-5 md:px-10'>
           <div className='mb-4'>
             <H4>1. Name & Quantity</H4>
-            <div className='flex items-center gap-4 my-8'>
+            <div className='flex items-center gap-3 md:gap-6 my-8'>
               <Paragraph classname='!mb-0'>Number of Vessels</Paragraph>
               <PlusMinusInput value={countVessels} setValue={setCountVessels} />
             </div>
@@ -53,9 +53,9 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
               <Input key={index} classname='mb-6' type='text' placeholder='Vessel Name' />
             )}
           </div>
-          <div className='mb-4'>
+          <div className='mb-9'>
             <H4>2. GPU</H4>
-            <div className='flex items-center gap-4 my-8'>
+            <div className='flex items-center gap-3 md:gap-6 my-8'>
               <Paragraph classname='!mb-0'>Number of GPUs</Paragraph>
               <PlusMinusInput value={countGPUs} setValue={setCountGPUs} />
             </div>
@@ -71,9 +71,9 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
               </div>
             )}
           </div>
-          <div className='mb-4'>
+          <div className='mb-10'>
             <H4>3. Docker</H4>
-            <div className='flex items-center gap-4 my-8'>
+            <div className='flex items-center gap-3 md:gap-6 my-8'>
               <Paragraph classname='!mb-0'>Image</Paragraph>
               <Select
                 className="basic-single light w-full"
@@ -93,8 +93,8 @@ export const CreateVessels = ({ setIsOpen, setIsAddedModal, setCountVessels, cou
                 src={'/arrow.svg'}
                 alt='' />
             </H4>
-            {isShowAdvanced && <div className='flex items-center gap-4 my-8'>
-              <Paragraph classname='!mb-0'>Priveleged Access</Paragraph>
+            {isShowAdvanced && <div className='flex items-center gap-3 md:gap-6 mt-6 mb-9'>
+              <Paragraph classname='!mb-0 md:mr-4'>Priveleged Access</Paragraph>
               <Radio name='access' label='True' checked={true} />
               <Radio name='access' label='False' />
             </div>}

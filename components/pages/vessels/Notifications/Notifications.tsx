@@ -22,8 +22,8 @@ export const Notifications = ({ classname, notifications, setNotifications }: IN
   return (
     <div
       className={cn('hidden absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border border-[#686868]', classname)}>
-      <div className='flex items-center p-4 border-b border-[#686868]'>
-        <H5 classname='!mb-0'>Notifications</H5>
+      <div className='flex items-center py-4 px-3 md:px-5 border-b border-[#686868]'>
+        <H5 classname='!mb-0 !text-lg'>Notifications</H5>
         <Paragraph classname='!mb-0 ml-4'>({notifications.length})</Paragraph>
         <div
           className='ml-auto cursor-pointer hover:opacity-50 select-none transition-all'
@@ -34,12 +34,12 @@ export const Notifications = ({ classname, notifications, setNotifications }: IN
       <div className='overflow-auto'>
         <div className='max-h-[540px]'>
           {notifications.length > 0 ? notifications.map((notification, index) => (
-              <div key={index} className='p-4 border-b border-[#686868]'>
+              <div key={index} className='py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868]'>
                 <div className='flex items-center'>
                   <div className='w-8'>
                     <img src={notification.icon} alt='' />
                   </div>
-                  <div className='ml-7 flex-1'>
+                  <div className='ml-3 md:ml-7 flex-1'>
                     <div
                       className={cn('flex items-center border-b border-[#535353] pb-2 mb-4 ', styles[notification.status])}>
                       <div className='w-6 mr-4'>

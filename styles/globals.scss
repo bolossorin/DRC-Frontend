@@ -8,6 +8,10 @@
   @apply m-0 p-0 text-[#F6F6F6];
 }
 
+h1, h2, h3, h4, h5, h6, p a {
+  font-family: 'Inter', sans-serif;
+}
+
 img, svg, video {
   @apply w-full;
 }
@@ -29,7 +33,7 @@ body {
       }
     }
     .select__option {
-      @apply bg-[#3D3C3C] text-sm text-[#D9D9D9];
+      @apply py-3 bg-[#3D3C3C] text-sm text-[#D9D9D9];
     }
     .select__placeholder {
       @apply text-sm;
@@ -40,11 +44,10 @@ body {
   }
   &.location {
     .select__value-container {
-      padding-left: 22px;
+      @apply pl-2 md:pl-5;
     }
     .select__indicator {
-      padding-right: 22px;
-      padding-left:  2px;
+      @apply pr-2 md:pr-5 pl-0.5;
     }
   }
   .select__placeholder {
