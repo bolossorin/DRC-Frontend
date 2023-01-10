@@ -18,7 +18,7 @@ export const Code = ({ children, title }: ICode) => {
       <div className='flex justify-between border border-[#686868] rounded'>
         <div
           ref={textFef}
-          className='px-6 text-sm text-[#D9D9D9] py-4 overflow-hidden text-ellipsis whitespace-nowrap leading-[2]'>
+          className='px-6 text-sm text-[#D9D9D9] py-3 overflow-hidden text-ellipsis whitespace-nowrap leading-[1.6]'>
           {children}
         </div>
         <div

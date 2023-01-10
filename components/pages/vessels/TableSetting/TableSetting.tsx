@@ -49,7 +49,7 @@ export const TableSetting = ({ classname }: ITableSetting) => {
           <Select
             // @ts-ignore
             components={{ DropdownIndicator }}
-            className="basic-single"
+            className="basic-single per-page"
             classNamePrefix="select"
             defaultValue={perPage[0]}
             name="color"

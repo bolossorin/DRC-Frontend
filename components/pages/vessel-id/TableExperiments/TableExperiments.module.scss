@@ -2,6 +2,7 @@
   @apply min-w-[680px];
   :global {
     .cell {
+      @apply py-3;
       &:nth-child(5) {
         @apply min-w-[200px];
       }

@@ -2,9 +2,9 @@
   .list {
     @apply min-h-[160px];
     li {
-      @apply mb-3 text-[#D9D9D9] break-all;
+      @apply mb-2.5 text-[#D9D9D9] break-all;
       > span {
-        @apply inline-block w-[130px] text-[#F6F6F6] font-medium;
+        @apply inline-block w-[118px] text-[#F6F6F6] font-medium;
       }
       ul {
         @apply list-disc;
