@@ -29,7 +29,7 @@ const keys = [
 export const PublicSSHKeys = () => {
   return (
     <div className='py-6 px-3 sm:p-6 bg-[#2F2F2F] rounded'>
-      <H4 classname='!mb-8 flex flex-wrap items-center'>
+      <H4 classname='!mb-8 flex !text-xl flex-wrap items-center'>
         <img className='w-5 mr-4' src={'/link.svg'} alt='' />
         Public SSH Keys
         <Button icon='/plus.svg' classname='ml-auto w-full sm:w-auto mt-4 sm:mt-0' size='medium' color='green'>

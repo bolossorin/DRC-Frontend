@@ -9,9 +9,9 @@
   }
   :global {
     .cell {
-      @apply overflow-visible text-[#A4A4A4];
+      @apply py-3 pl-3 md:pl-7 overflow-visible text-[#A4A4A4];
       &:nth-child(5) {
-        @apply min-w-[160px];
+        @apply min-w-[190px];
       }
     }
   }
