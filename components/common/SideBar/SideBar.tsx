@@ -16,7 +16,7 @@ const links = [
   { icon: <VesselIcon />, title: 'Vessels', link: routes.vessels },
   { icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
   { icon: <HardwareIcon />, title: 'Hardware', link: routes.hardware },
-  { icon: <LogOutIcon />, title: 'Log Out', link: '#' },
+  { icon: <LogOutIcon />, title: 'Log Out', link: '/api/auth/logout' },
 ]
 export const SideBar = () => {
   const router = useRouter();
