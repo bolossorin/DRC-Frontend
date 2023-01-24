@@ -1,11 +1,22 @@
+import React, { useEffect } from "react";
 // libs
 import Head from 'next/head'
 import Router from "next/router";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 // components
-import { Button, H4, Paragraph } from "../components/common";
+import { Button, H4, LoadingSpinner, Paragraph } from "../components/common";
+import { routes } from "../utility/routes";
 
 export default function Home() {
+  const { isLoading, user } = useUser();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      Router.push(routes.vessels);
+    }
+  }, [isLoading])
+
   return (
     <>
       <Head>
@@ -14,7 +25,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      {isLoading && <LoadingSpinner />}
+      {!user && <main>
         <section>
           <div className='container'>
             <div className='min-h-screen flex items-center justify-center'>
@@ -41,7 +53,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
+      </main>}
     </>
   )
 }

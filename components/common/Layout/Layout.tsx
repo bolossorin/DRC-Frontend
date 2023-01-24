@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // libs
 import Head from "next/head";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Router from "next/router";
 
 // components
-import { SideBar, Header } from "../../common";
+import { SideBar, Header, LoadingSpinner } from "../../common";
 import { useWindowSize } from "../../../utility/useWindowSize";
+import { routes } from "../../../utility/routes";
 
 // assets
 import styles from './Layout.module.scss'
@@ -19,6 +22,13 @@ interface ILayout {
 
 export const Layout = ({ title, description, children, label }: ILayout) => {
   const { width } = useWindowSize();
+  const { isLoading, user }:any = useUser();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      Router.push(routes.login);
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -28,8 +38,9 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.layout}>
-        {width > 1024 && <SideBar />}
+      {isLoading && <LoadingSpinner />}
+      {user && <div className={styles.layout}>
+        {width > 1024 && <SideBar user={user} />}
         <main>
           <div className='container'>
             <div className='flex flex-col min-h-screen py-10 md:px-4'>
@@ -40,7 +51,7 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
             </div>
           </div>
         </main>
-      </div>
+      </div>}
     </>
   )
 }

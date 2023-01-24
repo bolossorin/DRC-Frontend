@@ -11,3 +11,10 @@ export interface INotification {
   subMessage: string,
   icon: string
 }
+
+export interface IUser {
+  name: string
+  picture: string
+  nickname: string
+  sid: string
+}
