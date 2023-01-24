@@ -1,5 +1,6 @@
 // libs
 import Head from 'next/head'
+import Router from "next/router";
 
 // components
 import { Button, H4, Paragraph } from "../components/common";
@@ -24,7 +25,12 @@ export default function Home() {
                   Login to your account
                 </Paragraph>
                 <div className='mt-12'>
-                  <Button size='big' color='grey' icon='/google.svg' classname="w-full mb-8">
+                  <Button
+                    onClick={() => Router.push('/api/auth/login')}
+                    size='big'
+                    color='grey'
+                    icon='/google.svg'
+                    classname="w-full mb-8">
                     Login with Google
                   </Button>
                   <Button size='big' color='grey' icon='/github.svg' classname="w-full">
