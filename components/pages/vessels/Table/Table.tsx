@@ -1,32 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
 // libs
-import cn from "classnames";
-import Link from "next/link";
+import cn from 'classnames';
+import Link from 'next/link';
 
 // components
-import { Cel, CelHeader, Row } from "../index";
-import { Checkbox, List, State } from "../../../common";
-import { routes } from "../../../../utility/routes";
+import { Cel, CelHeader, Row } from '../index';
+import { Checkbox, List, State } from '../../../common';
+import { routes } from '../../../../utility/routes';
 
 // assets
-import styles from './Table.module.scss'
+import styles from './Table.module.scss';
+import { Session } from '../../../../graphql/types/session';
 
 interface IRows {
-  id: number,
-  selected: boolean,
-  versel_id: string,
-  name: string,
-  state: string,
-  queue: string,
-  docker_image: string,
-  gpu: string,
-  gpu_util: string,
-  gpu_memory: string,
-  created_at: string
+  id: number;
+  selected: boolean;
+  versel_id: string;
+  name: string;
+  state: string;
+  queue: string;
+  docker_image: string;
+  gpu: string;
+  gpu_util: string;
+  gpu_memory: string;
+  created_at: string;
 }
 
-const headers = ['Vessel ID', 'Name', 'State', 'Queue', 'Docker Image', 'GPU’s', 'GPU Util.', 'GPU Memory', 'Created At']
+const headers = [
+  'Vessel ID',
+  'Name',
+  'State',
+  'Queue',
+  'Docker Image',
+  'GPU’s',
+  'GPU Util',
+  'GPU Memory',
+  'Created At',
+];
 
 const rowsInitial: IRows[] = [
   {
@@ -40,7 +51,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 2,
@@ -53,7 +64,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 3,
@@ -66,7 +77,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 4,
@@ -79,7 +90,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 5,
@@ -92,7 +103,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 6,
@@ -105,7 +116,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 7,
@@ -118,7 +129,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 8,
@@ -131,7 +142,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 9,
@@ -144,7 +155,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 10,
@@ -157,7 +168,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 11,
@@ -170,7 +181,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 12,
@@ -183,7 +194,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 13,
@@ -196,7 +207,7 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
   {
     id: 14,
@@ -209,14 +220,16 @@ const rowsInitial: IRows[] = [
     gpu: '1',
     gpu_util: '100%',
     gpu_memory: '100%',
-    created_at: '2022-09-05T06:36:01.205Z'
+    created_at: '2022-09-05T06:36:01.205Z',
   },
-]
+];
 
 interface ITable {
-  selectAll: boolean
-  setSelectAll: (value: boolean) => void
-  setCurrentSelected: (value: {}[]) => void
+  items: Session[];
+  selected: string[];
+  selectAll: boolean;
+  setSelectAll: (value: boolean) => void;
+  setCurrentSelected: (value: string[] | ((value: string[]) => string[])) => void;
 }
 
 const list = [
@@ -224,54 +237,53 @@ const list = [
   { icon: '/vs-code.svg', title: 'VS Code' },
   { icon: '/ssh.svg', title: 'Copy SSH Config' },
   { icon: '/ssh.svg', title: 'Copy SSH Command' },
-]
+];
 
-export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) => {
-  const [rows, setRows] = useState(rowsInitial);
+export const Table = ({ items, selected, selectAll, setSelectAll, setCurrentSelected }: ITable) => {
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
-  const isSelected = (index: number) => {
-    rows[index].selected = !rows[index].selected;
-    setRows([...rows]);
+  const handleSelect = (id: string) => () => {
+    if (isSelected(id)) {
+      return setCurrentSelected((prev) => prev.filter((x) => x !== id));
+    }
+    setCurrentSelected((prev) => [...prev, id]);
+  };
 
-    const filteredBySelected = rows.filter(row => row.selected)
-    setCurrentSelected(filteredBySelected);
-  }
-
-  const handleAllSelected = () => {
-
-    const newRows = rows.map(row => {
-      row.selected = !selectAll
-      return { ...row }
-    })
-
-    setSelectAll(!selectAll);
-    setRows([...newRows]);
-  }
+  useEffect(() => {
+    if (selectAll) {
+      const newSelecteds = items.map((x) => x.id);
+      setCurrentSelected(newSelecteds);
+      return;
+    }
+    setCurrentSelected([]);
+  }, [selectAll]);
 
   return (
     <div className={cn('overflow-y-auto flex-1', styles.table)}>
-      <div className='min-w-[1900px]'>
+      <div className="min-w-[1900px]">
         <Row>
-          <Cel classname='w-12'>
-            <img className='opacity-50' src='/dots.svg' alt='' />
+          <Cel classname="w-12">
+            <img className="opacity-50" src="/dots.svg" alt="" />
           </Cel>
-          <Cel classname='flex'>
-            <Checkbox onChange={handleAllSelected} checked={selectAll} />
+          <Cel classname="flex">
+            <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
           </Cel>
-          {headers.map(header => <CelHeader key={header}>{header}</CelHeader>)}
+          {headers.map((header) => (
+            <CelHeader key={header}>{header}</CelHeader>
+          ))}
         </Row>
-        {rows.map((row, index) => (
-          <Row key={index} classname={cn({ '!bg-[#3A3A3A]': row.selected })}>
-            <Cel classname='w-12 cursor-pointer relative overflow-visible group'>
-              <img className='opacity-50 group-hover:opacity-100 transition-all' src='/dots.svg' alt='' />
-              <List size='small' list={list} classname='group-hover:block' />
+        {items.map((row, index) => (
+          <Row key={index} classname={cn({ '!bg-[#3A3A3A]': isSelected(row.id) })}>
+            <Cel classname="w-12 cursor-pointer relative overflow-visible group">
+              <img className="opacity-50 group-hover:opacity-100 transition-all" src="/dots.svg" alt="" />
+              <List size="small" list={list} classname="group-hover:block" />
             </Cel>
-            <Cel classname='flex'>
-              <Checkbox onChange={() => isSelected(index)} checked={row.selected} />
+            <Cel classname="flex">
+              <Checkbox onChange={handleSelect(row.id)} checked={isSelected(row.id)} />
             </Cel>
             <Cel>
-              <Link href={`${routes.vessels}/${row.versel_id}`} legacyBehavior>
-                <a className="hover:underline">{row.versel_id}</a>
+              <Link href={`${routes.vessels}/${row.id}`} legacyBehavior>
+                <a className="hover:underline">{row.id}</a>
               </Link>
             </Cel>
             <Cel>{row.name}</Cel>
@@ -279,14 +291,14 @@ export const Table = ({ selectAll, setSelectAll, setCurrentSelected }: ITable) =
               <State state={row.state} />
             </Cel>
             <Cel>{row.queue}</Cel>
-            <Cel>{row.docker_image}</Cel>
-            <Cel>{row.gpu}</Cel>
-            <Cel>{row.gpu_util}</Cel>
-            <Cel>{row.gpu_memory}</Cel>
+            <Cel>{row.image}</Cel>
+            <Cel>{row.n_gpus}</Cel>
+            <Cel>{row.avg_gpu_util}</Cel>
+            <Cel>{row.avg_gpu_memory_util}</Cel>
             <Cel>{row.created_at}</Cel>
           </Row>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
