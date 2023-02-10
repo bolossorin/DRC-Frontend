@@ -11,7 +11,7 @@ const client = new ApolloClient({
 });
 
 export const setApolloAuthToken = async () => {
-  const { accessToken } = await fetch('http://localhost:3000/api/auth/token').then((res) => res.json());
+  const { accessToken } = await fetch(process.env.LOCAL_SERVER_URL + '/auth/token').then((res) => res.json());
 
   const link = setContext((_, { headers }) => ({
     headers: {
