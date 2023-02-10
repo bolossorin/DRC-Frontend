@@ -18,6 +18,9 @@ import {
 import { IFilter } from '../../utility/types';
 import { StopVesselsModal, VesselAddedModal } from '../../components/common/Modals';
 
+import { createSession } from '../../graphql/sessions/createSession';
+import { CreateSessionArgs } from '../../graphql/types/session';
+
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<string[]>([]);
@@ -57,16 +60,47 @@ export default function Vessels() {
     setIsStopModal(false);
   };
 
+  const [writeSession] = useMutation(createSession, {
+    onError: (error) => console.log(error),
+  });
+
+  const createSessions = async (sessionsData: CreateSessionArgs[]) => {
+    const requests: Promise<any>[] = [];
+    sessionsData.forEach((s) =>
+      requests.push(
+        writeSession({
+          variables: {
+            label: s.label,
+            n_gpus: s.n_gpus,
+            queue: s.queue,
+            image: s.image,
+            privileged: s.privileged,
+          },
+        })
+      )
+    );
+    const result = await Promise.all(requests);
+    refetch();
+    setIsCreateVessels(false);
+    if (!result.some((r) => r.errors)) {
+      setIsAddedModal(true);
+    } else {
+      setCountVessels(0);
+    }
+  };
+
   return (
     <Layout title="Vessels | Deep Render Cloud" description="Vessels | Deep Render Cloud" label={<VesselTitle />}>
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} vessels={currentSelected} onStop={stopSessions} />}
-      {isAddedModal && <VesselAddedModal countVessels={countVessels} setIsOpen={setIsAddedModal} />}
+      {isAddedModal && (
+        <VesselAddedModal countVessels={countVessels} setIsOpen={setIsAddedModal} setCountVessels={setCountVessels} />
+      )}
       {isCreateVessels && (
         <CreateVessels
           countVessels={countVessels}
           setCountVessels={setCountVessels}
           setIsOpen={setIsCreateVessels}
-          setIsAddedModal={setIsAddedModal}
+          createVessels={createSessions}
         />
       )}
       <div className="px-6 pt-6 pb-5 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6">
