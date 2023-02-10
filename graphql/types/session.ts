@@ -46,13 +46,14 @@ export type Session = {
 };
 
 export interface CreateSessionArgs {
-  triggered_by: string;
-  user_id: string;
+  triggered_by?: string;
+  user_id?: string;
   image: string;
   label: string;
   n_gpus: number;
   queue: string;
-  privileged: boolean;
-  home_label: string;
-  region: string;
+  privileged?: boolean;
+  home_label?: string;
+  region?: string;
+  name?: string;
 }
