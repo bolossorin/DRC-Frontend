@@ -32,11 +32,8 @@ export default function Vessels() {
 
   const { data, refetch } = useQuery(getSessions, {
     variables: {
-      state: [],
       limit: 10,
       offset: 0,
-      session_type: 'all',
-      region: 'uk-south-1',
     },
   });
 

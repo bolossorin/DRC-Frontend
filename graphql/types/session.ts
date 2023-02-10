@@ -12,7 +12,7 @@ export interface Process {
   error_message: string;
 }
 
-export type Session = {
+export interface ISession {
   id: string;
   avg_gpu_memory_util: string | null;
   avg_gpu_util: string | null;
@@ -43,7 +43,7 @@ export type Session = {
   processes: Process[];
   modified_at: Date;
   created_at: Date;
-};
+}
 
 export interface CreateSessionArgs {
   triggered_by?: string;

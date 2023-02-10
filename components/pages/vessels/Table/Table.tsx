@@ -11,7 +11,7 @@ import { routes } from '../../../../utility/routes';
 
 // assets
 import styles from './Table.module.scss';
-import { Session } from '../../../../graphql/types/session';
+import { ISession } from '../../../../graphql/types/session';
 
 interface IRows {
   id: number;
@@ -225,7 +225,7 @@ const rowsInitial: IRows[] = [
 ];
 
 interface ITable {
-  items: Session[];
+  items: ISession[];
   selected: string[];
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
