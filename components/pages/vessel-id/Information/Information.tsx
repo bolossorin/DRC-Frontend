@@ -1,77 +1,127 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 // libs
 import cn from "classnames";
+
+import { useMutation, useQuery } from "@apollo/client";
+import { getSessionById } from "../../../../graphql/sessions/getSessionById";
+import { stopSession } from "../../../../graphql/sessions/stopSession";
 
 // components
 import { Button, H4, State } from "../../../common";
 import { StopVesselsModal } from "../../../common/Modals";
 
 // assets
-import styles from './Information.module.scss'
+import styles from "./Information.module.scss";
+import { ISession } from "../../../../graphql/types/session";
 
-export const Information = () => {
+interface IInformation {
+  vessel: ISession | null;
+}
+
+export const Information = ({ vessel }: IInformation) => {
+  const [stopSessionMutation] = useMutation(stopSession, {
+    onError: (errors) => console.log(errors),
+    refetchQueries: [{ query: getSessionById, variables: { id: vessel?.id } }],
+  });
+
   const [isStopModal, setIsStopModal] = useState(false);
 
+  const stopSessions = async () => {
+    await stopSessionMutation({
+      variables: {
+        id: vessel?.id,
+      },
+    });
+    setIsStopModal(false);
+  };
+
   return (
-    <div className={cn('p-2 md:p-6 md:pb-0 w-full', styles.information)}>
-      {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} />}
-      <div className='px-2 md:px-6 pt-5 pb-2 bg-[#2F2F2F] rounded'>
-        <div className='flex flex-wrap gap-4 items-center justify-between mb-4'>
-          <H4 classname='!mb-0 flex items-center'>
-            <img className='w-8 mr-4' src={'/cube-green.svg'} alt='' />
-            Super super long vessel name!!
+    <div className={cn("p-2 md:p-6 md:pb-0 w-full", styles.information)}>
+      {isStopModal && (
+        <StopVesselsModal setIsOpen={setIsStopModal} vessels={[vessel?.id ?? ""]} onStop={stopSessions} />
+      )}
+      <div className="px-2 md:px-6 pt-5 pb-2 bg-[#2F2F2F] rounded">
+        <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
+          <H4 classname="!mb-0 flex items-center">
+            <img className="w-8 mr-4" src={"/cube-green.svg"} alt="" />
+            {vessel?.name}
           </H4>
-          <div className='flex flex-wrap gap-4 md:gap-8 items-center w-full sm:w-auto'>
-            <Button
-              size='medium'
-              classname='w-full sm:w-auto'
-              icon='/vs-code-white.svg'
-              color='blue'>
+          <div className="flex flex-wrap gap-4 md:gap-8 items-center w-full sm:w-auto">
+            <Button size="medium" classname="w-full sm:w-auto" icon="/vs-code-white.svg" color="blue">
               VS Code
             </Button>
             <Button
               onClick={() => setIsStopModal(true)}
-              size='medium'
-              classname='w-full sm:w-auto'
-              icon='/stop-empty.svg'
-              color='red'>
+              size="medium"
+              classname="w-full sm:w-auto"
+              icon="/stop-empty.svg"
+              color="red"
+            >
               Stop
             </Button>
           </div>
         </div>
-        <div className='flex flex-wrap items-center gap-x-10 xl:gap-x-32 gap-y-5 md:gap-y-10'>
+        <div className="flex flex-wrap items-center gap-x-10 xl:gap-x-32 gap-y-5 md:gap-y-10">
           <ul className={styles.list}>
-            <li className='flex items-center'>
-              <span>State :</span> <State state='Running' fontSize='text-sm' />
+            <li className="flex items-center">
+              <span>State :</span> <State state={vessel?.state ?? ""} fontSize="text-sm" />
             </li>
-            <li><span>Vessel ID:</span>68333578-13a5-43df-a839-49ffed149988</li>
-            <li><span>Created at:</span>2022-09-05T06:36:01.205Z</li>
-            <li><span>Modified at:</span>2022-08-05T06:24:01.205Y</li>
-            <li><span>IP:</span>100.86.104.174</li>
-            <li><span>Port:</span>22</li>
+            <li>
+              <span>Vessel ID:</span>
+              {vessel?.id ?? ""}
+            </li>
+            <li>
+              <>
+                <span>Created at:</span>
+                {vessel?.created_at ?? ""}
+              </>
+            </li>
+            <li>
+              <>
+                <span>Modified at:</span>
+                {vessel?.modified_at ?? ""}
+              </>
+            </li>
+            <li>
+              <span>IP:</span>
+              {vessel?.tailscale_ip ?? ""}
+            </li>
+            {/* <li>
+              <span>Port:</span>22
+            </li> */}
           </ul>
           <ul className={styles.list}>
-            <li className='flex items-start'>
-              <span className='!w-20'>GPUs:</span>
+            <li className="flex items-start">
+              <span className="!w-20">GPUs:</span>
               <ul>
-                <li>RTX 3090</li>
-                <li>RTX 3090</li>
-                <li>RTX 3090</li>
-                <li>RTX 3090</li>
+                {vessel?.gpu_ids?.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
               </ul>
             </li>
           </ul>
           <ul className={styles.list}>
-            <li><span>Queue:</span>Titan_dry32k</li>
-            <li className='font-medium !text-[#F6F6F6]'>
-              <span>Docker Image:</span>vessel:v2.7.0.wdbiweubqoubdwwk
+            <li>
+              <span>Queue:</span>
+              {vessel?.queue ?? ""}
             </li>
-            <li><span>GPU Utilisation:</span>100%</li>
-            <li><span>GPU Memory:</span>100%</li>
+            <li className="font-medium !text-[#F6F6F6]">
+              <span>Docker Image:</span>
+              {vessel?.image ?? ""}
+            </li>
+            <li>
+              <span>GPU Utilisation:</span>
+              {vessel?.avg_gpu_util ?? ""}
+            </li>
+            <li>
+              <span>GPU Memory:</span>
+              {vessel?.avg_gpu_memory_util ?? ""}
+            </li>
           </ul>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
