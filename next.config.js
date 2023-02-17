@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    LOCAL_SERVER_URL: process.env.LOCAL_SERVER_URL,
+    BACKEND_URL: process.env.BACKEND_URL,
   },
 };
 
