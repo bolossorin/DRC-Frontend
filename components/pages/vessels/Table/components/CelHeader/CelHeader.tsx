@@ -7,11 +7,9 @@ interface ICelHeader {
   children: any;
   classname?: string;
   isSort?: boolean;
-  sorting?: { ascValue: string; descValue: string };
-  onSort?: (sorting: { ascValue: string; descValue: string }) => void;
 }
 
-export const CelHeader: FC<ICelHeader> = ({ children, classname, isSort, sorting }) => {
+export const CelHeader: FC<ICelHeader> = ({ children, classname, isSort }) => {
   return (
     <div
       className={cn(

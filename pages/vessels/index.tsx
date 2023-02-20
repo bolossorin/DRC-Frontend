@@ -23,6 +23,8 @@ import { CreateSessionArgs, ISession } from "../../graphql/types/session";
 import { useRegion } from "../../context/region";
 import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
 
+const disabledVsCodeButtonStates = ["stopped", "crashed", "removed", "gpu_lost", "freed", "released", "stopping"];
+
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<string[]>([]);
@@ -104,10 +106,16 @@ export default function Vessels() {
     }
   };
 
-  const vsCodeLink =
-    currentSelected.length === 1
-      ? data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0])?.fqdn
-      : undefined;
+  const getVsCodeLink = () => {
+    if (currentSelected.length !== 1) return;
+    const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0]);
+    if (session) {
+      if (disabledVsCodeButtonStates.includes(session.state)) {
+        return;
+      }
+      return session.fqdn;
+    }
+  };
 
   return (
     <Layout
@@ -135,7 +143,7 @@ export default function Vessels() {
             currentSelected={currentSelected}
             setIsStopModal={setIsStopModal}
             setIsCreateVessels={setIsCreateVessels}
-            vsCodeLink={vsCodeLink}
+            vsCodeLink={getVsCodeLink()}
           />
           <Pagination />
           <div className="relative z-10 w-6 group">

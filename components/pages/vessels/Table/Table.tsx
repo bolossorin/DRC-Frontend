@@ -34,19 +34,9 @@ const headers = [
   { label: "Queue", key: "queue" },
   { label: "Docker Image", key: "image" },
   { label: "GPU’s", key: "n_gpus" },
-  {
-    label: "GPU Util",
-    key: "avg_gpu_util",
-    isSort: true,
-    sorting: { ascValue: "gpu_util_asc", descValue: "gpu_util_desc" },
-  },
+  { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
-  {
-    label: "Created At",
-    key: "created_at",
-    isSort: true,
-    sorting: { ascValue: "created_at", descValue: "created_at" },
-  },
+  { label: "Created At", key: "created_at" },
 ];
 
 const rowsInitial: IRows[] = [
@@ -279,9 +269,7 @@ export const Table = ({ items, selected, selectAll, setSelectAll, setCurrentSele
             <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
           </Cel>
           {headers.map((header) => (
-            <CelHeader key={header.key} isSort={header.isSort}>
-              {header.label}
-            </CelHeader>
+            <CelHeader key={header.key}>{header.label}</CelHeader>
           ))}
         </Row>
         {items.map((row, index) => (
