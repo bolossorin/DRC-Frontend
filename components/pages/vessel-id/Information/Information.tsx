@@ -49,7 +49,14 @@ export const Information = ({ vessel }: IInformation) => {
             {vessel?.name}
           </H4>
           <div className="flex flex-wrap gap-4 md:gap-8 items-center w-full sm:w-auto">
-            <Button size="medium" classname="w-full sm:w-auto" icon="/vs-code-white.svg" color="blue">
+            <Button
+              size="medium"
+              classname="w-full sm:w-auto"
+              icon="/vs-code-white.svg"
+              color="blue"
+              href={"/" + vessel?.fqdn}
+              target="_blank"
+            >
               VS Code
             </Button>
             <Button

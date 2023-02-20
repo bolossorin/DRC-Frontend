@@ -1,23 +1,27 @@
-import React from 'react';
+import React from "react";
 
 // components
-import { Button } from '../../../common';
+import { Button } from "../../../common";
 
 interface IActions {
   currentSelected: string[];
   setIsStopModal: (value: boolean) => void;
   setIsCreateVessels: (value: boolean) => void;
+  vsCodeLink: string | undefined;
 }
 
-export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels }: IActions) => {
+export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, vsCodeLink }: IActions) => {
   return (
     <>
       <Button
-        disabled={currentSelected.length <= 0}
+        disabled={currentSelected.length <= 0 || !vsCodeLink}
         size="medium"
         classname="w-full sm:w-auto"
         icon="/vs-code-white.svg"
-        color="blue">
+        href={vsCodeLink}
+        target="_blank"
+        color="blue"
+      >
         VS Code
       </Button>
       <Button
@@ -26,7 +30,8 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels }:
         size="medium"
         classname="w-full sm:w-auto"
         icon="/stop-empty.svg"
-        color="red">
+        color="red"
+      >
         Stop
       </Button>
       <Button
@@ -34,7 +39,8 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels }:
         size="medium"
         classname="text-[#C0C0C0] w-full sm:w-auto"
         icon="/plus.svg"
-        color="green">
+        color="green"
+      >
         Create
       </Button>
     </>

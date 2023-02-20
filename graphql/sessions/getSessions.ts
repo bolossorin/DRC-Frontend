@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const getSessions = gql`
   query my_sessions(
@@ -7,8 +7,16 @@ export const getSessions = gql`
     $offset: Int
     $session_type: [SessionTypeEnum]
     $region: String
+    $sort_by: SortByEnum
   ) {
-    my_sessions(state: $state, limit: $limit, offset: $offset, session_type: $session_type, region: $region) {
+    my_sessions(
+      state: $state
+      limit: $limit
+      offset: $offset
+      session_type: $session_type
+      region: $region
+      sort_by: $sort_by
+    ) {
       id
       fqdn
       container_id
