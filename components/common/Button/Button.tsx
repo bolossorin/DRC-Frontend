@@ -20,7 +20,7 @@ interface IButton {
 }
 
 export const Button: FC<IButton> = ({ icon, classname, children, size, onClick, color, disabled, href, target }) => {
-  return href ? (
+  return href && !disabled ? (
     <Link
       href={href}
       target={target}
