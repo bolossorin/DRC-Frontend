@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { useMutation, useQuery } from '@apollo/client';
-import { getSessions } from '../../graphql/sessions/getSessions';
-import { stopSession } from '../../graphql/sessions/stopSession';
+import { useMutation, useQuery } from "@apollo/client";
+import { getSessions } from "../../graphql/sessions/getSessions";
+import { stopSession } from "../../graphql/sessions/stopSession";
 
 // components
-import { Layout, VesselTitle } from '../../components/common';
+import { Layout, VesselTitle } from "../../components/common";
 import {
   Actions,
   CreateVessels,
@@ -14,12 +14,14 @@ import {
   Search,
   Table,
   TableSetting,
-} from '../../components/pages/vessels';
-import { IFilter } from '../../utility/types';
-import { StopVesselsModal, VesselAddedModal } from '../../components/common/Modals';
+} from "../../components/pages/vessels";
+import { IFilter } from "../../utility/types";
+import { StopVesselsModal, VesselAddedModal } from "../../components/common/Modals";
 
-import { createSession } from '../../graphql/sessions/createSession';
-import { CreateSessionArgs } from '../../graphql/types/session';
+import { createSession } from "../../graphql/sessions/createSession";
+import { CreateSessionArgs, ISession } from "../../graphql/types/session";
+import { useRegion } from "../../context/region";
+import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -27,13 +29,21 @@ export default function Vessels() {
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [isStopModal, setIsStopModal] = useState(false);
   const [isAddedModal, setIsAddedModal] = useState(false);
+  const [isAddedErrorModal, setIsAddedErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(0);
+
+  const [sortBy, setSortBy] = useState("modified_at");
+
+  const [region] = useRegion();
 
   const { data, refetch } = useQuery(getSessions, {
     variables: {
       limit: 10,
       offset: 0,
+      sort_by: sortBy,
+      ...(region && { region }),
     },
   });
 
@@ -72,22 +82,39 @@ export default function Vessels() {
             queue: s.queue,
             image: s.image,
             privileged: s.privileged,
+            ...(region && { region }),
           },
         })
       )
     );
     const result = await Promise.all(requests);
     refetch();
-    setIsCreateVessels(false);
     if (!result.some((r) => r.errors)) {
       setIsAddedModal(true);
+      setIsCreateVessels(false);
     } else {
-      setCountVessels(0);
+      setIsAddedErrorModal(true);
+      setErrorMessage(result[0].errors.message);
     }
   };
 
+  const openFqdn = (id: string) => {
+    const sesssion = data?.my_sessions?.find((s: ISession) => s.id === id);
+    if (sesssion) {
+    }
+  };
+
+  const vsCodeLink =
+    currentSelected.length === 1
+      ? data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0])?.fqdn
+      : undefined;
+
   return (
-    <Layout title="Vessels | Deep Render Cloud" description="Vessels | Deep Render Cloud" label={<VesselTitle />}>
+    <Layout
+      title="Vessels | Deep Render Cloud"
+      description="Vessels | Deep Render Cloud"
+      label={<VesselTitle count={data?.my_sessions.length ?? 0} />}
+    >
       {isStopModal && <StopVesselsModal setIsOpen={setIsStopModal} vessels={currentSelected} onStop={stopSessions} />}
       {isAddedModal && (
         <VesselAddedModal countVessels={countVessels} setIsOpen={setIsAddedModal} setCountVessels={setCountVessels} />
@@ -100,6 +127,7 @@ export default function Vessels() {
           createVessels={createSessions}
         />
       )}
+      {isAddedErrorModal && <VesselAddError setIsOpen={setIsAddedErrorModal} message={errorMessage} />}
       <div className="px-6 pt-6 pb-5 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6">
         <Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />
         <div className="flex flex-wrap items-center gap-4 md:gap-10">
@@ -107,6 +135,7 @@ export default function Vessels() {
             currentSelected={currentSelected}
             setIsStopModal={setIsStopModal}
             setIsCreateVessels={setIsCreateVessels}
+            vsCodeLink={vsCodeLink}
           />
           <Pagination />
           <div className="relative z-10 w-6 group">

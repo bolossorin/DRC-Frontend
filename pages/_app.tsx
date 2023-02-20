@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 // assets
 import "../styles/globals.scss";
 import { LoadingSpinner } from "../components/common";
+import { RegionContextProvider } from "../context/region";
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const { user } = pageProps;
 
   const [loading, setLoading] = useState(true);
+  const [region, setRegion] = useState("");
 
   useEffect(() => {
     const initialize = async () => {
@@ -21,7 +23,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         setLoading(false);
       }
     };
+
     initialize();
+
+    const regionData = localStorage.getItem("region");
+    if (regionData) {
+      setRegion(regionData);
+    }
   }, []);
 
   if (loading) {
@@ -31,7 +39,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   return (
     <UserProvider user={user}>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <RegionContextProvider initRegion={region}>
+          <Component {...pageProps} />
+        </RegionContextProvider>
       </ApolloProvider>
     </UserProvider>
   );

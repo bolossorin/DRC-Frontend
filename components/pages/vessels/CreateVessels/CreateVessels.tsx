@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // libs
-import cn from 'classnames';
-import Select from 'react-select';
+import cn from "classnames";
+import Select from "react-select";
 
 //  components
-import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from '../../../common';
+import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from "../../../common";
 
-import { CreateSessionArgs } from '../../../../graphql/types/session';
+import { CreateSessionArgs } from "../../../../graphql/types/session";
 
 interface ICreateVessels {
   setIsOpen: (value: boolean) => void;
@@ -17,15 +17,15 @@ interface ICreateVessels {
 }
 
 const queues: { label: string; value: string }[] = [
-  { value: 'default', label: 'Queue1' },
-  { value: 'default', label: 'Queue2' },
-  { value: 'default', label: 'Queue3' },
+  { value: "default", label: "Queue1" },
+  { value: "default", label: "Queue2" },
+  { value: "default", label: "Queue3" },
 ];
 
 const dockerImages: { label: string; value: string }[] = [
-  { value: 'test_vessel:v3.1.0', label: 'Image1' },
-  { value: 'test_vessel:v3.1.0', label: 'Image2' },
-  { value: 'test_vessel:v3.1.0', label: 'Image3' },
+  { value: "test_vessel:v3.1.0", label: "Image1" },
+  { value: "test_vessel:v3.1.0", label: "Image2" },
+  { value: "test_vessel:v3.1.0", label: "Image3" },
 ];
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels }: ICreateVessels) => {
@@ -40,7 +40,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
     if (value > countVessels) {
       setVessels((prev) => [
         ...prev,
-        { label: '', n_gpus: countGPUs, queue: queue?.value ?? '', image: dockerImage?.value ?? '', privileged },
+        { label: "", n_gpus: countGPUs, queue: queue?.value ?? "", image: dockerImage?.value ?? "", privileged },
       ]);
     } else {
       setVessels((prev) => prev.filter((_, i) => i !== countVessels - 1));
@@ -62,22 +62,27 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
       prev.map((v) => ({
         ...v,
         n_gpus: countGPUs,
-        image: dockerImage?.value ?? '',
-        queue: queue?.value ?? '',
+        image: dockerImage?.value ?? "",
+        queue: queue?.value ?? "",
         privileged,
       }))
     );
   }, [countGPUs, dockerImage, queue, privileged]);
 
+  const handleClose = () => {
+    setIsOpen(false);
+    setCountVessels(0);
+  };
+
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
-      <div onClick={() => setIsOpen(false)} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />
+      <div onClick={handleClose} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />
       <div className="w-full h-full relative z-20 ml-auto max-w-[478px] bg-[#282828] overflow-auto">
         <div className="py-7 px-5 md:px-10 flex items-center border-b border-[#686868]">
           <img className="w-8 mr-3 md:mr-7" src="/cube-green.svg" alt="" />
           <H4 classname="!mb-0">Create Vessels</H4>
           <img
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
             className="w-4 ml-auto opacity-50 hover:opacity-100 cursor-pointer"
             src="/close.svg"
             alt=""
@@ -142,11 +147,12 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
           <div className="mb-4">
             <H4
               onClick={() => setIsShowAdvanced(!isShowAdvanced)}
-              classname="flex items-center cursor-pointer transition-all hover:opacity-70 select-none">
+              classname="flex items-center cursor-pointer transition-all hover:opacity-70 select-none"
+            >
               4. Advanced
               <img
-                className={cn('w-2.5 ml-4 -rotate-90 transition-all', { '!rotate-90': isShowAdvanced })}
-                src={'/arrow.svg'}
+                className={cn("w-2.5 ml-4 -rotate-90 transition-all", { "!rotate-90": isShowAdvanced })}
+                src={"/arrow.svg"}
                 alt=""
               />
             </H4>
