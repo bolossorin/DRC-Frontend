@@ -21,7 +21,6 @@ export default function VesselID() {
   });
 
   const session = data?.session?.[0] ?? null;
-  console.log(session);
   return (
     <Layout title="Vessel | Deep Render Cloud" description="Vessel | Deep Render Cloud" label={<VesselTitle />}>
       <div className="p-6 border-b border-[#686868]">

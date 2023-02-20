@@ -16,6 +16,8 @@ import { StopVesselsModal } from "../../../common/Modals";
 import styles from "./Information.module.scss";
 import { ISession } from "../../../../graphql/types/session";
 
+const disabledVsCodeButtonStates = ["stopped", "crashed", "removed", "gpu_lost", "freed", "released", "stopping"];
+
 interface IInformation {
   vessel: ISession | null;
 }
@@ -49,7 +51,15 @@ export const Information = ({ vessel }: IInformation) => {
             {vessel?.name}
           </H4>
           <div className="flex flex-wrap gap-4 md:gap-8 items-center w-full sm:w-auto">
-            <Button size="medium" classname="w-full sm:w-auto" icon="/vs-code-white.svg" color="blue">
+            <Button
+              size="medium"
+              classname="w-full sm:w-auto"
+              icon="/vs-code-white.svg"
+              color="blue"
+              disabled={disabledVsCodeButtonStates.includes(vessel?.state ?? "")}
+              href={"/" + vessel?.fqdn}
+              target="_blank"
+            >
               VS Code
             </Button>
             <Button
