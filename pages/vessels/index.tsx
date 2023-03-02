@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { getSessions } from "../../graphql/sessions/getSessions";
 import { stopSession } from "../../graphql/sessions/stopSession";
 
@@ -22,6 +22,7 @@ import { createSession } from "../../graphql/sessions/createSession";
 import { CreateSessionArgs, ISession } from "../../graphql/types/session";
 import { useRegion } from "../../context/region";
 import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
+import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
 
 const disabledVsCodeButtonStates = ["stopped", "crashed", "removed", "gpu_lost", "freed", "released", "stopping"];
 
@@ -47,6 +48,11 @@ export default function Vessels() {
       sort_by: sortBy,
       ...(region && { region }),
     },
+  });
+
+  const { data: sub } = useSubscription(onSessionsChange, {
+    variables: { region },
+    onError: (error) => console.log(error),
   });
 
   const [stopSessionMutation] = useMutation(stopSession, {
