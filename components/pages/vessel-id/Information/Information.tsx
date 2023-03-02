@@ -57,7 +57,7 @@ export const Information = ({ vessel }: IInformation) => {
               icon="/vs-code-white.svg"
               color="blue"
               disabled={disabledVsCodeButtonStates.includes(vessel?.state ?? "")}
-              href={"/" + vessel?.fqdn}
+              href={"https://" + vessel?.fqdn}
               target="_blank"
             >
               VS Code
