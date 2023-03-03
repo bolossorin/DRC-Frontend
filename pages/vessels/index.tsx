@@ -39,17 +39,39 @@ export default function Vessels() {
 
   const [sortBy, setSortBy] = useState("modified_at");
 
+  const [pagination, setPagination] = useState({
+    limit: 10,
+    offset: 0,
+  });
+
+  const handlePageChange = (offset: number) => {
+    setPagination((prev) => ({ ...prev, offset }));
+  };
+
+  const handleChangePageLimit = (limit: number) => {
+    setPagination({ offset: 0, limit });
+  };
+
   const [region] = useRegion();
 
   const { data, refetch, subscribeToMore } = useQuery<{ my_sessions: ISession[] }>(getSessions, {
     variables: {
-      limit: 10,
+      limit: 10000,
       offset: 0,
       sort_by: sortBy,
       ...(region && { region }),
     },
     fetchPolicy: "network-only",
   });
+
+  const [paginatedSessions, setPaginatedSessions] = useState<ISession[]>([]);
+
+  useEffect(() => {
+    if (data?.my_sessions.length) {
+      const sessions = data.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
+      setPaginatedSessions(sessions);
+    }
+  }, [data?.my_sessions, pagination]);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -168,14 +190,23 @@ export default function Vessels() {
             setIsCreateVessels={setIsCreateVessels}
             vsCodeLink={getVsCodeLink()}
           />
-          <Pagination />
+          <Pagination
+            totalCount={data?.my_sessions.length ?? 0}
+            limit={pagination.limit}
+            offset={pagination.offset}
+            onPageChange={handlePageChange}
+          />
           <div className="relative z-10 w-6 group">
             <img
               className="opacity-50 group-hover:opacity-100 cursor-pointer transition-all"
               src="/setting.svg"
               alt=""
             />
-            <TableSetting classname="group-hover:block" />
+            <TableSetting
+              classname="group-hover:block"
+              onPageLimitChange={handleChangePageLimit}
+              pageLimit={pagination.limit}
+            />
           </div>
         </div>
       </div>
@@ -185,7 +216,7 @@ export default function Vessels() {
         </div>
       )}
       <Table
-        items={data?.my_sessions ?? []}
+        items={paginatedSessions}
         selected={currentSelected}
         selectAll={selectAll}
         setSelectAll={setSelectAll}
