@@ -23,9 +23,9 @@ const queues: { label: string; value: string }[] = [
 ];
 
 const dockerImages: { label: string; value: string }[] = [
-  { value: "test_vessel:v3.1.0", label: "Image1" },
-  { value: "test_vessel:v3.1.0", label: "Image2" },
-  { value: "test_vessel:v3.1.0", label: "Image3" },
+  { value: "test_vessel:v3.1.1", label: "Image1" },
+  { value: "test_vessel:v3.1.1", label: "Image2" },
+  { value: "test_vessel:v3.1.1", label: "Image3" },
 ];
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels }: ICreateVessels) => {
