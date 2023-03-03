@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { getSessions } from "../../graphql/sessions/getSessions";
 import { stopSession } from "../../graphql/sessions/stopSession";
 
@@ -41,19 +41,36 @@ export default function Vessels() {
 
   const [region] = useRegion();
 
-  const { data, refetch } = useQuery(getSessions, {
+  const { data, refetch, subscribeToMore } = useQuery<{ my_sessions: ISession[] }>(getSessions, {
     variables: {
       limit: 10,
       offset: 0,
       sort_by: sortBy,
       ...(region && { region }),
     },
+    fetchPolicy: "network-only",
   });
 
-  const { data: sub } = useSubscription(onSessionsChange, {
-    variables: { region },
-    onError: (error) => console.log(error),
-  });
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: onSessionsChange,
+      variables: { region },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
+        const updatedSessions = prev.my_sessions.map((session) => {
+          const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
+          if (updatedSession) return updatedSession;
+          return session;
+        });
+        return {
+          my_sessions: updatedSessions,
+        };
+      },
+    });
+
+    return () => unsubscribe();
+  }, [region]);
 
   const [stopSessionMutation] = useMutation(stopSession, {
     onError: (errors) => console.log(errors),

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // libs
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { getSessionById } from "../../graphql/sessions/getSessionById";
 
 import { useRegion } from "../../context/region";
@@ -13,21 +13,39 @@ import { Layout, Paragraph, VesselTitle } from "../../components/common";
 import { routes } from "../../utility/routes";
 import { Connection, Experiments, Information } from "../../components/pages/vessel-id";
 import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
+import { ISession } from "../../graphql/types/session";
 
 export default function VesselID() {
   const router = useRouter();
   const [region] = useRegion();
 
-  const { data } = useQuery(getSessionById, {
+  const { data, subscribeToMore } = useQuery<{ session: ISession[]; my_sessions?: ISession[] }>(getSessionById, {
     variables: {
       id: router.query.vessel_id,
     },
+    fetchPolicy: "network-only",
   });
 
-  const { data: sub } = useSubscription(onSessionsChange, {
-    variables: { region },
-    onError: (error) => console.log(error),
-  });
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: onSessionsChange,
+      variables: { region },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
+        const updatedSessions = prev.session.map((session) => {
+          const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
+          if (updatedSession) return updatedSession;
+          return session;
+        });
+        return {
+          session: updatedSessions,
+        };
+      },
+    });
+
+    return () => unsubscribe();
+  }, [region]);
 
   const session = data?.session?.[0] ?? null;
   return (
