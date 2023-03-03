@@ -3,21 +3,30 @@ import React from "react";
 // libs
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { getSessionById } from "../../graphql/sessions/getSessionById";
+
+import { useRegion } from "../../context/region";
 
 // components
 import { Layout, Paragraph, VesselTitle } from "../../components/common";
 import { routes } from "../../utility/routes";
 import { Connection, Experiments, Information } from "../../components/pages/vessel-id";
+import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
 
 export default function VesselID() {
   const router = useRouter();
+  const [region] = useRegion();
 
   const { data } = useQuery(getSessionById, {
     variables: {
       id: router.query.vessel_id,
     },
+  });
+
+  const { data: sub } = useSubscription(onSessionsChange, {
+    variables: { region },
+    onError: (error) => console.log(error),
   });
 
   const session = data?.session?.[0] ?? null;
