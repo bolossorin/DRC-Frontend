@@ -9,7 +9,7 @@ import { Updated } from "../../../common/Icons";
 
 // assets
 import styles from "./Notifications.module.scss";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { getNotifications } from "../../../../graphql/notifications/getNotifications";
 
 import { INotification } from "../../../../graphql/types/notification";
@@ -17,21 +17,13 @@ import { INotification } from "../../../../graphql/types/notification";
 //graphql
 import { dismissNotificationById } from "../../../../graphql/notifications/dismissNotificationById";
 import { dismissNotifications } from "../../../../graphql/notifications/dismissNotifications";
-import { onNotificationAdded } from "../../../../graphql/notifications/onNotificationAdded";
 
 interface INotifications {
   classname: string;
+  notifications: INotification[];
 }
 
-export const Notifications = ({ classname }: INotifications) => {
-  const { data, subscribeToMore } = useQuery<
-    { my_notifications: INotification[]; notifications?: INotification[] },
-    { unread_only: boolean }
-  >(getNotifications, {
-    variables: {
-      unread_only: true,
-    },
-  });
+export const Notifications = ({ classname, notifications }: INotifications) => {
   const [dismissNotification] = useMutation(dismissNotificationById, {
     onError: (error) => console.log(error),
     refetchQueries: [{ query: getNotifications, variables: { unread_only: true } }],
@@ -42,19 +34,6 @@ export const Notifications = ({ classname }: INotifications) => {
     refetchQueries: [{ query: getNotifications, variables: { unread_only: true } }],
   });
 
-  useEffect(() => {
-    subscribeToMore({
-      document: onNotificationAdded,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const newNotifications = subscriptionData.data?.notifications?.filter((n) => !n.is_read) ?? [];
-        return {
-          my_notifications: [...newNotifications, ...prev.my_notifications],
-        };
-      },
-    });
-  }, []);
-
   return (
     <div
       className={cn(
@@ -64,7 +43,7 @@ export const Notifications = ({ classname }: INotifications) => {
     >
       <div className="flex items-center py-4 px-3 md:px-5 border-b border-[#686868]">
         <H5 classname="!mb-0 !text-lg">Notifications</H5>
-        <Paragraph classname="!mb-0 ml-4">({data?.my_notifications.length ?? 0})</Paragraph>
+        <Paragraph classname="!mb-0 ml-4">({notifications.length})</Paragraph>
         <div
           className="ml-auto cursor-pointer hover:opacity-50 select-none transition-all"
           onClick={() =>
@@ -80,8 +59,8 @@ export const Notifications = ({ classname }: INotifications) => {
       </div>
       <div className="overflow-auto">
         <div className="max-h-[540px]">
-          {data?.my_notifications && data.my_notifications.length > 0 ? (
-            data?.my_notifications.map((notification, index) => (
+          {notifications.length > 0 ? (
+            notifications.map((notification, index) => (
               <div key={index} className="py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868]">
                 <div className="flex items-center">
                   {/* <div className="w-8">
