@@ -20,24 +20,27 @@ const perPage: { label: string; value: number }[] = [
   { value: 50, label: "50" },
 ];
 
+interface IColumnSetting {
+  label: string;
+  key: string;
+  checked: boolean;
+}
+
 interface ITableSetting {
   classname: string;
   pageLimit: number;
+  columnSettings: IColumnSetting[];
+  setColumnSettingsList: React.Dispatch<React.SetStateAction<IColumnSetting[]>>;
   onPageLimitChange: (limit: number) => void;
 }
 
-export const TableSetting = ({ classname, onPageLimitChange, pageLimit }: ITableSetting) => {
-  const [settingsList, setSettingsList] = useState<{ label: string; checked: boolean }[]>([
-    { label: "Vessel ID", checked: true },
-    { label: "Name", checked: false },
-    { label: "State", checked: true },
-    { label: "Queue", checked: false },
-    { label: "Docker Image", checked: false },
-    { label: "GPUs", checked: true },
-    { label: "GPU Utilisation", checked: false },
-    { label: "GPU Memory", checked: false },
-    { label: "Created at", checked: false },
-  ]);
+export const TableSetting = ({
+  classname,
+  columnSettings,
+  setColumnSettingsList,
+  onPageLimitChange,
+  pageLimit,
+}: ITableSetting) => {
   const [pageLimitOption, setPageLimitOption] = useState<typeof perPage[0]>(
     perPage.find((p) => p.value === pageLimit) ?? perPage[0]
   );
@@ -74,16 +77,20 @@ export const TableSetting = ({ classname, onPageLimitChange, pageLimit }: ITable
       </div>
       <H5 classname="p-4 !mb-0 !text-white border-b border-[#686868]">Visible Columns</H5>
       <ul>
-        {settingsList.map((setting, index) => (
+        {columnSettings.map((setting, index) => (
           <li
             key={setting.label}
             className="flex items-center justify-between text-sm px-4 py-3 border-b border-[#686868]"
           >
             {setting.label}
             <Switch
-              onClick={() => {
-                settingsList[index].checked = !settingsList[index].checked;
-                setSettingsList([...settingsList]);
+              onChange={(e) => {
+                columnSettings[index].checked = !columnSettings[index].checked;
+                setColumnSettingsList((prev) => {
+                  const newState = [...prev];
+                  newState[index].checked = e.target.checked;
+                  return newState;
+                });
               }}
               checked={setting.checked}
             />

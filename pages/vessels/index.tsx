@@ -5,9 +5,10 @@ import { getSessions } from "../../graphql/sessions/getSessions";
 import { stopSession } from "../../graphql/sessions/stopSession";
 
 // components
-import { Layout, VesselTitle } from "../../components/common";
+import { Layout, State, VesselTitle } from "../../components/common";
 import {
   Actions,
+  Cel,
   CreateVessels,
   Filters,
   Pagination,
@@ -24,6 +25,38 @@ import { useRegion } from "../../context/region";
 import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
 import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
 import { inactiveSessionStatuses } from "../../utility/inactiveSessionStatuses";
+import { routes } from "../../utility/routes";
+import Link from "next/link";
+
+export const sessionsTableColumns = [
+  {
+    label: "Vessel ID",
+    key: "id",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <Link href={`${routes.vessels}/${item.id}`} legacyBehavior>
+          <a className="hover:underline">{item.id}</a>
+        </Link>
+      </Cel>
+    ),
+  },
+  { label: "Name", key: "name" },
+  {
+    label: "State",
+    key: "state",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <State state={item.state} />
+      </Cel>
+    ),
+  },
+  { label: "Queue", key: "queue" },
+  { label: "Docker Image", key: "image" },
+  { label: "GPU’s", key: "n_gpus" },
+  { label: "GPU Util", key: "avg_gpu_util" },
+  { label: "GPU Memory", key: "avg_gpu_memory_util" },
+  { label: "Created At", key: "created_at" },
+];
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -37,6 +70,10 @@ export default function Vessels() {
   const [countVessels, setCountVessels] = useState(0);
 
   const [sortBy, setSortBy] = useState("modified_at");
+
+  const [columnSettings, setColumnSettings] = useState(
+    sessionsTableColumns.map((c) => ({ label: c.label, key: c.key, checked: true }))
+  );
 
   const [pagination, setPagination] = useState({
     limit: 10,
@@ -202,6 +239,8 @@ export default function Vessels() {
               classname="group-hover:block"
               onPageLimitChange={handleChangePageLimit}
               pageLimit={pagination.limit}
+              columnSettings={columnSettings}
+              setColumnSettingsList={setColumnSettings}
             />
           </div>
         </div>
@@ -213,6 +252,7 @@ export default function Vessels() {
       )}
       <Table
         items={paginatedSessions}
+        columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
         selected={currentSelected}
         selectAll={selectAll}
         setSelectAll={setSelectAll}
