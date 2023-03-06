@@ -15,8 +15,7 @@ import { StopVesselsModal } from "../../../common/Modals";
 // assets
 import styles from "./Information.module.scss";
 import { ISession } from "../../../../graphql/types/session";
-
-const disabledVsCodeButtonStates = ["stopped", "crashed", "removed", "gpu_lost", "freed", "released", "stopping"];
+import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
 
 interface IInformation {
   vessel: ISession | null;
@@ -56,7 +55,7 @@ export const Information = ({ vessel }: IInformation) => {
               classname="w-full sm:w-auto"
               icon="/vs-code-white.svg"
               color="blue"
-              disabled={disabledVsCodeButtonStates.includes(vessel?.state ?? "")}
+              disabled={inactiveSessionStatuses.includes(vessel?.state ?? "")}
               href={"https://" + vessel?.fqdn}
               target="_blank"
             >
