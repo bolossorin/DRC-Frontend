@@ -80,13 +80,16 @@ export default function Vessels() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
-        const updatedSessions = prev.my_sessions.map((session) => {
+        const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
           const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
           if (updatedSession) return updatedSession;
           return session;
         });
+        const newSessions = subscriptionSessions.filter(
+          (session) => !prev.my_sessions.find((prev) => prev.id === session.id)
+        );
         return {
-          my_sessions: updatedSessions,
+          my_sessions: [...newSessions, ...updatedSessions],
         };
       },
     });
