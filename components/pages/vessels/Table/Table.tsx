@@ -227,8 +227,15 @@ const rowsInitial: IRows[] = [
   },
 ];
 
+interface IColumn<T> {
+  label: string;
+  key: string;
+  renderCell?: (item: T, key: string) => React.ReactNode;
+}
+
 interface ITable {
   items: ISession[];
+  columns: IColumn<ISession>[];
   selected: string[];
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
@@ -236,7 +243,15 @@ interface ITable {
   onSessionStop: (id: string) => void;
 }
 
-export const Table = ({ items, selected, selectAll, setSelectAll, setCurrentSelected, onSessionStop }: ITable) => {
+export const Table = ({
+  items,
+  columns,
+  selected,
+  selectAll,
+  setSelectAll,
+  setCurrentSelected,
+  onSessionStop,
+}: ITable) => {
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
 
@@ -276,22 +291,22 @@ export const Table = ({ items, selected, selectAll, setSelectAll, setCurrentSele
         />
       )}
       <div className={cn("overflow-y-auto flex-1", styles.table)}>
-        <div className="min-w-[1900px]">
+        <div className={`min-w-[${210 * columns.length}px]`}>
           <Row>
             <Cel classname="w-12">
-              <img className="opacity-50" src="/dots.svg" alt="" />
+              <img className="opacity-50 w-4 h-4" src="/dots.svg" alt="" />
             </Cel>
             <Cel classname="flex">
               <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
             </Cel>
-            {headers.map((header) => (
+            {columns.map((header) => (
               <CelHeader key={header.key}>{header.label}</CelHeader>
             ))}
           </Row>
           {items.map((row, index) => (
             <Row key={index} classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) })}>
               <Cel classname="w-12 cursor-pointer relative overflow-visible group">
-                <img className="opacity-50 group-hover:opacity-100 transition-all" src="/dots.svg" alt="" />
+                <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
                 <ul
                   className={cn(
                     "hidden group-hover:block w-max absolute z-20 top-4 left-4 rounded border border-[#686868] bg-[#3D3C3C]",
@@ -337,21 +352,9 @@ export const Table = ({ items, selected, selectAll, setSelectAll, setCurrentSele
               <Cel classname="flex">
                 <Checkbox onChange={handleSelect(row.id)} checked={isSelected(row.id)} />
               </Cel>
-              <Cel>
-                <Link href={`${routes.vessels}/${row.id}`} legacyBehavior>
-                  <a className="hover:underline">{row.id}</a>
-                </Link>
-              </Cel>
-              <Cel>{row.name}</Cel>
-              <Cel>
-                <State state={row.state} />
-              </Cel>
-              <Cel>{row.queue}</Cel>
-              <Cel>{row.image}</Cel>
-              <Cel>{row.n_gpus}</Cel>
-              <Cel>{row.avg_gpu_util}</Cel>
-              <Cel>{row.avg_gpu_memory_util}</Cel>
-              <Cel>{row.created_at}</Cel>
+              {columns.map(({ renderCell, key }) =>
+                renderCell ? renderCell(row, key) : <Cel key={key}>{row[key as keyof ISession]}</Cel>
+              )}
             </Row>
           ))}
         </div>
