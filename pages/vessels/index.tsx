@@ -23,8 +23,7 @@ import { CreateSessionArgs, ISession } from "../../graphql/types/session";
 import { useRegion } from "../../context/region";
 import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
 import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
-
-const disabledVsCodeButtonStates = ["stopped", "crashed", "removed", "gpu_lost", "freed", "released", "stopping"];
+import { inactiveSessionStatuses } from "../../utility/inactiveSessionStatuses";
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -148,17 +147,11 @@ export default function Vessels() {
     }
   };
 
-  const openFqdn = (id: string) => {
-    const sesssion = data?.my_sessions?.find((s: ISession) => s.id === id);
-    if (sesssion) {
-    }
-  };
-
   const getVsCodeLink = () => {
     if (currentSelected.length !== 1) return;
     const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0]);
     if (session) {
-      if (disabledVsCodeButtonStates.includes(session.state)) {
+      if (inactiveSessionStatuses.includes(session.state)) {
         return;
       }
       return session.fqdn;
@@ -224,6 +217,13 @@ export default function Vessels() {
         selectAll={selectAll}
         setSelectAll={setSelectAll}
         setCurrentSelected={setCurrentSelected}
+        onSessionStop={(id: string) =>
+          stopSessionMutation({
+            variables: {
+              id,
+            },
+          })
+        }
       />
     </Layout>
   );
