@@ -5,7 +5,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cel, CelHeader, Row } from "../index";
+import { Cel, CelHeader, Row, CopyButton } from "../index";
 import { Checkbox, List, State } from "../../../common";
 import { routes } from "../../../../utility/routes";
 
@@ -339,14 +339,8 @@ export const Table = ({
                       </>
                     )}
                   </li>
-                  <li className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none">
-                    <img className="w-4 mr-3" src="/ssh.svg" alt="" />
-                    <p>Copy SSH Config</p>
-                  </li>
-                  <li className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none">
-                    <img className="w-4 mr-3" src="/ssh.svg" alt="" />
-                    <p>Copy SSH Command</p>
-                  </li>
+                  <CopyButton content={row.ssh_config} label="Copy SSH Config" />
+                  <CopyButton content={row.ssh_command} label="Copy SSH Command" />
                 </ul>
               </Cel>
               <Cel classname="flex">
