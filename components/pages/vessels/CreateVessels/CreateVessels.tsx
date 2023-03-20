@@ -29,7 +29,7 @@ const dockerImages: { label: string; value: string }[] = [
 ];
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels }: ICreateVessels) => {
-  const [countGPUs, setCountGPUs] = useState(0);
+  const [countGPUs, setCountGPUs] = useState(1);
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
   const [dockerImage, setDockerImage] = useState<typeof dockerImages[0] | null>(dockerImages[0]);
   const [queue, setQueue] = useState<typeof queues[0] | null>(queues[0]);
