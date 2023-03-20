@@ -12,7 +12,7 @@ import {
   CreateVessels,
   Filters,
   Pagination,
-  Search,
+  /*Search,*/
   Table,
   TableSetting,
 } from "../../components/pages/vessels";
@@ -215,7 +215,8 @@ export default function Vessels() {
       )}
       {isAddedErrorModal && <VesselAddError setIsOpen={setIsAddedErrorModal} message={errorMessage} />}
       <div className="px-6 pt-6 pb-5 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6">
-        <Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />
+        {/*<Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />*/}
+        <div className="grow" />
         <div className="flex flex-wrap items-center gap-4 md:gap-10">
           <Actions
             currentSelected={currentSelected}
