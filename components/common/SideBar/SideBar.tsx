@@ -31,7 +31,9 @@ export const SideBar: FC<ISideBar> = ({ user }) => {
 
   return (
     <div className={cn('bg-[#282828] w-80 fixed left-0 top-0 z-10 h-screen py-10', styles.sideBar)}>
-      <img className='w-[116px] mx-10 mb-2' src={'/logo.svg'} alt='' />
+      <Link href="/vessels">
+        <img className='w-[116px] mx-10 mb-2' src={'/logo.svg'} alt='' />
+      </Link>
       <a href={routes.myProfile} className='mx-10 text-center group hover:opacity-80 transition-all'>
         <div className='w-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto'>
           <img src={user.picture} alt='' />
