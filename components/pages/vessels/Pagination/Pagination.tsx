@@ -10,7 +10,7 @@ interface IProps {
 export const Pagination = ({ totalCount, limit, offset, onPageChange }: IProps) => {
   return (
     <div className="flex items-center gap-4 md:gap-6">
-      <div className="font-medium mr-1 md:mr-5">{`${offset + 1} – ${
+      <div className="font-medium mr-1 md:mr-5">{`${totalCount > 0 ? offset + 1 : 0} – ${
         offset + limit < totalCount ? offset + limit : totalCount
       } of ${totalCount}`}</div>
       <div className="flex items-center gap-9">
