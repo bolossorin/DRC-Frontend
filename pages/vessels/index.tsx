@@ -77,7 +77,7 @@ export default function Vessels() {
   const [isAddedErrorModal, setIsAddedErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateVessels, setIsCreateVessels] = useState(false);
-  const [countVessels, setCountVessels] = useState(0);
+  const [countVessels, setCountVessels] = useState(1);
 
   const [sortBy, setSortBy] = useState("modified_at");
 
