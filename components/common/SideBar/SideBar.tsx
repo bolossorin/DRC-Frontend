@@ -8,17 +8,17 @@ import { useRouter } from "next/router";
 // components
 import { H5, H6 } from "../";
 import { routes } from "../../../utility/routes";
-import { AdminIcon, ExperimentsIcon, HardwareIcon, LogOutIcon, VesselIcon } from "../Icons";
+import { /*AdminIcon, ExperimentsIcon, HardwareIcon,*/ LogOutIcon, VesselIcon } from "../Icons";
 import { IUser } from "../../../utility/types";
 
 // assets
 import styles from './SideBar.module.scss';
 
 const links = [
-  { icon: <AdminIcon />, title: 'Admin', link: '#' },
+  //{ icon: <AdminIcon />, title: 'Admin', link: '#' },
   { icon: <VesselIcon />, title: 'Vessels', link: routes.vessels },
-  { icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
-  { icon: <HardwareIcon />, title: 'Hardware', link: routes.hardware },
+  //{ icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
+  //{ icon: <HardwareIcon />, title: 'Hardware', link: routes.hardware },
   { icon: <LogOutIcon />, title: 'Log Out', link: '/api/auth/logout' },
 ]
 
