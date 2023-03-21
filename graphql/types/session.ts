@@ -58,4 +58,5 @@ export interface CreateSessionArgs {
   home_label?: string;
   region?: string;
   name?: string;
+  monitor_by_undertaker?: boolean;
 }

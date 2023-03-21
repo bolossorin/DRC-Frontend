@@ -178,6 +178,7 @@ export default function Vessels() {
             queue: s.queue,
             image: s.image,
             privileged: s.privileged,
+            monitor_by_undertaker: s.monitor_by_undertaker,
             ...(region && { region }),
           },
         })

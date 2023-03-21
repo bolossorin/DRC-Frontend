@@ -33,14 +33,24 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
   const [dockerImage, setDockerImage] = useState<typeof dockerImages[0] | null>(dockerImages[0]);
   const [queue, setQueue] = useState<typeof queues[0] | null>(queues[0]);
-  const [privileged, setPrivileged] = useState(false);
   const [vessels, setVessels] = useState<CreateSessionArgs[]>([]);
+
+  // Advanced
+  const [privileged, setPrivileged] = useState(false);
+  const [monitorByUndertaker, setMonitorByUndertaker] = useState(true);
 
   const handleChangeVesselsCount = (value: number) => {
     if (value > countVessels) {
       setVessels((prev) => [
         ...prev,
-        { label: "", n_gpus: countGPUs, queue: queue?.value ?? "", image: dockerImage?.value ?? "", privileged },
+        {
+          label: "",
+          n_gpus: countGPUs,
+          queue: queue?.value ?? "",
+          image: dockerImage?.value ?? "",
+          privileged,
+          monitor_by_undertaker: monitorByUndertaker,
+        },
       ]);
     } else {
       setVessels((prev) => prev.filter((_, i) => i !== countVessels - 1));
@@ -157,6 +167,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
               />
             </H4>
             {isShowAdvanced && (
+              <>
               <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
                 <Paragraph classname="!mb-0 md:mr-4">Priveleged Access</Paragraph>
                 <Radio
@@ -172,6 +183,22 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   onChange={() => setPrivileged((prev) => !prev)}
                 />
               </div>
+              <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
+                <Paragraph classname="!mb-0 md:mr-4">Monitor</Paragraph>
+                <Radio
+                  name="monitor"
+                  label="True"
+                  checked={monitorByUndertaker}
+                  onChange={() => setMonitorByUndertaker((prev) => !prev)}
+                />
+                <Radio
+                  name="monitor"
+                  label="False"
+                  checked={!monitorByUndertaker}
+                  onChange={() => setMonitorByUndertaker((prev) => !prev)}
+                />
+              </div>
+              </>
             )}
           </div>
           <Button size="medium" color="green" onClick={() => createVessels(vessels)}>
