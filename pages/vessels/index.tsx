@@ -34,13 +34,23 @@ export const sessionsTableColumns = [
     key: "id",
     renderCell: (item: ISession, key: string) => (
       <Cel key={key}>
-        <Link href={`${routes.vessels}/${item.id}`} legacyBehavior>
-          <a className="hover:underline">{item.id}</a>
+        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
+          {item.id}
         </Link>
       </Cel>
     ),
   },
-  { label: "Name", key: "name" },
+  {
+    label: "Name",
+    key: "name",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
+          {item.name}
+        </Link>
+      </Cel>
+    ),
+  },
   {
     label: "State",
     key: "state",
