@@ -35,7 +35,7 @@ export const Header: FC<IHeader> = ({ label }) => {
   }, []);
 
   return (
-    <div className="flex items-center mb-6 w-full justify-between max-w-[1540px]">
+    <div className="flex items-center mb-6 w-full justify-between px-6">
       <div className="flex items-center">{label}</div>
       <div className="flex items-center">
         <div className="ml-2">
