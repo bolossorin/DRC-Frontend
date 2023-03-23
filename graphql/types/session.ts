@@ -32,6 +32,7 @@ export interface ISession {
   n_gpus: number;
   monitor: boolean;
   gpu_ids: string[];
+  gpu_names: string[];
   name: string;
   label: string;
   privileged: boolean;
