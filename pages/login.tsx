@@ -42,12 +42,12 @@ export default function Home() {
                     size='big'
                     color='grey'
                     icon='/google.svg'
-                    classname="w-full mb-8">
+                    classname="w-full">
                     Login with Google
                   </Button>
-                  <Button size='big' color='grey' icon='/github.svg' classname="w-full">
+                  {/*<Button size='big' color='grey' icon='/github.svg' classname="w-full">
                     Login with Github
-                  </Button>
+                  </Button>*/}
                 </div>
               </div>
             </div>

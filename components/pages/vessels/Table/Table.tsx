@@ -5,7 +5,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cel, CelHeader, Row } from "../index";
+import { Cel, CelHeader, Row, CopyButton, StopButton } from "../index";
 import { Checkbox, List, State } from "../../../common";
 import { routes } from "../../../../utility/routes";
 
@@ -15,217 +15,6 @@ import { ISession } from "../../../../graphql/types/session";
 import listStyles from "../../../../components/common/List/List.module.scss";
 import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
 import { StopVesselsModal } from "../../../common/Modals";
-
-interface IRows {
-  id: number;
-  selected: boolean;
-  versel_id: string;
-  name: string;
-  state: string;
-  queue: string;
-  docker_image: string;
-  gpu: string;
-  gpu_util: string;
-  gpu_memory: string;
-  created_at: string;
-}
-
-const headers = [
-  { label: "Vessel ID", key: "id" },
-  { label: "Name", key: "name" },
-  { label: "State", key: "state" },
-  { label: "Queue", key: "queue" },
-  { label: "Docker Image", key: "image" },
-  { label: "GPU’s", key: "n_gpus" },
-  { label: "GPU Util", key: "avg_gpu_util" },
-  { label: "GPU Memory", key: "avg_gpu_memory_util" },
-  { label: "Created At", key: "created_at" },
-];
-
-const rowsInitial: IRows[] = [
-  {
-    id: 1,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Requested",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 2,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Pulling Container",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 3,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Starting",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 4,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Running",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 5,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Stopping",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 6,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Stopped",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 7,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Idle",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 8,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Tailscale Cooking",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 9,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Warn Send",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 10,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Freed",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 11,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "GPU Lost",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 12,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Requested",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 13,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Crashed",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-  {
-    id: 14,
-    selected: false,
-    versel_id: "68333578-13a5-43df-a839-49ffed149988",
-    name: "Super Super Long Vessel Name!!",
-    state: "Crashed",
-    queue: "Super Super Long Queue Name",
-    docker_image: "vessel:v2.7.0.wdbiweubqoubdwwk",
-    gpu: "1",
-    gpu_util: "100%",
-    gpu_memory: "100%",
-    created_at: "2022-09-05T06:36:01.205Z",
-  },
-];
 
 interface IColumn<T> {
   label: string;
@@ -314,13 +103,7 @@ export const Table = ({
                     listStyles.small
                   )}
                 >
-                  <li
-                    className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none"
-                    onClick={() => handleOpenStopVesselModal(row.id)}
-                  >
-                    <img className="w-4 mr-3" src="/stop.svg" alt="" />
-                    <p>Stop</p>
-                  </li>
+                  <StopButton onClick={() => handleOpenStopVesselModal(row.id)} disabled={inactiveSessionStatuses.includes(row.state)} />
                   <li
                     className={cn(
                       "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",
@@ -339,14 +122,8 @@ export const Table = ({
                       </>
                     )}
                   </li>
-                  <li className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none">
-                    <img className="w-4 mr-3" src="/ssh.svg" alt="" />
-                    <p>Copy SSH Config</p>
-                  </li>
-                  <li className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none">
-                    <img className="w-4 mr-3" src="/ssh.svg" alt="" />
-                    <p>Copy SSH Command</p>
-                  </li>
+                  <CopyButton content={row.ssh_config} label="Copy SSH Config" />
+                  <CopyButton content={row.ssh_command} label="Copy SSH Command" />
                 </ul>
               </Cel>
               <Cel classname="flex">

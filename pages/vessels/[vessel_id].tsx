@@ -61,7 +61,7 @@ export default function VesselID() {
       <div className="flex flex-wrap">
         <Information vessel={session} />
         <Connection />
-        <Experiments />
+        {/*<Experiments />*/}
       </div>
     </Layout>
   );

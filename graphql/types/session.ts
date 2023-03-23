@@ -32,6 +32,7 @@ export interface ISession {
   n_gpus: number;
   monitor: boolean;
   gpu_ids: string[];
+  gpu_names: string[];
   name: string;
   label: string;
   privileged: boolean;
@@ -43,6 +44,8 @@ export interface ISession {
   processes: Process[];
   modified_at: Date;
   created_at: Date;
+  ssh_config: string | null;
+  ssh_command: string | null;
 }
 
 export interface CreateSessionArgs {
@@ -56,4 +59,5 @@ export interface CreateSessionArgs {
   home_label?: string;
   region?: string;
   name?: string;
+  monitor_by_undertaker?: boolean;
 }

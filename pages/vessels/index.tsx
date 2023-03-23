@@ -12,7 +12,7 @@ import {
   CreateVessels,
   Filters,
   Pagination,
-  Search,
+  /*Search,*/
   Table,
   TableSetting,
 } from "../../components/pages/vessels";
@@ -34,13 +34,23 @@ export const sessionsTableColumns = [
     key: "id",
     renderCell: (item: ISession, key: string) => (
       <Cel key={key}>
-        <Link href={`${routes.vessels}/${item.id}`} legacyBehavior>
-          <a className="hover:underline">{item.id}</a>
+        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
+          {item.id}
         </Link>
       </Cel>
     ),
   },
-  { label: "Name", key: "name" },
+  {
+    label: "Name",
+    key: "name",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
+          {item.name}
+        </Link>
+      </Cel>
+    ),
+  },
   {
     label: "State",
     key: "state",
@@ -52,7 +62,19 @@ export const sessionsTableColumns = [
   },
   { label: "Queue", key: "queue" },
   { label: "Docker Image", key: "image" },
-  { label: "GPU’s", key: "n_gpus" },
+  {
+    label: "GPU’s",
+    key: "gpu_names",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <ul className="list-disc">
+          {item.gpu_names.map((gpu, index) => (
+            <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
+          ))}
+        </ul>
+      </Cel>
+    )
+   },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
   { label: "Created At", key: "created_at" },
@@ -67,7 +89,7 @@ export default function Vessels() {
   const [isAddedErrorModal, setIsAddedErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateVessels, setIsCreateVessels] = useState(false);
-  const [countVessels, setCountVessels] = useState(0);
+  const [countVessels, setCountVessels] = useState(1);
 
   const [sortBy, setSortBy] = useState("modified_at");
 
@@ -103,10 +125,8 @@ export default function Vessels() {
   const [paginatedSessions, setPaginatedSessions] = useState<ISession[]>([]);
 
   useEffect(() => {
-    if (data?.my_sessions.length) {
-      const sessions = data.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
-      setPaginatedSessions(sessions);
-    }
+    const sessions = data?.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
+    if (sessions) setPaginatedSessions(sessions);
   }, [data?.my_sessions, pagination]);
 
   useEffect(() => {
@@ -168,6 +188,7 @@ export default function Vessels() {
             queue: s.queue,
             image: s.image,
             privileged: s.privileged,
+            monitor_by_undertaker: s.monitor_by_undertaker,
             ...(region && { region }),
           },
         })
@@ -211,11 +232,13 @@ export default function Vessels() {
           setCountVessels={setCountVessels}
           setIsOpen={setIsCreateVessels}
           createVessels={createSessions}
+          region={region}
         />
       )}
       {isAddedErrorModal && <VesselAddError setIsOpen={setIsAddedErrorModal} message={errorMessage} />}
-      <div className="px-6 pt-6 pb-5 flex flex-wrap items-center justify-between  max-w-[1524px] gap-6">
-        <Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />
+      <div className="px-8 pt-6 pb-5 flex flex-wrap items-center justify-between gap-6">
+        {/*<Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />*/}
+        <div className="grow" />
         <div className="flex flex-wrap items-center gap-4 md:gap-10">
           <Actions
             currentSelected={currentSelected}
