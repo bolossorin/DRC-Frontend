@@ -113,10 +113,8 @@ export default function Vessels() {
   const [paginatedSessions, setPaginatedSessions] = useState<ISession[]>([]);
 
   useEffect(() => {
-    if (data?.my_sessions.length) {
-      const sessions = data.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
-      setPaginatedSessions(sessions);
-    }
+    const sessions = data?.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
+    if (sessions) setPaginatedSessions(sessions);
   }, [data?.my_sessions, pagination]);
 
   useEffect(() => {
