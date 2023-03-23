@@ -232,6 +232,7 @@ export default function Vessels() {
           setCountVessels={setCountVessels}
           setIsOpen={setIsCreateVessels}
           createVessels={createSessions}
+          region={region}
         />
       )}
       {isAddedErrorModal && <VesselAddError setIsOpen={setIsAddedErrorModal} message={errorMessage} />}
