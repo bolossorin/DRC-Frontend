@@ -5,7 +5,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cel, CelHeader, Row, CopyButton } from "../index";
+import { Cel, CelHeader, Row, CopyButton, StopButton } from "../index";
 import { Checkbox, List, State } from "../../../common";
 import { routes } from "../../../../utility/routes";
 
@@ -314,13 +314,7 @@ export const Table = ({
                     listStyles.small
                   )}
                 >
-                  <li
-                    className="flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none"
-                    onClick={() => handleOpenStopVesselModal(row.id)}
-                  >
-                    <img className="w-4 mr-3" src="/stop.svg" alt="" />
-                    <p>Stop</p>
-                  </li>
+                  <StopButton onClick={() => handleOpenStopVesselModal(row.id)} disabled={inactiveSessionStatuses.includes(row.state)} />
                   <li
                     className={cn(
                       "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",

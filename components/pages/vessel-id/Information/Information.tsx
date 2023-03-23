@@ -67,6 +67,7 @@ export const Information = ({ vessel }: IInformation) => {
               classname="w-full sm:w-auto"
               icon="/stop-empty.svg"
               color="red"
+              disabled={inactiveSessionStatuses.includes(vessel?.state ?? "")}
             >
               Stop
             </Button>
