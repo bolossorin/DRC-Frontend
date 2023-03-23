@@ -8,6 +8,8 @@ import Select from "react-select";
 import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from "../../../common";
 
 import { CreateSessionArgs } from "../../../../graphql/types/session";
+import { findImages } from "../../../../graphql/images/getImagesByName";
+import { useQuery } from "@apollo/client";
 
 interface ICreateVessels {
   setIsOpen: (value: boolean) => void;
@@ -22,22 +24,28 @@ const queues: { label: string; value: string }[] = [
   { value: "default", label: "Queue3" },
 ];
 
-const dockerImages: { label: string; value: string }[] = [
-  { value: "test_vessel:v3.1.1", label: "Image1" },
-  { value: "test_vessel:v3.1.1", label: "Image2" },
-  { value: "test_vessel:v3.1.1", label: "Image3" },
-];
+function useAvailableImages(query: string) {
+  const { data } = useQuery<{ available_images: string[] }>(findImages, {
+    variables: {
+      text: query,
+    },
+    fetchPolicy: "network-only",
+  });
+  return data?.available_images
+}
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels }: ICreateVessels) => {
+  const [imageQuery, setImageQuery] = useState("")
+  const availableImages = useAvailableImages(imageQuery)
   const [countGPUs, setCountGPUs] = useState(1);
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
-  const [dockerImage, setDockerImage] = useState<typeof dockerImages[0] | null>(dockerImages[0]);
+  const [dockerImage, setDockerImage] = useState<string | null>(null);
   const [queue, setQueue] = useState<typeof queues[0] | null>(queues[0]);
   const [vessels, setVessels] = useState<CreateSessionArgs[]>([{
     label: "",
     n_gpus: countGPUs,
     queue: queue?.value ?? "",
-    image: dockerImage?.value ?? "",
+    image: dockerImage ?? "",
     privileged: false,
     monitor_by_undertaker: true,
   }]);
@@ -54,7 +62,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
           label: "",
           n_gpus: countGPUs,
           queue: queue?.value ?? "",
-          image: dockerImage?.value ?? "",
+          image: dockerImage ?? "",
           privileged,
           monitor_by_undertaker: monitorByUndertaker,
         },
@@ -79,7 +87,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
       prev.map((v) => ({
         ...v,
         n_gpus: countGPUs,
-        image: dockerImage?.value ?? "",
+        image: dockerImage ?? "",
         queue: queue?.value ?? "",
         privileged,
         monitor_by_undertaker: monitorByUndertaker,
@@ -91,6 +99,14 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
     setIsOpen(false);
     setCountVessels(1);
   };
+
+  const getDockerImages = () => {
+    if (availableImages === undefined) return []
+    return availableImages.map(item => ({
+      label: item,
+      value: item
+    }))
+  }
 
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
@@ -152,13 +168,25 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <div className="flex items-center gap-3 md:gap-6 my-8">
               <Paragraph classname="!mb-0">Image</Paragraph>
               <Select
-                className="basic-single light w-full"
+                styles={{
+                  input: (baseStyles) => ({
+                    ...baseStyles,
+                    color: 'white',
+                  }),
+                }}
+                className="basic-single light w-full text-white"
                 classNamePrefix="select"
                 components={{ DropdownIndicator } as any}
                 placeholder="Select"
-                options={dockerImages}
-                value={dockerImage}
-                onChange={(option) => setDockerImage(option)}
+                options={getDockerImages()}
+                value={{label: dockerImage, value: dockerImage}}
+                onChange={(option) => setDockerImage(option?.value || null)}
+                isSearchable={true}
+                defaultValue={availableImages !== undefined && availableImages.length > 0 ? { label: availableImages[0], value: availableImages[0]} : undefined}
+                inputValue={imageQuery}
+                onInputChange={(v) => setImageQuery(v)}
+                isLoading={availableImages === undefined}
+                isClearable={imageQuery.length > 0 || dockerImage !== undefined}
               />
             </div>
           </div>
