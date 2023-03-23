@@ -43,6 +43,8 @@ export interface ISession {
   processes: Process[];
   modified_at: Date;
   created_at: Date;
+  ssh_config: string | null;
+  ssh_command: string | null;
 }
 
 export interface CreateSessionArgs {

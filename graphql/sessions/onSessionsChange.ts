@@ -24,6 +24,8 @@ export const onSessionsChange = gql`
       error_message
       created_at
       modified_at
+      ssh_config
+      ssh_command
     }
   }
 `;
