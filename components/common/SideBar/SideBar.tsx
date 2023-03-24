@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 // libs
 import Link from "next/link";
@@ -13,6 +13,9 @@ import { IUser } from "../../../utility/types";
 
 // assets
 import styles from './SideBar.module.scss';
+import { getUser } from "../../../graphql/users/getUser";
+import { IMyUser } from "../../../graphql/types/user";
+import { useQuery } from "@apollo/client";
 
 const links = [
   //{ icon: <AdminIcon />, title: 'Admin', link: '#' },
@@ -27,6 +30,10 @@ interface ISideBar {
 }
 
 export const SideBar: FC<ISideBar> = ({ user }) => {
+  const { data, refetch, subscribeToMore } = useQuery<{ my_user: IMyUser }>(getUser, {
+    fetchPolicy: "network-only",
+  });
+
   const router = useRouter();
 
   return (
@@ -42,7 +49,7 @@ export const SideBar: FC<ISideBar> = ({ user }) => {
           <span className='w-2 h-2 rounded-full bg-[#88E207] mr-3'></span>
           {user.name}
         </H5>
-        <H6 classname='text-[#D9D9D9] font-medium'>VP of Engineering</H6>
+        <H6 classname='text-[#D9D9D9] font-medium'>{data?.my_user.job_title || "..."}</H6>
       </a>
       <ul className='pt-2 pb-12'>
         {links.map(link => (
