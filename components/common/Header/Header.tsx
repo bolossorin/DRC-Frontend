@@ -46,7 +46,7 @@ export const Header: FC<IHeader> = ({ label }) => {
             <span className="absolute z-10 -right-1.5 -top-1.5 w-2 h-2 rounded-full bg-[#CA3C3C]" />
           )}
           <img className="cursor-pointer opacity-50 group-hover:opacity-100 transition-all" src="/bell.svg" alt="" />
-          <Notifications classname="group-hover:block" notifications={data?.my_notifications ?? []} />
+          <Notifications notifications={data?.my_notifications ?? []} />
         </div>
       </div>
     </div>

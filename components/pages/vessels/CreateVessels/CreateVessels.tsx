@@ -68,6 +68,12 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   const [privileged, setPrivileged] = useState(false);
   const [monitorByUndertaker, setMonitorByUndertaker] = useState(true);
 
+  // Styles and animation
+  const [marginRight, setMarginRight] = useState('mr-[-100%]');
+  useEffect(() => {
+    setMarginRight('mr-[0%]');
+  }, [])
+
   const handleChangeVesselsCount = (value: number) => {
     if (value > countVessels) {
       setVessels((prev) => [
@@ -115,9 +121,20 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
       setQueue(null)
   }, [queues])
 
+  // Select the first available docker image by default
+  useEffect(() => {
+    if (availableImages === undefined)
+      return
+    if (dockerImage === null)
+      setDockerImage(availableImages[0])
+  }, [availableImages])
+
   const handleClose = () => {
-    setIsOpen(false);
-    setCountVessels(1);
+    setMarginRight('mr-[-100%]')
+    setTimeout(() => {
+      setIsOpen(false);
+      setCountVessels(1);
+    }, 150);
   };
 
   const getDockerImages = () => {
@@ -140,7 +157,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
       <div onClick={handleClose} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />
-      <div className="w-full h-full relative z-20 ml-auto max-w-[478px] bg-[#282828] overflow-auto">
+      <div className={`w-full h-full relative z-20 max-w-[478px] bg-[#282828] overflow-auto ml-auto ${marginRight} transition-all`}>
         <div className="py-7 px-5 md:px-10 flex items-center border-b border-[#686868]">
           <img className="w-8 mr-3 md:mr-7" src="/cube-green.svg" alt="" />
           <H4 classname="!mb-0">Create Vessels</H4>
