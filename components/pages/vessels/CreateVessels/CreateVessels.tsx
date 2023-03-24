@@ -33,7 +33,14 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
   const [dockerImage, setDockerImage] = useState<typeof dockerImages[0] | null>(dockerImages[0]);
   const [queue, setQueue] = useState<typeof queues[0] | null>(queues[0]);
-  const [vessels, setVessels] = useState<CreateSessionArgs[]>([]);
+  const [vessels, setVessels] = useState<CreateSessionArgs[]>([{
+    label: "",
+    n_gpus: countGPUs,
+    queue: queue?.value ?? "",
+    image: dockerImage?.value ?? "",
+    privileged: false,
+    monitor_by_undertaker: true,
+  }]);
 
   // Advanced
   const [privileged, setPrivileged] = useState(false);
@@ -52,7 +59,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
           monitor_by_undertaker: monitorByUndertaker,
         },
       ]);
-    } else {
+    } else if (value < countVessels) {
       setVessels((prev) => prev.filter((_, i) => i !== countVessels - 1));
     }
     setCountVessels(value);
@@ -75,13 +82,14 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
         image: dockerImage?.value ?? "",
         queue: queue?.value ?? "",
         privileged,
+        monitor_by_undertaker: monitorByUndertaker,
       }))
     );
-  }, [countGPUs, dockerImage, queue, privileged]);
+  }, [countGPUs, dockerImage, queue, privileged, monitorByUndertaker]);
 
   const handleClose = () => {
     setIsOpen(false);
-    setCountVessels(0);
+    setCountVessels(1);
   };
 
   return (
@@ -103,7 +111,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <H4>1. Name & Quantity</H4>
             <div className="flex items-center gap-3 md:gap-6 my-8">
               <Paragraph classname="!mb-0">Number of Vessels</Paragraph>
-              <PlusMinusInput value={countVessels} setValue={handleChangeVesselsCount} />
+              <PlusMinusInput value={countVessels} setValue={handleChangeVesselsCount} minValue={1} />
             </div>
             {vessels.map((vessel, index) => (
               <Input
@@ -120,7 +128,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <H4>2. GPU</H4>
             <div className="flex items-center gap-3 md:gap-6 my-8">
               <Paragraph classname="!mb-0">Number of GPUs</Paragraph>
-              <PlusMinusInput value={countGPUs} setValue={setCountGPUs} />
+              <PlusMinusInput value={countGPUs} setValue={setCountGPUs} minValue={1} />
             </div>
             {/* {Array.from(Array(countGPUs).keys()).map((index) => ( */}
             {countGPUs > 0 && (
