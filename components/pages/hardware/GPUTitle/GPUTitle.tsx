@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { H4 } from "../../../common";
+import { H4 } from "@/components/common";
 
 export const GPUTitle = () => {
   return (

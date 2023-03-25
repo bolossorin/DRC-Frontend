@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { IFilter } from "../../../../utility/types";
+import { IFilter } from "@/utility/types";
 
 interface IFilters {
   filters: IFilter[]

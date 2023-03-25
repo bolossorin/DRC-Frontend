@@ -2,11 +2,11 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import Select from "react-select";
-import { useRegion } from "../../../../context/region";
-import { getRegions } from "../../../../graphql/regions/getRegions";
+import { useRegion } from "@/context/region";
+import { getRegions } from "@/graphql/regions/getRegions";
 
 // components
-import { DropdownIndicator } from "../../../common";
+import { DropdownIndicator } from "@/components/common";
 
 export const Location = () => {
   const router = useRouter();

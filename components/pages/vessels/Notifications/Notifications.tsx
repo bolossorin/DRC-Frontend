@@ -4,19 +4,19 @@ import React, { useEffect } from "react";
 import cn from "classnames";
 
 // components
-import { H5, Paragraph, State } from "../../../common";
-import { Updated } from "../../../common/Icons";
+import { H5, Paragraph, State } from "@/components/common";
+import { Updated } from "@/components/common/Icons";
 
 // assets
 import styles from "./Notifications.module.scss";
-import { useMutation } from "@apollo/client";
-import { getNotifications } from "../../../../graphql/notifications/getNotifications";
 
-import { INotification } from "../../../../graphql/types/notification";
+import { useMutation } from "@apollo/client";
+import { getNotifications } from "@/graphql/notifications/getNotifications";
+import { INotification } from "@/graphql/types/notification";
 
 //graphql
-import { dismissNotificationById } from "../../../../graphql/notifications/dismissNotificationById";
-import { dismissNotifications } from "../../../../graphql/notifications/dismissNotifications";
+import { dismissNotificationById } from "@/graphql/notifications/dismissNotificationById";
+import { dismissNotifications } from "@/graphql/notifications/dismissNotifications";
 
 interface INotifications {
   notifications: INotification[];

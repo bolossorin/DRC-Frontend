@@ -1,8 +1,8 @@
 import React from "react";
 
 // components
-import { H2, Layout } from "../components/common";
-import { GPU } from "../components/pages/hardware";
+import { H2, Layout } from "@/components/common";
+import { GPU } from "@/components/pages/hardware";
 
 export default function Hardware() {
 

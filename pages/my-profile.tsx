@@ -1,8 +1,8 @@
 import React from "react";
 
 // components
-import { H2, Layout } from "../components/common";
-import { PublicSSHKeys, UserInformation } from "../components/pages/my-profile";
+import { H2, Layout } from "@/components/common";
+import { PublicSSHKeys, UserInformation } from "@/components/pages/my-profile";
 
 export default function MyProfile() {
 

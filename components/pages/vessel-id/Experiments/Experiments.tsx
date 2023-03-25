@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import cn from "classnames";
 
 // components
-import { H4 } from "../../../common";
+import { H4 } from "@/components/common";
 import { Filters, Search } from "../../vessels";
-import { IFilter } from "../../../../utility/types";
+import { IFilter } from "@/utility/types";
 import { TableExperiments } from "../";
 
 // assets

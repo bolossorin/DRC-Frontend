@@ -5,10 +5,7 @@ import cn from "classnames";
 import Select from "react-select";
 
 // components
-import { H5, Paragraph } from "../../../common";
-
-// components
-import { DropdownIndicator, Switch } from "../../../common";
+import { H5, Paragraph, DropdownIndicator, Switch } from "@/components/common";
 
 // assets
 import styles from "./TableSetting.module.scss";

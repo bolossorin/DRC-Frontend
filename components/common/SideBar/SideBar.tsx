@@ -7,14 +7,14 @@ import { useRouter } from "next/router";
 
 // components
 import { H5, H6 } from "../";
-import { routes } from "../../../utility/routes";
+import { routes } from "@/utility/routes";
 import { /*AdminIcon, ExperimentsIcon, HardwareIcon,*/ LogOutIcon, VesselIcon } from "../Icons";
-import { IUser } from "../../../utility/types";
+import { IUser } from "@/utility/types";
 
 // assets
 import styles from './SideBar.module.scss';
-import { getUser } from "../../../graphql/users/getUser";
-import { IMyUser } from "../../../graphql/types/user";
+import { getUser } from "@/graphql/users/getUser";
+import { IMyUser } from "@/graphql/types/user";
 import { useQuery } from "@apollo/client";
 
 const links = [

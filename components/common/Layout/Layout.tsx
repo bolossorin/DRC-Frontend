@@ -6,9 +6,9 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Router from "next/router";
 
 // components
-import { SideBar, Header, LoadingSpinner } from "../../common";
-import { useWindowSize } from "../../../utility/useWindowSize";
-import { routes } from "../../../utility/routes";
+import { SideBar, Header, LoadingSpinner } from "@/components/common";
+import { useWindowSize } from "@/utility/useWindowSize";
+import { routes } from "@/utility/routes";
 
 // assets
 import styles from './Layout.module.scss'

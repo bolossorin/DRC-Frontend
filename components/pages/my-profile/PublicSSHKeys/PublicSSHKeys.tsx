@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { Button, H4 } from "../../../common";
+import { Button, H4 } from "@/components/common";
 
 // assets
 import styles from './PublicSSHKeys.module.scss';

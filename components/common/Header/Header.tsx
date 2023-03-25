@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import React, { FC, useEffect } from "react";
-import { getNotifications } from "../../../graphql/notifications/getNotifications";
-import { onNotificationAdded } from "../../../graphql/notifications/onNotificationAdded";
-import { INotification } from "../../../graphql/types/notification";
+import { getNotifications } from "@/graphql/notifications/getNotifications";
+import { onNotificationAdded } from "@/graphql/notifications/onNotificationAdded";
+import { INotification } from "@/graphql/types/notification";
 
 // components
-import { Location, Notifications } from "../../pages/vessels";
+import { Location, Notifications } from "@/components/pages/vessels";
 
 interface IHeader {
   label: string;
