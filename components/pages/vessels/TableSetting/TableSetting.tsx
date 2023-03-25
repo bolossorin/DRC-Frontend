@@ -27,7 +27,6 @@ interface IColumnSetting {
 }
 
 interface ITableSetting {
-  classname: string;
   pageLimit: number;
   columnSettings: IColumnSetting[];
   setColumnSettingsList: React.Dispatch<React.SetStateAction<IColumnSetting[]>>;
@@ -35,7 +34,6 @@ interface ITableSetting {
 }
 
 export const TableSetting = ({
-  classname,
   columnSettings,
   setColumnSettingsList,
   onPageLimitChange,
@@ -53,9 +51,8 @@ export const TableSetting = ({
   return (
     <div
       className={cn(
-        "hidden absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border border-[#686868] min-w-[216px] rounded",
+        "max-h-0 border-0 absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] min-w-[216px] rounded transition-all overflow-hidden group-hover:max-h-[800px] group-hover:border",
         styles.tableSetting,
-        classname
       )}
     >
       <H5 classname="p-4 !mb-0 !text-white border-b border-[#686868]">Table Settings</H5>

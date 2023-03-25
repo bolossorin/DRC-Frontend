@@ -259,7 +259,6 @@ export default function Vessels() {
               alt=""
             />
             <TableSetting
-              classname="group-hover:block"
               onPageLimitChange={handleChangePageLimit}
               pageLimit={pagination.limit}
               columnSettings={columnSettings}
