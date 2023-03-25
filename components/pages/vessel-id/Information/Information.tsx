@@ -85,13 +85,13 @@ export const Information = ({ vessel }: IInformation) => {
             <li>
               <>
                 <span>Created at:</span>
-                {vessel?.created_at ?? ""}
+                {vessel?.created_at ? new Date(vessel.created_at).toLocaleString("en-US") : ""}
               </>
             </li>
             <li>
               <>
                 <span>Modified at:</span>
-                {vessel?.modified_at ?? ""}
+                {vessel?.modified_at ? new Date(vessel.modified_at).toLocaleString('en-US') : ""}
               </>
             </li>
             <li>
