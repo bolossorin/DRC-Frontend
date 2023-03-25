@@ -20,6 +20,7 @@ export const getSessionById = gql`
       image
       name
       gpu_ids
+      gpu_names
       state
       error_message
       created_at

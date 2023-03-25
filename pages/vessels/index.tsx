@@ -62,7 +62,19 @@ export const sessionsTableColumns = [
   },
   { label: "Queue", key: "queue" },
   { label: "Docker Image", key: "image" },
-  { label: "GPU’s", key: "n_gpus" },
+  {
+    label: "GPU’s",
+    key: "gpu_names",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        <ul className="list-disc">
+          {item.gpu_names.map((gpu, index) => (
+            <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
+          ))}
+        </ul>
+      </Cel>
+    )
+   },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
   { label: "Created At", key: "created_at" },
