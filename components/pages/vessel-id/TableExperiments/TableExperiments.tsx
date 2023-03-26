@@ -10,8 +10,8 @@ ChartJS.register(ArcElement);
 
 // components
 import { Cel, CelHeader, Row } from "../../vessels";
-import { State } from "../../../common";
-import { routes } from "../../../../utility/routes";
+import { State } from "@/components/common";
+import { routes } from "@/utility/routes";
 
 // assets
 import styles from './TableExperiments.module.scss'

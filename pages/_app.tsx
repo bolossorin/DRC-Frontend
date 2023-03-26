@@ -1,12 +1,12 @@
 import type { AppProps } from "next/app";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ApolloProvider } from "@apollo/client";
-import client, { setApolloAuthToken } from "../apollo-client";
+import client, { setApolloAuthToken } from "@/apollo-client";
 import { useEffect, useState } from "react";
 // assets
-import "../styles/globals.scss";
-import { LoadingSpinner } from "../components/common";
-import { RegionContextProvider } from "../context/region";
+import "@/styles/globals.scss";
+import { LoadingSpinner } from "@/components/common";
+import { RegionContextProvider } from "@/context/region";
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const { user } = pageProps;

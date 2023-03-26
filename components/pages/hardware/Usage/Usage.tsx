@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import cn from "classnames";
 
 // components
-import { H5 } from "../../../common";
+import { H5 } from "@/components/common";
 import { PerQueueTable, PerUserTable } from "../../hardware";
 
 export const Usage = () => {

@@ -5,7 +5,7 @@ import cn from "classnames";
 
 // components
 import { Cel, CelHeader, Row } from "../../vessels";
-import { H6, Paragraph } from "../../../common";
+import { H6, Paragraph } from "@/components/common";
 
 // assets
 import styles from "./PerUserTable.module.scss";

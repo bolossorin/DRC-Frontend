@@ -7,11 +7,11 @@ import Select from "react-select";
 //  components
 import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from "../../../common";
 
-import { CreateSessionArgs } from "../../../../graphql/types/session";
-import { findImages } from "../../../../graphql/images/getImagesByName";
 import { useQuery } from "@apollo/client";
-import { IQueue } from "../../../../graphql/types/queues";
-import { getQueues } from "../../../../graphql/queues/getQueues";
+import { CreateSessionArgs } from "@/graphql/types/session";
+import { findImages } from "@/graphql/images/getImagesByName";
+import { IQueue } from "@/graphql/types/queues";
+import { getQueues } from "@/graphql/queues/getQueues";
 
 interface ICreateVessels {
   setIsOpen: (value: boolean) => void;

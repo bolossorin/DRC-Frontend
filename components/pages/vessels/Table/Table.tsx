@@ -6,15 +6,14 @@ import Link from "next/link";
 
 // components
 import { Cel, CelHeader, Row, CopyButton, StopButton } from "../index";
-import { Checkbox, List, State } from "../../../common";
-import { routes } from "../../../../utility/routes";
+import { Checkbox, List, State } from "@/components/common";
+import { StopVesselsModal } from "@/components/common/Modals";
 
 // assets
 import styles from "./Table.module.scss";
-import { ISession } from "../../../../graphql/types/session";
-import listStyles from "../../../../components/common/List/List.module.scss";
-import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
-import { StopVesselsModal } from "../../../common/Modals";
+import { ISession } from "@/graphql/types/session";
+import listStyles from "@/components/common/List/List.module.scss";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 
 interface IColumn<T> {
   label: string;

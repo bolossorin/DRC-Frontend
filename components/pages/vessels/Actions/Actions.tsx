@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { Button } from "../../../common";
+import { Button } from "@/components/common";
 
 interface IActions {
   currentSelected: string[];

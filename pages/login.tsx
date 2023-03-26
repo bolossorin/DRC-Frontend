@@ -5,8 +5,8 @@ import Router from "next/router";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 // components
-import { Button, H4, LoadingSpinner, Paragraph } from "../components/common";
-import { routes } from "../utility/routes";
+import { Button, H4, LoadingSpinner, Paragraph } from "@/components/common";
+import { routes } from "@/utility/routes";
 
 export default function Home() {
   const { isLoading, user } = useUser();

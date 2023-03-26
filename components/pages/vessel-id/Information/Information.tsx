@@ -5,17 +5,17 @@ import { useRouter } from "next/router";
 import cn from "classnames";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { getSessionById } from "../../../../graphql/sessions/getSessionById";
-import { stopSession } from "../../../../graphql/sessions/stopSession";
+import { getSessionById } from "@/graphql/sessions/getSessionById";
+import { stopSession } from "@/graphql/sessions/stopSession";
 
 // components
-import { Button, H4, State } from "../../../common";
-import { StopVesselsModal } from "../../../common/Modals";
+import { Button, H4, State } from "@/components/common";
+import { StopVesselsModal } from "@/components/common/Modals";
 
 // assets
 import styles from "./Information.module.scss";
-import { ISession } from "../../../../graphql/types/session";
-import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
+import { ISession } from "@/graphql/types/session";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 
 interface IInformation {
   vessel: ISession | null;
@@ -85,13 +85,13 @@ export const Information = ({ vessel }: IInformation) => {
             <li>
               <>
                 <span>Created at:</span>
-                {vessel?.created_at ?? ""}
+                {vessel?.created_at ? new Date(vessel.created_at).toLocaleString("en-US") : ""}
               </>
             </li>
             <li>
               <>
                 <span>Modified at:</span>
-                {vessel?.modified_at ?? ""}
+                {vessel?.modified_at ? new Date(vessel.modified_at).toLocaleString('en-US') : ""}
               </>
             </li>
             <li>

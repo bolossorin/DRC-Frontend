@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { getSessions } from "../../graphql/sessions/getSessions";
-import { stopSession } from "../../graphql/sessions/stopSession";
+import { getSessions } from "@/graphql/sessions/getSessions";
+import { stopSession } from "@/graphql/sessions/stopSession";
+import { createSession } from "@/graphql/sessions/createSession";
+import { CreateSessionArgs, ISession } from "@/graphql/types/session";
+import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
 
 // components
-import { Layout, State, VesselTitle } from "../../components/common";
+import { Layout, State, VesselTitle } from "@/components/common";
 import {
   Actions,
   Cel,
@@ -15,17 +18,14 @@ import {
   /*Search,*/
   Table,
   TableSetting,
-} from "../../components/pages/vessels";
-import { IFilter } from "../../utility/types";
-import { StopVesselsModal, VesselAddedModal } from "../../components/common/Modals";
+} from "@/components/pages/vessels";
+import { IFilter } from "@/utility/types";
+import { StopVesselsModal, VesselAddedModal } from "@/components/common/Modals";
+import { VesselAddError } from "@/components/common/Modals/VesselAddError.tsx/VesselAddError";
 
-import { createSession } from "../../graphql/sessions/createSession";
-import { CreateSessionArgs, ISession } from "../../graphql/types/session";
-import { useRegion } from "../../context/region";
-import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
-import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
-import { inactiveSessionStatuses } from "../../utility/inactiveSessionStatuses";
-import { routes } from "../../utility/routes";
+import { useRegion } from "@/context/region";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
+import { routes } from "@/utility/routes";
 import Link from "next/link";
 
 export const sessionsTableColumns = [
@@ -77,7 +77,15 @@ export const sessionsTableColumns = [
    },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
-  { label: "Created At", key: "created_at" },
+  {
+    label: "Created At",
+    key: "created_at",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        {new Date(item.created_at).toLocaleString("en-US")}
+      </Cel>
+    )
+   },
 ];
 
 export default function Vessels() {
@@ -259,7 +267,6 @@ export default function Vessels() {
               alt=""
             />
             <TableSetting
-              classname="group-hover:block"
               onPageLimitChange={handleChangePageLimit}
               pageLimit={pagination.limit}
               columnSettings={columnSettings}
