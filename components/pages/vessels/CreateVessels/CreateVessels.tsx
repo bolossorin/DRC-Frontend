@@ -237,7 +237,12 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
               </>
             )}
           </div>
-          <Button size="medium" color="green" onClick={() => createVessels(vessels)}>
+          <Button
+            size="medium"
+            color="green"
+            onClick={() => createVessels(vessels)}
+            disabled={dockerImage === null || dockerImage === ""}
+          >
             Create
           </Button>
         </div>
