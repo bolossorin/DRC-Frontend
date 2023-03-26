@@ -10,19 +10,16 @@ import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio 
 import { CreateSessionArgs } from "../../../../graphql/types/session";
 import { findImages } from "../../../../graphql/images/getImagesByName";
 import { useQuery } from "@apollo/client";
+import { IQueue } from "../../../../graphql/types/queues";
+import { getQueues } from "../../../../graphql/queues/getQueues";
 
 interface ICreateVessels {
   setIsOpen: (value: boolean) => void;
   setCountVessels: (value: number) => void;
   createVessels: (sessionsData: CreateSessionArgs[]) => void;
   countVessels: number;
+  region: string;
 }
-
-const queues: { label: string; value: string }[] = [
-  { value: "default", label: "Queue1" },
-  { value: "default", label: "Queue2" },
-  { value: "default", label: "Queue3" },
-];
 
 function useAvailableImages(query: string) {
   const { data } = useQuery<{ available_images: string[] }>(findImages, {
@@ -34,17 +31,34 @@ function useAvailableImages(query: string) {
   return data?.available_images
 }
 
-export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels }: ICreateVessels) => {
-  const [imageQuery, setImageQuery] = useState("")
-  const availableImages = useAvailableImages(imageQuery)
+function useQueues(computeType: "gpu" | "cpu", region: string) {
+  const { data } = useQuery<{ available_queues: IQueue[] }>(getQueues, {
+    variables: {
+      computeType,
+      region
+    },
+    fetchPolicy: "network-only",
+  });
+  return data?.available_queues
+}
+
+export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels, region }: ICreateVessels) => {
   const [countGPUs, setCountGPUs] = useState(1);
-  const [isShowAdvanced, setIsShowAdvanced] = useState(false);
+  
+  // Docker images
+  const [imageQuery, setImageQuery] = useState("");
+  const availableImages = useAvailableImages(imageQuery);
   const [dockerImage, setDockerImage] = useState<string | null>(null);
-  const [queue, setQueue] = useState<typeof queues[0] | null>(queues[0]);
+
+  // Queues
+  const queues = useQueues(countGPUs > 0 ? "gpu" : "cpu", region);
+  const [queue, setQueue] = useState<IQueue|null>(null);
+
+  const [isShowAdvanced, setIsShowAdvanced] = useState(false);
   const [vessels, setVessels] = useState<CreateSessionArgs[]>([{
     label: "",
     n_gpus: countGPUs,
-    queue: queue?.value ?? "",
+    queue: queue?.queue ?? "",
     image: dockerImage ?? "",
     privileged: false,
     monitor_by_undertaker: true,
@@ -61,7 +75,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
         {
           label: "",
           n_gpus: countGPUs,
-          queue: queue?.value ?? "",
+          queue: queue?.queue ?? "",
           image: dockerImage ?? "",
           privileged,
           monitor_by_undertaker: monitorByUndertaker,
@@ -88,12 +102,18 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
         ...v,
         n_gpus: countGPUs,
         image: dockerImage ?? "",
-        queue: queue?.value ?? "",
+        queue: queue?.queue ?? "",
         privileged,
         monitor_by_undertaker: monitorByUndertaker,
       }))
     );
   }, [countGPUs, dockerImage, queue, privileged, monitorByUndertaker]);
+
+  // Reset the queue value if the search result is empty.
+  useEffect(() => {
+    if (queues !== undefined && queues.length === 0) 
+      setQueue(null)
+  }, [queues])
 
   const handleClose = () => {
     setIsOpen(false);
@@ -104,7 +124,16 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
     if (availableImages === undefined) return []
     return availableImages.map(item => ({
       label: item,
-      value: item
+      value: item,
+    }))
+  }
+
+  const getQueues = () => {
+    if (queues === undefined) return []
+    return queues.map(item => ({
+      label: `${item.queue} (${item.free} free)`,
+      value: item.queue,
+      free: item.free,
     }))
   }
 
@@ -144,24 +173,26 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <H4>2. GPU</H4>
             <div className="flex items-center gap-3 md:gap-6 my-8">
               <Paragraph classname="!mb-0">Number of GPUs</Paragraph>
-              <PlusMinusInput value={countGPUs} setValue={setCountGPUs} minValue={1} />
+              <PlusMinusInput value={countGPUs} setValue={setCountGPUs} minValue={0} />
             </div>
-            {/* {Array.from(Array(countGPUs).keys()).map((index) => ( */}
-            {countGPUs > 0 && (
-              <div className="flex items-center gap-4 mb-6">
-                <Paragraph classname="!mb-0">Queue</Paragraph>
-                <Select
-                  className="basic-single light w-full"
-                  classNamePrefix="select"
-                  components={{ DropdownIndicator } as any}
-                  placeholder="Select"
-                  options={queues}
-                  value={queue}
-                  onChange={(option) => setQueue(option)}
-                />
-              </div>
+            
+            { queues === undefined || queues.length > 0 && (
+            <div className="flex items-center gap-4 mb-6">
+              <Paragraph classname="!mb-0">Queue</Paragraph>
+              <Select
+                className="basic-single light w-full"
+                classNamePrefix="select"
+                components={{ DropdownIndicator } as any}
+                placeholder="Select"
+                options={getQueues()}
+                value={queue ? {label: `${queue.queue} (${queue.free} free)`, value: queue.queue, free: queue.free} : undefined}
+                onChange={(option) => setQueue(option ? {queue: option.value, free: option.free} : null)}
+                isLoading={queues === undefined}
+              />
+            </div>
             )}
-            {/* ))} */}
+            { queues !== undefined && queues.length === 0 && countGPUs === 0 && <p>No CPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
+            { queues !== undefined && queues.length === 0 && countGPUs > 0 && <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
           </div>
           <div className="mb-10">
             <H4>3. Docker</H4>
@@ -241,7 +272,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             size="medium"
             color="green"
             onClick={() => createVessels(vessels)}
-            disabled={dockerImage === null || dockerImage === ""}
+            disabled={dockerImage === null || dockerImage === "" || queue === null || queue.queue === ""}
           >
             Create
           </Button>
