@@ -19,11 +19,10 @@ import { dismissNotificationById } from "../../../../graphql/notifications/dismi
 import { dismissNotifications } from "../../../../graphql/notifications/dismissNotifications";
 
 interface INotifications {
-  classname: string;
   notifications: INotification[];
 }
 
-export const Notifications = ({ classname, notifications }: INotifications) => {
+export const Notifications = ({ notifications }: INotifications) => {
   const [dismissNotification] = useMutation(dismissNotificationById, {
     onError: (error) => console.log(error),
     refetchQueries: [{ query: getNotifications, variables: { unread_only: true } }],
@@ -36,10 +35,7 @@ export const Notifications = ({ classname, notifications }: INotifications) => {
 
   return (
     <div
-      className={cn(
-        "hidden absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border border-[#686868]",
-        classname
-      )}
+      className="border-0 absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] max-h-0 overflow-hidden transition-all group-hover:border group-hover:max-h-[650px]"
     >
       <div className="flex items-center py-4 px-3 md:px-5 border-b border-[#686868]">
         <H5 classname="!mb-0 !text-lg">Notifications</H5>
