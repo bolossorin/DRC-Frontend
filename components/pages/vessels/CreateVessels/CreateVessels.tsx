@@ -115,6 +115,14 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
       setQueue(null)
   }, [queues])
 
+  // Select the first available docker image by default
+  useEffect(() => {
+    if (availableImages === undefined)
+      return
+    if (dockerImage === null)
+      setDockerImage(availableImages[0])
+  }, [availableImages])
+
   const handleClose = () => {
     setIsOpen(false);
     setCountVessels(1);
