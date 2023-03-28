@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // libs
 import cn from "classnames";
@@ -45,6 +45,38 @@ export const TableSetting = ({
     onPageLimitChange(option.value);
   };
 
+  // Load saved state
+  useEffect(() => {
+    const state = localStorage.getItem('tableSettingsState')
+    if (!state) return
+
+    const findColumn = (key: string) => {
+      for (let i=0; i<columnSettings.length; i++) {
+        if (columnSettings[i].key === key) {
+          return i
+        }
+      }
+      return -1
+    }
+
+    try {
+      const columns = JSON.parse(state)
+      
+        setColumnSettingsList((prev) => {
+          const newState = [...prev];
+          columns.forEach((column: IColumnSetting) => {
+            const index = findColumn(column.key)
+            if (index === -1) return
+            newState[index].checked = column.checked;
+          })
+          return newState;
+        });
+    }
+    catch(err) {
+      console.error(err)
+    }
+  }, [])
+
   return (
     <div
       className={cn(
@@ -83,6 +115,7 @@ export const TableSetting = ({
                 setColumnSettingsList((prev) => {
                   const newState = [...prev];
                   newState[index].checked = e.target.checked;
+                  localStorage.setItem('tableSettingsState', JSON.stringify(newState))
                   return newState;
                 });
               }}
