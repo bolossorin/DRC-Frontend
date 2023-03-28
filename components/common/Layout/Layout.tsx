@@ -6,8 +6,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Router from "next/router";
 
 // components
-import { SideBar, Header, LoadingSpinner } from "@/components/common";
-import { useWindowSize } from "@/utility/useWindowSize";
+import { Header, LoadingSpinner } from "@/components/common";
 import { routes } from "@/utility/routes";
 
 // assets
@@ -21,7 +20,6 @@ interface ILayout {
 }
 
 export const Layout = ({ title, description, children, label }: ILayout) => {
-  const { width } = useWindowSize();
   const { isLoading, user }:any = useUser();
 
   useEffect(() => {
@@ -39,8 +37,7 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLoading && <LoadingSpinner />}
-      {user && <div className={styles.layout}>
-        {width > 1024 && <SideBar user={user} />}
+      {user && <div className={`${styles.layout} grow`}>
         <main>
           <div className='container'>
             <div className='flex flex-col min-h-screen py-10 md:px-4'>

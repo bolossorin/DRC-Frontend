@@ -5,14 +5,17 @@ import client, { setApolloAuthToken } from "@/apollo-client";
 import { useEffect, useState } from "react";
 // assets
 import "@/styles/globals.scss";
-import { LoadingSpinner } from "@/components/common";
+import { LoadingSpinner, SideBar } from "@/components/common";
 import { RegionContextProvider } from "@/context/region";
+import { useWindowSize } from "@/utility/useWindowSize";
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const { user } = pageProps;
 
   const [loading, setLoading] = useState(true);
   const [region, setRegion] = useState("");
+
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const initialize = async () => {
@@ -40,7 +43,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <UserProvider user={user}>
       <ApolloProvider client={client}>
         <RegionContextProvider initRegion={region}>
-          <Component {...pageProps} />
+          <div className="flex">
+            {width > 1024 && <SideBar />}
+            <Component {...pageProps} />
+          </div>
         </RegionContextProvider>
       </ApolloProvider>
     </UserProvider>

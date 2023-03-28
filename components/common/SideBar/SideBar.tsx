@@ -16,6 +16,7 @@ import styles from './SideBar.module.scss';
 import { getUser } from "@/graphql/users/getUser";
 import { IMyUser } from "@/graphql/types/user";
 import { useQuery } from "@apollo/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const links = [
   //{ icon: <AdminIcon />, title: 'Admin', link: '#' },
@@ -25,16 +26,16 @@ const links = [
   { icon: <LogOutIcon />, title: 'Log Out', link: '/api/auth/logout' },
 ]
 
-interface ISideBar {
-  user: IUser
-}
+export const SideBar: FC = () => {
+  const { isLoading, user }:any = useUser();
 
-export const SideBar: FC<ISideBar> = ({ user }) => {
   const { data, refetch, subscribeToMore } = useQuery<{ my_user: IMyUser }>(getUser, {
     fetchPolicy: "network-only",
   });
 
   const router = useRouter();
+
+  if (!user) return <></>
 
   return (
     <div className={cn('bg-[#282828] w-80 fixed left-0 top-0 z-10 h-screen py-10', styles.sideBar)}>
