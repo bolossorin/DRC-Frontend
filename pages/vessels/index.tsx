@@ -77,7 +77,15 @@ export const sessionsTableColumns = [
    },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
-  { label: "Created At", key: "created_at" },
+  {
+    label: "Created At",
+    key: "created_at",
+    renderCell: (item: ISession, key: string) => (
+      <Cel key={key}>
+        {new Date(item.created_at).toLocaleString("en-US")}
+      </Cel>
+    )
+   },
 ];
 
 export default function Vessels() {
