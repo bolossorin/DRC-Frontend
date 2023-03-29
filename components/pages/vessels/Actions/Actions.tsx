@@ -1,10 +1,13 @@
 import React from "react";
 
+import { SelectedVessel } from "../Table/Table";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
+
 // components
 import { Button } from "@/components/common";
 
 interface IActions {
-  currentSelected: string[];
+  currentSelected: SelectedVessel[];
   setIsStopModal: (value: boolean) => void;
   setIsCreateVessels: (value: boolean) => void;
   vsCodeLink: string | undefined;
@@ -26,7 +29,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
       </Button>
       <Button
         onClick={() => setIsStopModal(true)}
-        disabled={currentSelected.length <= 0}
+        disabled={currentSelected.length <= 0 || !hasRunningVessels(currentSelected)}
         size="medium"
         classname="w-full sm:w-auto"
         icon="/stop-empty.svg"
@@ -46,3 +49,10 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
     </>
   );
 };
+
+function hasRunningVessels(selectedVessels: SelectedVessel[]): boolean {
+  for (const v of selectedVessels) {
+    if (!inactiveSessionStatuses.includes(v.state)) return true
+  }
+  return false
+}

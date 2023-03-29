@@ -41,7 +41,7 @@ export const Information = ({ vessel }: IInformation) => {
   return (
     <div className={cn("p-2 md:p-6 md:pb-0 w-full", styles.information)}>
       {isStopModal && (
-        <StopVesselsModal setIsOpen={setIsStopModal} vessels={[vessel?.id ?? ""]} onStop={stopSessions} />
+        <StopVesselsModal setIsOpen={setIsStopModal} vessels={vessel ? [vessel] : []} onStop={stopSessions} />
       )}
       <div className="px-2 md:px-6 pt-5 pb-2 bg-[#2F2F2F] rounded">
         <div className="flex flex-wrap gap-4 items-center justify-between mb-4">

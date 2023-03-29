@@ -24,11 +24,16 @@ interface IColumn<T> {
 interface ITable {
   items: ISession[];
   columns: IColumn<ISession>[];
-  selected: string[];
+  selected: SelectedVessel[];
+  setCurrentSelected: (value: SelectedVessel[] | ((v: SelectedVessel[]) => SelectedVessel[])) => void;
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
-  setCurrentSelected: (value: string[] | ((value: string[]) => string[])) => void;
   onSessionStop: (id: string) => void;
+}
+
+export interface SelectedVessel {
+  id: string
+  state: string
 }
 
 export const Table = ({
@@ -43,13 +48,18 @@ export const Table = ({
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
 
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  const handleSelect = (id: string) => () => {
-    if (isSelected(id)) {
-      return setCurrentSelected((prev) => prev.filter((x) => x !== id));
+  const isSelected = (id: string) => {
+    for (const s of selected) {
+      if (s.id === id) return true
     }
-    setCurrentSelected((prev) => [...prev, id]);
+    return false
+  }
+
+  const handleSelect = (vessel: SelectedVessel) => () => {
+    if (isSelected(vessel.id)) {
+      return setCurrentSelected((prev: SelectedVessel[]) => prev.filter((x) => x.id !== vessel.id));
+    }
+    setCurrentSelected((prev: SelectedVessel[]) => [...prev, vessel]);
   };
 
   const handleOpenStopVesselModal = (id: string) => {
@@ -59,8 +69,7 @@ export const Table = ({
 
   useEffect(() => {
     if (selectAll) {
-      const newSelecteds = items.map((x) => x.id);
-      setCurrentSelected(newSelecteds);
+      setCurrentSelected(items.map(x => ({id: x.id, state: x.state})));
       return;
     }
     setCurrentSelected([]);
@@ -71,7 +80,7 @@ export const Table = ({
       {isStopModal && (
         <StopVesselsModal
           setIsOpen={setIsStopModal}
-          vessels={[vesselId]}
+          vessels={selected}
           onStop={() => {
             onSessionStop(vesselId);
             setIsStopModal(false);
@@ -126,7 +135,7 @@ export const Table = ({
                 </ul>
               </Cel>
               <Cel classname="flex">
-                <Checkbox onChange={handleSelect(row.id)} checked={isSelected(row.id)} />
+                <Checkbox onChange={handleSelect({ id: row.id, state: row.state })} checked={isSelected(row.id)} />
               </Cel>
               {columns.map(({ renderCell, key }) =>
                 renderCell ? renderCell(row, key) : <Cel key={key}>{row[key as keyof ISession]}</Cel>
