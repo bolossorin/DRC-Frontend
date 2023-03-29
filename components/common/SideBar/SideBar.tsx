@@ -44,8 +44,8 @@ export const SideBar: FC = () => {
       </Link>
       {/* Previously, there was a link to the profile: <a href={routes.myProfile} className="mx-10 group hover:opacity-80 transition-all" > */}
       <div className='mx-10 my-10 text-center'>
-        <div className='w-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto'>
-          <img src={user.picture} alt='' />
+        <div className='w-20 h-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto relative'>
+          <img src={user.picture} alt='' className='object-cover' />
         </div>
         <H5 classname='font-medium flex items-center justify-center'>
           <span className='w-2 h-2 rounded-full bg-[#88E207] mr-3'></span>
