@@ -51,7 +51,7 @@ export const SideBar: FC = () => {
           <span className='w-2 h-2 rounded-full bg-[#88E207] mr-3'></span>
           {user.name}
         </H5>
-        <H6 classname='text-[#D9D9D9] font-medium'>{data?.my_user.job_title || "..."}</H6>
+        <H6 classname='text-[#D9D9D9] font-medium'>{data?.my_user.job_title || ""}</H6>
       </div>
       <ul className='pt-2 pb-12'>
         {links.map(link => (
