@@ -80,7 +80,7 @@ export const TableSetting = ({
   return (
     <div
       className={cn(
-        "max-h-0 border-0 absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] min-w-[216px] rounded transition-all overflow-hidden group-hover:max-h-[800px] group-hover:border",
+        "max-h-0 border-0 absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] min-w-[216px] rounded transition-all duration-300 overflow-hidden group-hover:max-h-[800px] group-hover:border",
         styles.tableSetting,
       )}
     >
