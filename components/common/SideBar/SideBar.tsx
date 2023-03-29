@@ -42,7 +42,8 @@ export const SideBar: FC = () => {
       <Link href="/vessels">
         <img className='w-[116px] mx-10 mb-2' src={'/logo.svg'} alt='' />
       </Link>
-      <a href={routes.myProfile} className='mx-10 text-center group hover:opacity-80 transition-all'>
+      {/* Previously, there was a link to the profile: <a href={routes.myProfile} className="mx-10 group hover:opacity-80 transition-all" > */}
+      <div className='mx-10 my-10 text-center'>
         <div className='w-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto'>
           <img src={user.picture} alt='' />
         </div>
@@ -51,7 +52,7 @@ export const SideBar: FC = () => {
           {user.name}
         </H5>
         <H6 classname='text-[#D9D9D9] font-medium'>{data?.my_user.job_title || "..."}</H6>
-      </a>
+      </div>
       <ul className='pt-2 pb-12'>
         {links.map(link => (
           <li key={link.title} className={cn({ [styles.active]: router.asPath === link.link })}>
