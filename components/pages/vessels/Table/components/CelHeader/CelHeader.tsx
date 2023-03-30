@@ -13,7 +13,7 @@ export const CelHeader: FC<ICelHeader> = ({ children, classname, isSort }) => {
   return (
     <div
       className={cn(
-        "w-full px-2 py-4 text-sm text-[#D9D9D9] overflow-hidden text-ellipsis cell flex items-center text-white font-medium text-base group select-none cursor-pointer",
+        "px-2 py-4 text-sm text-[#D9D9D9] overflow-hidden text-ellipsis cell flex items-center text-white font-medium text-base group select-none cursor-pointer w-20 md:w-20",
         classname
       )}
     >

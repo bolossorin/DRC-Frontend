@@ -43,44 +43,19 @@ export const TableSetting = ({
   const handleChangePageLimit = (option: { label: string; value: number }) => {
     setPageLimitOption(option);
     onPageLimitChange(option.value);
+    localStorage.setItem("pageLimit", JSON.stringify(option));
   };
 
   // Load saved state
   useEffect(() => {
-    const state = localStorage.getItem('tableSettingsState')
-    if (!state) return
-
-    const findColumn = (key: string) => {
-      for (let i=0; i<columnSettings.length; i++) {
-        if (columnSettings[i].key === key) {
-          return i
-        }
-      }
-      return -1
-    }
-
-    try {
-      const columns = JSON.parse(state)
-      
-        setColumnSettingsList((prev) => {
-          const newState = [...prev];
-          columns.forEach((column: IColumnSetting) => {
-            const index = findColumn(column.key)
-            if (index === -1) return
-            newState[index].checked = column.checked;
-          })
-          return newState;
-        });
-    }
-    catch(err) {
-      console.error(err)
-    }
+    loadVisibleColumnsState(columnSettings, setColumnSettingsList);
+    loadPageLimit(handleChangePageLimit);
   }, [])
 
   return (
     <div
       className={cn(
-        "max-h-0 border-0 absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] min-w-[216px] rounded transition-all overflow-hidden group-hover:max-h-[800px] group-hover:border",
+        "max-h-0 border-0 absolute z-20 right-0 -bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] min-w-[216px] rounded transition-all duration-300 overflow-hidden group-hover:max-h-[800px] group-hover:border",
         styles.tableSetting,
       )}
     >
@@ -115,7 +90,7 @@ export const TableSetting = ({
                 setColumnSettingsList((prev) => {
                   const newState = [...prev];
                   newState[index].checked = e.target.checked;
-                  localStorage.setItem('tableSettingsState', JSON.stringify(newState))
+                  localStorage.setItem('visibleColumns', JSON.stringify(newState))
                   return newState;
                 });
               }}
@@ -127,3 +102,57 @@ export const TableSetting = ({
     </div>
   );
 };
+
+/**
+ * Load information about visible columns from local storage.
+ * Called once on load.
+ */
+function loadVisibleColumnsState(
+  columnSettings: IColumnSetting[],
+  setColumnSettingsList: React.Dispatch<React.SetStateAction<IColumnSetting[]>>
+) {
+  const state = localStorage.getItem('visibleColumns')
+  if (!state) return
+
+  const findColumn = (key: string) => {
+    for (let i=0; i<columnSettings.length; i++) {
+      if (columnSettings[i].key === key) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  try {
+    const columns = JSON.parse(state)
+    setColumnSettingsList((prev) => {
+      const newState = [...prev];
+      columns.forEach((column: IColumnSetting) => {
+        const index = findColumn(column.key)
+        if (index === -1) return
+        newState[index].checked = column.checked;
+      })
+      return newState;
+    });
+  }
+  catch(err) {
+    console.error(err)
+  }
+}
+
+/**
+ * Load information about page limit from local storage.
+ * Called once on load.
+ */
+function loadPageLimit(setPageLimit: (arg0: { label: string; value: number }) => void) {
+  const state = localStorage.getItem('pageLimit')
+  if (!state) return
+
+  try {
+    const option = JSON.parse(state)
+    setPageLimit(option)
+  }
+  catch(err) {
+    console.error(err)
+  }
+}

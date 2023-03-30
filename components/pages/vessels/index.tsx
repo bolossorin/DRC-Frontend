@@ -1,4 +1,4 @@
-export { Cel } from './Table/components/Cel/Cel'
+export { Cell } from './Table/components/Cell/Cell'
 export { CelHeader } from './Table/components/CelHeader/CelHeader'
 export { Row } from './Table/components/Row/Row'
 export { CopyButton } from './Table/components/CopyButton/CopyButton'

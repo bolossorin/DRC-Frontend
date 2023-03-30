@@ -6,12 +6,13 @@ import { stopSession } from "@/graphql/sessions/stopSession";
 import { createSession } from "@/graphql/sessions/createSession";
 import { CreateSessionArgs, ISession } from "@/graphql/types/session";
 import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
+import { SelectedVessel } from "@/components/pages/vessels/Table/Table";
 
 // components
 import { Layout, State, VesselTitle } from "@/components/common";
 import {
   Actions,
-  Cel,
+  Cell,
   CreateVessels,
   Filters,
   Pagination,
@@ -33,31 +34,31 @@ export const sessionsTableColumns = [
     label: "Vessel ID",
     key: "id",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.id}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "Name",
     key: "name",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.name}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "State",
     key: "state",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <State state={item.state} />
-      </Cel>
+      </Cell>
     ),
   },
   { label: "Queue", key: "queue" },
@@ -66,31 +67,31 @@ export const sessionsTableColumns = [
     label: "GPU’s",
     key: "gpu_names",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <ul className="list-disc">
           {item.gpu_names.map((gpu, index) => (
             <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
           ))}
         </ul>
-      </Cel>
+      </Cell>
     )
-   },
+  },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
   {
     label: "Created At",
     key: "created_at",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         {new Date(item.created_at).toLocaleString("en-US")}
-      </Cel>
+      </Cell>
     )
-   },
+  },
 ];
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
-  const [currentSelected, setCurrentSelected] = useState<string[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<SelectedVessel[]>([]);
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [isStopModal, setIsStopModal] = useState(false);
   const [isAddedModal, setIsAddedModal] = useState(false);
@@ -167,11 +168,11 @@ export default function Vessels() {
 
   const stopSessions = async () => {
     const requests: Promise<any>[] = [];
-    currentSelected.forEach((id) =>
+    currentSelected.forEach((session) =>
       requests.push(
         stopSessionMutation({
           variables: {
-            id,
+            id: session.id,
           },
         })
       )
@@ -179,6 +180,7 @@ export default function Vessels() {
     await Promise.all(requests);
     refetch();
     setIsStopModal(false);
+    setCurrentSelected([])
   };
 
   const [writeSession] = useMutation(createSession, {
@@ -215,7 +217,7 @@ export default function Vessels() {
 
   const getVsCodeLink = () => {
     if (currentSelected.length !== 1) return;
-    const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0]);
+    const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0].id);
     if (session) {
       if (inactiveSessionStatuses.includes(session.state)) {
         return;

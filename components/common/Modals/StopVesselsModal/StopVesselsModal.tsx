@@ -1,7 +1,11 @@
+import { inactiveSessionStatuses } from '@/utility/inactiveSessionStatuses';
+import { SelectedVessel } from '@/components/pages/vessels/Table/Table';
+
 // components
 import { ModalLayout } from '../ModalLayout/ModalLayout';
 import { Paragraph } from '../../Paragraph/Paragraph';
 import { Button } from '../../Button/Button';
+
 
 const vessels = [
   '“Super Super Long Vessel Name!!”',
@@ -11,7 +15,7 @@ const vessels = [
 ];
 
 interface IStopVesselsModal {
-  vessels: string[];
+  vessels: SelectedVessel[];
   setIsOpen: (value: boolean) => void;
   onStop: () => void;
 }
@@ -22,9 +26,9 @@ export const StopVesselsModal = ({ setIsOpen, vessels, onStop }: IStopVesselsMod
       <div className="text-center">
         <Paragraph>Are you sure you want to stop vessels</Paragraph>
         <ul className="list-disc max-w-[206px] mx-auto text-left">
-          {vessels.map((vessel, index) => (
+          {vessels.filter(v => !inactiveSessionStatuses.includes(v.state)).map((vessel, index) => (
             <li className="text-xs text-[#D9D9D9] mb-2" key={index}>
-              {vessel}
+              {vessel.id}
             </li>
           ))}
         </ul>

@@ -41,7 +41,7 @@ export const Notifications = ({ notifications }: INotifications) => {
 
   return (
     <div
-      className="border-0 absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] max-h-0 overflow-hidden transition-all group-hover:border group-hover:max-h-[650px]"
+      className="border-0 absolute z-20 w-[400px] max-w-[90vw] right-0 bottom-0 translate-y-full bg-[#3C3C3C] border-[#686868] max-h-0 overflow-hidden transition-all duration-300 group-hover:border group-hover:max-h-[650px]"
     >
       <div className="flex items-center py-4 px-3 md:px-5 border-b border-[#686868]">
         <H5 classname="!mb-0 !text-lg">Notifications</H5>
@@ -82,7 +82,7 @@ function Notification({ notification, onDismiss }: { notification: INotification
   }
 
   return (
-    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all ${style}`}>
+    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all duration-300 ${style}`}>
       {/* <div className="w-8">
                     <img src={notification.icon} alt="" />
                   </div> */}
