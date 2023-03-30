@@ -5,7 +5,7 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cell, CelHeader, Row, CopyButton, StopButton } from "../index";
+import { Cell, Row, CopyButton, StopButton } from "../index";
 import { Checkbox } from "@/components/common";
 import { StopVesselsModal } from "@/components/common/Modals";
 
@@ -13,6 +13,7 @@ import { StopVesselsModal } from "@/components/common/Modals";
 import { ISession } from "@/graphql/types/session";
 import listStyles from "@/components/common/List/List.module.scss";
 import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
+import styles from "./Table.module.scss";
 
 interface IColumn<T> {
   label: string;
@@ -35,15 +36,17 @@ export interface SelectedVessel {
   state: string
 }
 
-export const Table = ({
-  items,
-  columns,
-  selected,
-  selectAll,
-  setSelectAll,
-  setCurrentSelected,
-  onSessionStop,
-}: ITable) => {
+export const Table = (
+  {
+    items,
+    columns,
+    selected,
+    selectAll,
+    setSelectAll,
+    setCurrentSelected,
+    onSessionStop,
+    className
+  }: ITable) => {
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
 
@@ -86,8 +89,8 @@ export const Table = ({
           }}
         />
       )}
-      <table>
-        <Row>
+      <table className={className}>
+        <Row classname={styles.row}>
           <Cell classname="w-12">
             <img className="opacity-50 w-4 h-4" src="/dots.svg" alt="" />
           </Cell>
@@ -99,7 +102,7 @@ export const Table = ({
           ))}
         </Row>
         {items.map((row, index) => (
-          <Row key={index} classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) })}>
+          <Row key={index} classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) }, styles.row)}>
             <Cell classname="!w-12 cursor-pointer relative overflow-visible group">
               <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
               <ul
@@ -109,7 +112,9 @@ export const Table = ({
                   listStyles.small
                 )}
               >
-                <StopButton onClick={() => handleOpenStopVesselModal(row.id)} disabled={inactiveSessionStatuses.includes(row.state)} />
+                <StopButton
+                  onClick={() => handleOpenStopVesselModal(row.id)}
+                  disabled={inactiveSessionStatuses.includes(row.state)} />
                 <li
                   className={cn(
                     "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",
@@ -140,7 +145,7 @@ export const Table = ({
             )}
           </Row>
         ))}
-        </table>
+      </table>
     </>
   );
 };

@@ -34,7 +34,7 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLoading && <LoadingSpinner />}
-      {user && <main className='py-10 grow md:px-4'>
+      {user && <main className='py-10 grow md:px-4 w-full'>
         <Header label={label} />
         <section className='border border-[#535353] bg-[#282828] rounded'>
           {children}

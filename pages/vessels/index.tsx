@@ -100,7 +100,7 @@ export default function Vessels() {
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(1);
 
-  const [sortBy, setSortBy] = useState("modified_at");
+  const [sortBy, ] = useState("modified_at");
 
   const [columnSettings, setColumnSettings] = useState(
     sessionsTableColumns.map((c) => ({ label: c.label, key: c.key, checked: true }))
@@ -282,21 +282,24 @@ export default function Vessels() {
           <Filters filters={filters} setFilters={setFilters} />
         </div>
       )}
-      <Table
-        items={paginatedSessions}
-        columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
-        selected={currentSelected}
-        selectAll={selectAll}
-        setSelectAll={setSelectAll}
-        setCurrentSelected={setCurrentSelected}
-        onSessionStop={(id: string) =>
-          stopSessionMutation({
-            variables: {
-              id,
-            },
-          })
-        }
-      />
+      <div className='overflow-auto'>
+        <Table
+          className='w-full'
+          items={paginatedSessions}
+          columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
+          selected={currentSelected}
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
+          setCurrentSelected={setCurrentSelected}
+          onSessionStop={(id: string) =>
+            stopSessionMutation({
+              variables: {
+                id,
+              },
+            })
+          }
+        />
+      </div>
     </Layout>
   );
 }

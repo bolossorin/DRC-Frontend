@@ -1,0 +1,21 @@
+.row {
+  :global {
+    .cell {
+      &:nth-child(3) {
+        @apply min-w-[200px];
+      }
+      &:nth-child(4) {
+        @apply min-w-[200px];
+      }
+      &:nth-child(8) {
+        @apply min-w-[150px];
+      }
+      &:nth-child(9) {
+        @apply min-w-[80px];
+      }
+      &:nth-child(10) {
+        @apply min-w-[110px];
+      }
+    }
+  }
+}
