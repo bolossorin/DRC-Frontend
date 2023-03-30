@@ -197,6 +197,12 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <div className="flex items-center gap-4 mb-6">
               <Paragraph classname="!mb-0">Queue</Paragraph>
               <Select
+                styles={{
+                  input: (baseStyles) => ({
+                    ...baseStyles,
+                    color: 'white',
+                  }),
+                }}
                 className="basic-single light w-full"
                 classNamePrefix="select"
                 components={{ DropdownIndicator } as any}
@@ -222,7 +228,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                     color: 'white',
                   }),
                 }}
-                className="basic-single light w-full text-white"
+                className="basic-single light w-full"
                 classNamePrefix="select"
                 components={{ DropdownIndicator } as any}
                 placeholder="Select"

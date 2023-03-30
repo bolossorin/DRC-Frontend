@@ -4,7 +4,7 @@ import React from "react";
 import cn from "classnames";
 
 // components
-import { Cel, CelHeader, Row } from "../../vessels";
+import { Cell, CelHeader, Row } from "../../vessels";
 import { H6, Paragraph } from "@/components/common";
 
 // assets
@@ -51,14 +51,14 @@ export const PerUserTable = () => {
       </Row>
       {rows.map((row, index) => (
         <Row key={index} classname={styles.row}>
-          <Cel>
+          <Cell>
             <div className='flex items-center'>
               <img className='w-7 mr-2' src={row.user.image} alt='' />
               <Paragraph classname='mb-0 overflow-hidden text-ellipsis'>{row.user.name}</Paragraph>
             </div>
-          </Cel>
-          <Cel>{row.used}</Cel>
-          <Cel classname='relative'>
+          </Cell>
+          <Cell>{row.used}</Cell>
+          <Cell classname='relative'>
             {row.queue_usage.slice(0, 1).map((queue, index) =>
               <div key={index} className={styles.queueUsage}>
                 {queue.count}
@@ -83,7 +83,7 @@ export const PerUserTable = () => {
                 </div>
               </div>
             )}
-          </Cel>
+          </Cell>
         </Row>
       ))}
     </>
