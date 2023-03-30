@@ -1,20 +1,29 @@
 .row {
   :global {
     .cell {
-      &:nth-child(3) {
+      &.dockerimage {
+        @apply min-w-[110px];
+      }
+      &.vesselid {
+        @apply min-w-[90px];
+      }
+      &.name {
         @apply min-w-[200px];
       }
-      &:nth-child(4) {
+      &.state {
         @apply min-w-[200px];
       }
-      &:nth-child(8) {
+      &.gpu’s {
         @apply min-w-[150px];
       }
-      &:nth-child(9) {
+      &.gpuutil {
         @apply min-w-[80px];
       }
-      &:nth-child(10) {
+      &.gpumemory {
         @apply min-w-[110px];
+      }
+      &.createdat {
+        @apply min-w-[90px];
       }
     }
   }

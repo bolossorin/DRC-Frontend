@@ -131,7 +131,7 @@ export default function Vessels() {
     fetchPolicy: "network-only",
   });
 
-  const [paginatedSessions, setPaginatedSessions] = useState<ISession[]>([]);
+  const [paginatedSessions, setPaginatedSessions] = useState<ISession[] | null>(null);
 
   useEffect(() => {
     const sessions = data?.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
