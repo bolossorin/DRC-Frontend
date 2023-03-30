@@ -29,6 +29,7 @@ interface ITable {
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
   onSessionStop: (id: string) => void;
+  className: string;
 }
 
 export interface SelectedVessel {
