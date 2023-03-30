@@ -7,15 +7,12 @@ import { useEffect, useState } from "react";
 import "@/styles/globals.scss";
 import { LoadingSpinner, SideBar } from "@/components/common";
 import { RegionContextProvider } from "@/context/region";
-import { useWindowSize } from "@/utility/useWindowSize";
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const { user } = pageProps;
 
   const [loading, setLoading] = useState(true);
   const [region, setRegion] = useState("");
-
-  const { width } = useWindowSize();
 
   useEffect(() => {
     const initialize = async () => {
@@ -43,8 +40,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <UserProvider user={user}>
       <ApolloProvider client={client}>
         <RegionContextProvider initRegion={region}>
-          <div className="flex">
-            {width > 1024 && <SideBar />}
+          <div className="flex w-full">
+            <SideBar />
             <Component {...pageProps} />
           </div>
         </RegionContextProvider>

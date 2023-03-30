@@ -1,5 +1,3 @@
-import React from "react";
-
 // components
 import { Paragraph } from "../Paragraph/Paragraph";
 import { H2 } from "../H2/H2";

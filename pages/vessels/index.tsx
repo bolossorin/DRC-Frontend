@@ -12,7 +12,7 @@ import { SelectedVessel } from "@/components/pages/vessels/Table/Table";
 import { Layout, State, VesselTitle } from "@/components/common";
 import {
   Actions,
-  Cel,
+  Cell,
   CreateVessels,
   Filters,
   Pagination,
@@ -34,31 +34,31 @@ export const sessionsTableColumns = [
     label: "Vessel ID",
     key: "id",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.id}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "Name",
     key: "name",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.name}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "State",
     key: "state",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <State state={item.state} />
-      </Cel>
+      </Cell>
     ),
   },
   { label: "Queue", key: "queue" },
@@ -67,26 +67,26 @@ export const sessionsTableColumns = [
     label: "GPU’s",
     key: "gpu_names",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <ul className="list-disc">
           {item.gpu_names.map((gpu, index) => (
             <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
           ))}
         </ul>
-      </Cel>
+      </Cell>
     )
-   },
+  },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
   {
     label: "Created At",
     key: "created_at",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         {new Date(item.created_at).toLocaleString("en-US")}
-      </Cel>
+      </Cell>
     )
-   },
+  },
 ];
 
 export default function Vessels() {

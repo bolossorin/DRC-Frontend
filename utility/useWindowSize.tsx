@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 
-export function useWindowSize() {
+interface Rect {
+  width: number
+  height: number
+}
+
+export function useWindowSize(): Rect {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-  const [windowSize, setWindowSize] = useState<{ width: any, height: any }>({
-    width: undefined,
-    height: undefined,
+  const [windowSize, setWindowSize] = useState<Rect>({
+    width: 0,
+    height: 0,
   });
   useEffect(() => {
     // Handler to call on window resize

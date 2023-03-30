@@ -9,9 +9,6 @@ import Router from "next/router";
 import { Header, LoadingSpinner } from "@/components/common";
 import { routes } from "@/utility/routes";
 
-// assets
-import styles from './Layout.module.scss'
-
 interface ILayout {
   title: string
   description: string
@@ -20,7 +17,7 @@ interface ILayout {
 }
 
 export const Layout = ({ title, description, children, label }: ILayout) => {
-  const { isLoading, user }:any = useUser();
+  const { isLoading, user } = useUser();
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -37,18 +34,13 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLoading && <LoadingSpinner />}
-      {user && <div className={`${styles.layout} grow`}>
-        <main>
-          <div className='container'>
-            <div className='flex flex-col min-h-screen py-10 md:px-4'>
-              <Header label={label} />
-              <section className='border border-[#535353] bg-[#282828] flex-1 flex flex-col rounded'>
-                {children}
-              </section>
-            </div>
-          </div>
-        </main>
-      </div>}
+      {user && <main className='py-10 grow md:px-4'>
+        <Header label={label} />
+        <section className='border border-[#535353] bg-[#282828] rounded'>
+          {children}
+        </section>
+      </main>
+      }
     </>
   )
 }
