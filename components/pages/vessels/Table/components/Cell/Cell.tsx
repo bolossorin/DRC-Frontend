@@ -6,6 +6,7 @@ import cn from "classnames";
 interface ICell {
   children: any
   classname?: string
+  colspan?: number
 }
 
 export const Cell: FC<ICell> = ({ children, classname, colspan }) => {
