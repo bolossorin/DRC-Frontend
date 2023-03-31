@@ -17,7 +17,7 @@ export const VesselAddedModal = ({ setIsOpen, countVessels, setCountVessels }: I
         <Button
           onClick={() => {
             setIsOpen(false);
-            setCountVessels(0);
+            setCountVessels(1);
           }}
           size="small"
           classname="mx-auto mt-8"

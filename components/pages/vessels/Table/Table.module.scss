@@ -1,0 +1,47 @@
+.row {
+  &.animation {
+    animation: showVessel 0.5s linear forwards;
+  }
+  &:hover {
+    @apply relative z-20;
+  }
+  :global {
+    .cell {
+      &.dockerimage {
+        @apply min-w-[110px];
+      }
+      &.vesselid {
+        @apply min-w-[90px];
+      }
+      &.name {
+        @apply min-w-[200px];
+      }
+      &.state {
+        @apply min-w-[200px];
+      }
+      &.gpu’s {
+        @apply min-w-[150px];
+      }
+      &.gpuutil {
+        @apply min-w-[80px];
+      }
+      &.gpumemory {
+        @apply min-w-[110px];
+      }
+      &.createdat {
+        @apply min-w-[90px];
+      }
+    }
+  }
+}
+
+@keyframes showVessel {
+  0% {
+    opacity:   0;
+    transform: translate(0, 25%);
+  }
+  100% {
+    opacity:   1;
+    transform: translate(0, 0%);
+  }
+}

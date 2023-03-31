@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // libs
 import cn from "classnames";
@@ -60,7 +60,7 @@ export const Notifications = ({ notifications }: INotifications) => {
         </div>
       </div>
       <div className="overflow-auto">
-        <div className="max-h-[540px]">
+        <div className="max-h-[540px] overflow-x-hidden">
           {notifications.length > 0 ? (
             notifications.map((data) => <Notification notification={data} key={data.id} onDismiss={() => dismissNotification(data.id)} />)
           ) : (
@@ -74,15 +74,15 @@ export const Notifications = ({ notifications }: INotifications) => {
 
 function Notification({ notification, onDismiss }: { notification: INotification, onDismiss: (arg0: string) => void }) {
   // Used for fade animation
-  const [style, setStyle] = useState("translate-x-0 opacity-100")
+  const [style, setStyle] = useState(`translate-x-0 opacity-100`)
 
   const dismiss = () => {
-    setStyle("translate-x-full opacity-0")
+    setStyle(`translate-x-full opacity-0 ${styles.notification}`)
     setTimeout(() => onDismiss(notification.id), 150)
   }
 
   return (
-    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all duration-300 ${style}`}>
+    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all duration-500 ${style}`}>
       {/* <div className="w-8">
                     <img src={notification.icon} alt="" />
                   </div> */}
