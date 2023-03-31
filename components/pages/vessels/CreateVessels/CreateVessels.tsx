@@ -235,6 +235,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   onInputChange={(v) => setQueueQuery(v)}
                   isClearable={queueQuery.length > 0 || queue !== undefined}
                   onMenuOpen={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
+                  // eslint-disable-next-line
                   onClear={() => setQueueQuery('')}
                 />
               </div>
@@ -272,6 +273,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 isLoading={availableImages === undefined}
                 isClearable={imageQuery.length > 0 || dockerImage !== undefined}
                 onMenuOpen={() => setImageQuery(dockerImage ? dockerImage : '')}
+                // eslint-disable-next-line
                 onClear={() => setImageQuery('')}
               />
             </div>
