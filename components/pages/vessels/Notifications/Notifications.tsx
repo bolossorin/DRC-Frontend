@@ -82,7 +82,7 @@ function Notification({ notification, onDismiss }: { notification: INotification
   }
 
   return (
-    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all duration-300 ${style}`}>
+    <div className={`py-5 pl-2 md:pl-7 pr-3 md:pr-10 border-b border-[#686868] flex items-center transition-all duration-500 ${style}`}>
       {/* <div className="w-8">
                     <img src={notification.icon} alt="" />
                   </div> */}
