@@ -105,7 +105,8 @@ export const Table = (
           ))}
         </Row>
         {items ? items.map((row, index) => (
-            <Row key={index} classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) }, styles.row)}>
+            <Row key={index}
+                 classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) }, styles.row, { [styles.animation]: (row.state === 'starting' || row.state === 'requested') })}>
               <Cell classname="!w-12 cursor-pointer relative overflow-visible group">
                 <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
                 <ul

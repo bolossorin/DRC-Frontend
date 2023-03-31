@@ -1,4 +1,7 @@
 .row {
+  &.animation {
+    animation: showVessel 0.5s linear forwards;
+  }
   :global {
     .cell {
       &.dockerimage {
@@ -26,5 +29,16 @@
         @apply min-w-[90px];
       }
     }
+  }
+}
+
+@keyframes showVessel {
+  0% {
+    opacity:   0;
+    transform: translate(0, 25%);
+  }
+  100% {
+    opacity:   1;
+    transform: translate(0, 0%);
   }
 }
