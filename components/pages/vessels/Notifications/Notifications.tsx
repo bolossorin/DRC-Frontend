@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // libs
 import cn from "classnames";
@@ -74,10 +74,10 @@ export const Notifications = ({ notifications }: INotifications) => {
 
 function Notification({ notification, onDismiss }: { notification: INotification, onDismiss: (arg0: string) => void }) {
   // Used for fade animation
-  const [style, setStyle] = useState("translate-x-0 opacity-100")
+  const [style, setStyle] = useState(`translate-x-0 opacity-100`)
 
   const dismiss = () => {
-    setStyle("translate-x-full opacity-0")
+    setStyle(`translate-x-full opacity-0 ${styles.notification}`)
     setTimeout(() => onDismiss(notification.id), 150)
   }
 

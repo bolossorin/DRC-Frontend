@@ -29,6 +29,9 @@ import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 import { routes } from "@/utility/routes";
 import Link from "next/link";
 
+// assets
+import styles from '../../components/pages/vessels/index.module.scss';
+
 export const sessionsTableColumns = [
   {
     label: "Vessel ID",
@@ -100,7 +103,7 @@ export default function Vessels() {
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(1);
 
-  const [sortBy, ] = useState("modified_at");
+  const [sortBy,] = useState("modified_at");
 
   const [columnSettings, setColumnSettings] = useState(
     sessionsTableColumns.map((c) => ({ label: c.label, key: c.key, checked: true }))
@@ -282,7 +285,7 @@ export default function Vessels() {
           <Filters filters={filters} setFilters={setFilters} />
         </div>
       )}
-      <div className='overflow-auto'>
+      <div className={styles.table}>
         <Table
           className='w-full'
           items={paginatedSessions}
