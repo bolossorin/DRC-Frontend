@@ -236,7 +236,10 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   isClearable={queueQuery.length > 0 || queue !== undefined}
                   onMenuOpen={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
                   // @ts-ignore
-                  onClear={() => setQueueQuery('')}
+                  onClear={() => {
+                    setQueue(null);
+                    setQueueQuery('');
+                  }}
                 />
               </div>
             )}
@@ -274,7 +277,10 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 isClearable={imageQuery.length > 0 || dockerImage !== undefined}
                 onMenuOpen={() => setImageQuery(dockerImage ? dockerImage : '')}
                 // @ts-ignore
-                onClear={() => setImageQuery('')}
+                onClear={() => {
+                  setDockerImage('');
+                  setImageQuery('');
+                }}
               />
             </div>
           </div>
