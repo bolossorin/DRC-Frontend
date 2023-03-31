@@ -8,6 +8,10 @@ import Router from "next/router";
 // components
 import { Header, LoadingSpinner } from "@/components/common";
 import { routes } from "@/utility/routes";
+import cn from "classnames";
+
+// assets
+import styles from './Layout.module.scss';
 
 interface ILayout {
   title: string
@@ -34,7 +38,7 @@ export const Layout = ({ title, description, children, label }: ILayout) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLoading && <LoadingSpinner />}
-      {user && <main className='py-10 grow md:px-4 w-full'>
+      {user && <main className={cn('py-10 grow md:px-4', styles.main)}>
         <Header label={label} />
         <section className='border border-[#535353] bg-[#282828] rounded'>
           {children}
