@@ -1,63 +1,67 @@
 import React, { useEffect, useState } from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { getSessions } from "../../graphql/sessions/getSessions";
-import { stopSession } from "../../graphql/sessions/stopSession";
+import { getSessions } from "@/graphql/sessions/getSessions";
+import { stopSession } from "@/graphql/sessions/stopSession";
+import { createSession } from "@/graphql/sessions/createSession";
+import { CreateSessionArgs, ISession } from "@/graphql/types/session";
+import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
+import { SelectedVessel } from "@/components/pages/vessels/Table/Table";
 
 // components
-import { Layout, State, VesselTitle } from "../../components/common";
+import { Layout, State, VesselTitle } from "@/components/common";
 import {
   Actions,
-  Cel,
+  Cell,
   CreateVessels,
   Filters,
   Pagination,
   /*Search,*/
   Table,
   TableSetting,
-} from "../../components/pages/vessels";
-import { IFilter } from "../../utility/types";
-import { StopVesselsModal, VesselAddedModal } from "../../components/common/Modals";
+} from "@/components/pages/vessels";
+import { IFilter } from "@/utility/types";
+import { StopVesselsModal, VesselAddedModal } from "@/components/common/Modals";
+import { VesselAddError } from "@/components/common/Modals/VesselAddError.tsx/VesselAddError";
 
-import { createSession } from "../../graphql/sessions/createSession";
-import { CreateSessionArgs, ISession } from "../../graphql/types/session";
-import { useRegion } from "../../context/region";
-import { VesselAddError } from "../../components/common/Modals/VesselAddError.tsx/VesselAddError";
-import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
-import { inactiveSessionStatuses } from "../../utility/inactiveSessionStatuses";
-import { routes } from "../../utility/routes";
+import { useRegion } from "@/context/region";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
+import { routes } from "@/utility/routes";
 import Link from "next/link";
+
+// assets
+import styles from '../../components/pages/vessels/index.module.scss';
 
 export const sessionsTableColumns = [
   {
     label: "Vessel ID",
     key: "id",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.id}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "Name",
     key: "name",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
           {item.name}
         </Link>
-      </Cel>
+      </Cell>
     ),
   },
   {
     label: "State",
     key: "state",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <State state={item.state} />
-      </Cel>
+      </Cell>
     ),
   },
   { label: "Queue", key: "queue" },
@@ -66,31 +70,31 @@ export const sessionsTableColumns = [
     label: "GPU’s",
     key: "gpu_names",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         <ul className="list-disc">
           {item.gpu_names.map((gpu, index) => (
             <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
           ))}
         </ul>
-      </Cel>
+      </Cell>
     )
-   },
+  },
   { label: "GPU Util", key: "avg_gpu_util" },
   { label: "GPU Memory", key: "avg_gpu_memory_util" },
   {
     label: "Created At",
     key: "created_at",
     renderCell: (item: ISession, key: string) => (
-      <Cel key={key}>
+      <Cell key={key}>
         {new Date(item.created_at).toLocaleString("en-US")}
-      </Cel>
+      </Cell>
     )
-   },
+  },
 ];
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
-  const [currentSelected, setCurrentSelected] = useState<string[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<SelectedVessel[]>([]);
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [isStopModal, setIsStopModal] = useState(false);
   const [isAddedModal, setIsAddedModal] = useState(false);
@@ -99,7 +103,7 @@ export default function Vessels() {
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(1);
 
-  const [sortBy, setSortBy] = useState("modified_at");
+  const [sortBy,] = useState("modified_at");
 
   const [columnSettings, setColumnSettings] = useState(
     sessionsTableColumns.map((c) => ({ label: c.label, key: c.key, checked: true }))
@@ -130,7 +134,7 @@ export default function Vessels() {
     fetchPolicy: "network-only",
   });
 
-  const [paginatedSessions, setPaginatedSessions] = useState<ISession[]>([]);
+  const [paginatedSessions, setPaginatedSessions] = useState<ISession[] | null>(null);
 
   useEffect(() => {
     const sessions = data?.my_sessions.slice(pagination.offset, pagination.offset + pagination.limit);
@@ -167,11 +171,11 @@ export default function Vessels() {
 
   const stopSessions = async () => {
     const requests: Promise<any>[] = [];
-    currentSelected.forEach((id) =>
+    currentSelected.forEach((session) =>
       requests.push(
         stopSessionMutation({
           variables: {
-            id,
+            id: session.id,
           },
         })
       )
@@ -179,6 +183,7 @@ export default function Vessels() {
     await Promise.all(requests);
     refetch();
     setIsStopModal(false);
+    setCurrentSelected([])
   };
 
   const [writeSession] = useMutation(createSession, {
@@ -215,7 +220,7 @@ export default function Vessels() {
 
   const getVsCodeLink = () => {
     if (currentSelected.length !== 1) return;
-    const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0]);
+    const session = data?.my_sessions?.find((s: ISession) => s.id === currentSelected[0].id);
     if (session) {
       if (inactiveSessionStatuses.includes(session.state)) {
         return;
@@ -280,21 +285,24 @@ export default function Vessels() {
           <Filters filters={filters} setFilters={setFilters} />
         </div>
       )}
-      <Table
-        items={paginatedSessions}
-        columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
-        selected={currentSelected}
-        selectAll={selectAll}
-        setSelectAll={setSelectAll}
-        setCurrentSelected={setCurrentSelected}
-        onSessionStop={(id: string) =>
-          stopSessionMutation({
-            variables: {
-              id,
-            },
-          })
-        }
-      />
+      <div className={styles.table}>
+        <Table
+          className='w-full'
+          items={paginatedSessions}
+          columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
+          selected={currentSelected}
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
+          setCurrentSelected={setCurrentSelected}
+          onSessionStop={(id: string) =>
+            stopSessionMutation({
+              variables: {
+                id,
+              },
+            })
+          }
+        />
+      </div>
     </Layout>
   );
 }

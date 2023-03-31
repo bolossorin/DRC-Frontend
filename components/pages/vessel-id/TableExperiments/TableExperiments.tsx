@@ -9,9 +9,9 @@ import { Chart as ChartJS, ArcElement } from 'chart.js'
 ChartJS.register(ArcElement);
 
 // components
-import { Cel, CelHeader, Row } from "../../vessels";
-import { State } from "../../../common";
-import { routes } from "../../../../utility/routes";
+import { Cell, CelHeader, Row } from "../../vessels";
+import { State } from "@/components/common";
+import { routes } from "@/utility/routes";
 
 // assets
 import styles from './TableExperiments.module.scss'
@@ -62,17 +62,17 @@ export const TableExperiments = () => {
         </Row>
         {rows.map((row, index) => (
           <Row key={index}>
-            <Cel>
+            <Cell>
               <Link href={`${routes.vessels}/${row.name}`} legacyBehavior>
                 <a className="underline hover:text-[#F6F6F6]">{row.name}</a>
               </Link>
-            </Cel>
-            <Cel>{row.project}</Cel>
-            <Cel>
+            </Cell>
+            <Cell>{row.project}</Cell>
+            <Cell>
               <State state={row.state} />
-            </Cel>
-            <Cel>{row.created}</Cel>
-            <Cel>
+            </Cell>
+            <Cell>{row.created}</Cell>
+            <Cell>
               <div className='flex items-center'>
                 <div className='relative w-7 mr-2'>
                 <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[6px]'>
@@ -95,7 +95,7 @@ export const TableExperiments = () => {
                 </div>
                 {new Intl.NumberFormat('en-US').format(row.iteration1)} / {new Intl.NumberFormat('en-US').format(row.iteration2)}
               </div>
-            </Cel>
+            </Cell>
           </Row>
         ))}
       </div>

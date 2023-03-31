@@ -1,13 +1,9 @@
-.layout {
-  main {
-    @apply ml-80;
-  }
+.main {
+  width: calc(100% - 20rem);
 }
 
 @media screen and (max-width: 1024px) {
-  .layout {
-    main {
-      @apply ml-0;
-    }
+  .main {
+    width: 100%;
   }
 }

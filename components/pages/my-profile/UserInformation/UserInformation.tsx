@@ -4,7 +4,7 @@ import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 // components
-import { H4 } from "../../../common";
+import { H4 } from "@/components/common";
 
 // assets
 import styles from './UserInformation.module.scss';

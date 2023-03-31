@@ -5,16 +5,15 @@ import cn from "classnames";
 import Link from "next/link";
 
 // components
-import { Cel, CelHeader, Row, CopyButton, StopButton } from "../index";
-import { Checkbox, List, State } from "../../../common";
-import { routes } from "../../../../utility/routes";
+import { Cell, Row, CopyButton, StopButton } from "../index";
+import { Checkbox, H4 } from "@/components/common";
+import { StopVesselsModal } from "@/components/common/Modals";
 
 // assets
+import { ISession } from "@/graphql/types/session";
+import listStyles from "@/components/common/List/List.module.scss";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 import styles from "./Table.module.scss";
-import { ISession } from "../../../../graphql/types/session";
-import listStyles from "../../../../components/common/List/List.module.scss";
-import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
-import { StopVesselsModal } from "../../../common/Modals";
 
 interface IColumn<T> {
   label: string;
@@ -23,34 +22,47 @@ interface IColumn<T> {
 }
 
 interface ITable {
-  items: ISession[];
+  items: ISession[] | null;
   columns: IColumn<ISession>[];
-  selected: string[];
+  selected: SelectedVessel[];
+  setCurrentSelected: (value: SelectedVessel[] | ((v: SelectedVessel[]) => SelectedVessel[])) => void;
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
-  setCurrentSelected: (value: string[] | ((value: string[]) => string[])) => void;
   onSessionStop: (id: string) => void;
+  className: string;
 }
 
-export const Table = ({
-  items,
-  columns,
-  selected,
-  selectAll,
-  setSelectAll,
-  setCurrentSelected,
-  onSessionStop,
-}: ITable) => {
+export interface SelectedVessel {
+  id: string
+  state: string
+}
+
+export const Table = (
+  {
+    items,
+    columns,
+    selected,
+    selectAll,
+    setSelectAll,
+    setCurrentSelected,
+    onSessionStop,
+    className
+  }: ITable) => {
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
 
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
-  const handleSelect = (id: string) => () => {
-    if (isSelected(id)) {
-      return setCurrentSelected((prev) => prev.filter((x) => x !== id));
+  const isSelected = (id: string) => {
+    for (const s of selected) {
+      if (s.id === id) return true
     }
-    setCurrentSelected((prev) => [...prev, id]);
+    return false
+  }
+
+  const handleSelect = (vessel: SelectedVessel) => () => {
+    if (isSelected(vessel.id)) {
+      return setCurrentSelected((prev: SelectedVessel[]) => prev.filter((x) => x.id !== vessel.id));
+    }
+    setCurrentSelected((prev: SelectedVessel[]) => [...prev, vessel]);
   };
 
   const handleOpenStopVesselModal = (id: string) => {
@@ -60,8 +72,7 @@ export const Table = ({
 
   useEffect(() => {
     if (selectAll) {
-      const newSelecteds = items.map((x) => x.id);
-      setCurrentSelected(newSelecteds);
+      if (items) setCurrentSelected(items.map(x => ({ id: x.id, state: x.state })));
       return;
     }
     setCurrentSelected([]);
@@ -72,29 +83,31 @@ export const Table = ({
       {isStopModal && (
         <StopVesselsModal
           setIsOpen={setIsStopModal}
-          vessels={[vesselId]}
+          vessels={selected}
           onStop={() => {
             onSessionStop(vesselId);
             setIsStopModal(false);
           }}
         />
       )}
-      <div className={cn("overflow-y-auto flex-1", styles.table)}>
-        <div className={`min-w-[${210 * columns.length}px]`}>
-          <Row>
-            <Cel classname="w-12">
-              <img className="opacity-50 w-4 h-4" src="/dots.svg" alt="" />
-            </Cel>
-            <Cel classname="flex">
-              <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
-            </Cel>
-            {columns.map((header) => (
-              <CelHeader key={header.key}>{header.label}</CelHeader>
-            ))}
-          </Row>
-          {items.map((row, index) => (
-            <Row key={index} classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) })}>
-              <Cel classname="w-12 cursor-pointer relative overflow-visible group">
+      <table className={className}>
+        <Row classname={styles.row}>
+          <Cell classname="w-12">
+            <img className="opacity-50 w-4 h-4" src="/dots.svg" alt="" />
+          </Cell>
+          <Cell classname="w-[40px] relative top-0.5">
+            <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
+          </Cell>
+          {columns.map((header) => (
+            <Cell classname={header.label.toLowerCase().replaceAll(' ', '')} key={header.key}>
+              {header.label}
+            </Cell>
+          ))}
+        </Row>
+        {items ? items.map((row, index) => (
+            <Row key={index}
+                 classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) }, styles.row, { [styles.animation]: (row.state === 'starting' || row.state === 'requested') })}>
+              <Cell classname="!w-12 cursor-pointer relative overflow-visible group">
                 <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
                 <ul
                   className={cn(
@@ -103,7 +116,9 @@ export const Table = ({
                     listStyles.small
                   )}
                 >
-                  <StopButton onClick={() => handleOpenStopVesselModal(row.id)} disabled={inactiveSessionStatuses.includes(row.state)} />
+                  <StopButton
+                    onClick={() => handleOpenStopVesselModal(row.id)}
+                    disabled={inactiveSessionStatuses.includes(row.state)} />
                   <li
                     className={cn(
                       "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",
@@ -125,17 +140,26 @@ export const Table = ({
                   <CopyButton content={row.ssh_config} label="Copy SSH Config" />
                   <CopyButton content={row.ssh_command} label="Copy SSH Command" />
                 </ul>
-              </Cel>
-              <Cel classname="flex">
-                <Checkbox onChange={handleSelect(row.id)} checked={isSelected(row.id)} />
-              </Cel>
+              </Cell>
+              <Cell classname="w-[40px] relative top-0.5">
+                <Checkbox onChange={handleSelect({ id: row.id, state: row.state })} checked={isSelected(row.id)} />
+              </Cell>
               {columns.map(({ renderCell, key }) =>
-                renderCell ? renderCell(row, key) : <Cel key={key}>{row[key as keyof ISession]}</Cel>
+                renderCell ? renderCell(row, key)
+                  : <Cell
+                    classname={row.label.toLowerCase().replaceAll(' ', '')}
+                    key={key}>
+                    {row[key as keyof ISession]}
+                  </Cell>
               )}
             </Row>
-          ))}
-        </div>
-      </div>
+          ))
+          : <Row>
+            <Cell colspan={columns.length + 2}>
+              <H4 classname="w-full text-center py-4">Loading...</H4>
+            </Cell>
+          </Row>}
+      </table>
     </>
   );
 };

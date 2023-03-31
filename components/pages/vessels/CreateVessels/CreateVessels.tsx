@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 
 // libs
 import cn from "classnames";
-import Select from "react-select";
+import Select, { components } from "react-select";
 
 //  components
 import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from "../../../common";
 
-import { CreateSessionArgs } from "../../../../graphql/types/session";
-import { findImages } from "../../../../graphql/images/getImagesByName";
 import { useQuery } from "@apollo/client";
-import { IQueue } from "../../../../graphql/types/queues";
-import { getQueues } from "../../../../graphql/queues/getQueues";
+import { CreateSessionArgs } from "@/graphql/types/session";
+import { findImages } from "@/graphql/images/getImagesByName";
+import { IQueue } from "@/graphql/types/queues";
+import { getQueues } from "@/graphql/queues/getQueues";
 
 interface ICreateVessels {
   setIsOpen: (value: boolean) => void;
@@ -20,6 +20,21 @@ interface ICreateVessels {
   countVessels: number;
   region: string;
 }
+
+const ClearIndicator = (props: any) => {
+  const clearValue = () => {
+    props.clearValue();
+    props.selectProps.onClear && props.selectProps.onClear();
+  };
+
+  const innerProps = {
+    ...props.innerProps,
+    onMouseDown: clearValue,
+    onTouchEnd: clearValue
+  };
+
+  return <components.ClearIndicator {...props} innerProps={innerProps} />;
+};
 
 function useAvailableImages(query: string) {
   const { data } = useQuery<{ available_images: string[] }>(findImages, {
@@ -44,15 +59,16 @@ function useQueues(computeType: "gpu" | "cpu", region: string) {
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels, region }: ICreateVessels) => {
   const [countGPUs, setCountGPUs] = useState(1);
-  
+
   // Docker images
+  const [dockerImage, setDockerImage] = useState<string | null>(null);
   const [imageQuery, setImageQuery] = useState("");
   const availableImages = useAvailableImages(imageQuery);
-  const [dockerImage, setDockerImage] = useState<string | null>(null);
 
   // Queues
+  const [queue, setQueue] = useState<IQueue | null>(null);
   const queues = useQueues(countGPUs > 0 ? "gpu" : "cpu", region);
-  const [queue, setQueue] = useState<IQueue|null>(null);
+  const [queueQuery, setQueueQuery] = useState("");
 
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
   const [vessels, setVessels] = useState<CreateSessionArgs[]>([{
@@ -117,7 +133,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
 
   // Reset the queue value if the search result is empty.
   useEffect(() => {
-    if (queues !== undefined && queues.length === 0) 
+    if (queues !== undefined && queues.length === 0)
       setQueue(null)
   }, [queues])
 
@@ -157,7 +173,8 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
       <div onClick={handleClose} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />
-      <div className={`w-full h-full relative z-20 max-w-[478px] bg-[#282828] overflow-auto ml-auto ${marginRight} transition-all`}>
+      <div
+        className={`w-full h-full relative z-20 max-w-[478px] bg-[#282828] overflow-auto ml-auto ${marginRight} transition-all`}>
         <div className="py-7 px-5 md:px-10 flex items-center border-b border-[#686868]">
           <img className="w-8 mr-3 md:mr-7" src="/cube-green.svg" alt="" />
           <H4 classname="!mb-0">Create Vessels</H4>
@@ -192,24 +209,41 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
               <Paragraph classname="!mb-0">Number of GPUs</Paragraph>
               <PlusMinusInput value={countGPUs} setValue={setCountGPUs} minValue={0} />
             </div>
-            
-            { queues === undefined || queues.length > 0 && (
-            <div className="flex items-center gap-4 mb-6">
-              <Paragraph classname="!mb-0">Queue</Paragraph>
-              <Select
-                className="basic-single light w-full"
-                classNamePrefix="select"
-                components={{ DropdownIndicator } as any}
-                placeholder="Select"
-                options={getQueues()}
-                value={queue ? {label: `${queue.queue} (${queue.free} free)`, value: queue.queue, free: queue.free} : undefined}
-                onChange={(option) => setQueue(option ? {queue: option.value, free: option.free} : null)}
-                isLoading={queues === undefined}
-              />
-            </div>
+            {queues === undefined || queues.length > 0 && (
+              <div className="flex items-center gap-4 mb-6">
+                <Paragraph classname="!mb-0">Queue</Paragraph>
+                <Select
+                  styles={{
+                    input: (baseStyles) => ({
+                      ...baseStyles,
+                      color: 'white',
+                    }),
+                  }}
+                  className="basic-single light w-full"
+                  classNamePrefix="select"
+                  components={{ DropdownIndicator, ClearIndicator } as any}
+                  placeholder="Select"
+                  options={getQueues()}
+                  value={queue ? {
+                    label: `${queue.queue} (${queue.free} free)`,
+                    value: queue.queue,
+                    free: queue.free
+                  } : undefined}
+                  onChange={(option) => setQueue(option ? { queue: option.value, free: option.free } : null)}
+                  isSearchable={true}
+                  inputValue={queueQuery}
+                  onInputChange={(v) => setQueueQuery(v)}
+                  isClearable={queueQuery.length > 0 || queue !== undefined}
+                  onMenuOpen={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
+                  // @ts-ignore
+                  onClear={() => setQueueQuery('')}
+                />
+              </div>
             )}
-            { queues !== undefined && queues.length === 0 && countGPUs === 0 && <p>No CPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
-            { queues !== undefined && queues.length === 0 && countGPUs > 0 && <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
+            {queues !== undefined && queues.length === 0 && countGPUs === 0 &&
+              <p>No CPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
+            {queues !== undefined && queues.length === 0 && countGPUs > 0 &&
+              <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
           </div>
           <div className="mb-10">
             <H4>3. Docker</H4>
@@ -222,19 +256,25 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                     color: 'white',
                   }),
                 }}
-                className="basic-single light w-full text-white"
+                className="basic-single light w-full"
                 classNamePrefix="select"
-                components={{ DropdownIndicator } as any}
+                components={{ DropdownIndicator, ClearIndicator } as any}
                 placeholder="Select"
                 options={getDockerImages()}
-                value={{label: dockerImage, value: dockerImage}}
+                value={{ label: dockerImage, value: dockerImage }}
                 onChange={(option) => setDockerImage(option?.value || null)}
                 isSearchable={true}
-                defaultValue={availableImages !== undefined && availableImages.length > 0 ? { label: availableImages[0], value: availableImages[0]} : undefined}
+                defaultValue={availableImages !== undefined && availableImages.length > 0 ? {
+                  label: availableImages[0],
+                  value: availableImages[0]
+                } : undefined}
                 inputValue={imageQuery}
                 onInputChange={(v) => setImageQuery(v)}
                 isLoading={availableImages === undefined}
                 isClearable={imageQuery.length > 0 || dockerImage !== undefined}
+                onMenuOpen={() => setImageQuery(dockerImage ? dockerImage : '')}
+                // @ts-ignore
+                onClear={() => setImageQuery('')}
               />
             </div>
           </div>
@@ -252,36 +292,36 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             </H4>
             {isShowAdvanced && (
               <>
-              <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
-                <Paragraph classname="!mb-0 md:mr-4">Priveleged Access</Paragraph>
-                <Radio
-                  name="access"
-                  label="True"
-                  checked={privileged}
-                  onChange={() => setPrivileged((prev) => !prev)}
-                />
-                <Radio
-                  name="access"
-                  label="False"
-                  checked={!privileged}
-                  onChange={() => setPrivileged((prev) => !prev)}
-                />
-              </div>
-              <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
-                <Paragraph classname="!mb-0 md:mr-4">Monitor</Paragraph>
-                <Radio
-                  name="monitor"
-                  label="True"
-                  checked={monitorByUndertaker}
-                  onChange={() => setMonitorByUndertaker((prev) => !prev)}
-                />
-                <Radio
-                  name="monitor"
-                  label="False"
-                  checked={!monitorByUndertaker}
-                  onChange={() => setMonitorByUndertaker((prev) => !prev)}
-                />
-              </div>
+                <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
+                  <Paragraph classname="!mb-0 md:mr-4">Priveleged Access</Paragraph>
+                  <Radio
+                    name="access"
+                    label="True"
+                    checked={privileged}
+                    onChange={() => setPrivileged((prev) => !prev)}
+                  />
+                  <Radio
+                    name="access"
+                    label="False"
+                    checked={!privileged}
+                    onChange={() => setPrivileged((prev) => !prev)}
+                  />
+                </div>
+                <div className="flex items-center gap-3 md:gap-6 mt-6 mb-9">
+                  <Paragraph classname="!mb-0 md:mr-4">Monitor</Paragraph>
+                  <Radio
+                    name="monitor"
+                    label="True"
+                    checked={monitorByUndertaker}
+                    onChange={() => setMonitorByUndertaker((prev) => !prev)}
+                  />
+                  <Radio
+                    name="monitor"
+                    label="False"
+                    checked={!monitorByUndertaker}
+                    onChange={() => setMonitorByUndertaker((prev) => !prev)}
+                  />
+                </div>
               </>
             )}
           </div>

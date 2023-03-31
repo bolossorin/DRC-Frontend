@@ -1,21 +1,47 @@
-.table {
+.row {
+  &.animation {
+    animation: showVessel 0.5s linear forwards;
+  }
+  &:hover {
+    @apply relative z-20;
+  }
   :global {
     .cell {
-      &:nth-child(2) {
-        @apply min-w-[40px] w-[40px];
+      &.dockerimage {
+        @apply min-w-[110px];
       }
-      &:nth-child(5) {
-        @apply max-w-[160px];
+      &.vesselid {
+        @apply min-w-[90px];
       }
-      &:nth-child(8) {
-        @apply max-w-[180px];
+      &.name {
+        @apply min-w-[200px];
       }
-      &:nth-child(9), &:nth-child(10) {
-        @apply max-w-[120px];
+      &.state {
+        @apply min-w-[200px];
       }
-      &:nth-child(11) {
-        @apply max-w-[220px];
+      &.gpu’s {
+        @apply min-w-[150px];
+      }
+      &.gpuutil {
+        @apply min-w-[80px];
+      }
+      &.gpumemory {
+        @apply min-w-[110px];
+      }
+      &.createdat {
+        @apply min-w-[90px];
       }
     }
+  }
+}
+
+@keyframes showVessel {
+  0% {
+    opacity:   0;
+    transform: translate(0, 25%);
+  }
+  100% {
+    opacity:   1;
+    transform: translate(0, 0%);
   }
 }

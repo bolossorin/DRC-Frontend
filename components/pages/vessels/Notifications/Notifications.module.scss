@@ -1,3 +1,17 @@
+.notification {
+  animation: hide 0s .5s linear forwards;
+}
+
+@keyframes hide {
+  0% {
+    max-height: 500px;
+  }
+  100% {
+    max-height: 0;
+    padding: 0;
+  }
+}
+
 .success {
   @apply text-[#88E207];
   path {

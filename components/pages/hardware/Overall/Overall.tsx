@@ -2,7 +2,7 @@
 import cn from "classnames";
 
 // components
-import { H5 } from "../../../common";
+import { H5 } from "@/components/common";
 
 // assets
 import styles from './Overall.module.scss';

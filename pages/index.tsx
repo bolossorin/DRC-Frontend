@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 // components
-import { routes } from "../utility/routes";
+import { routes } from "@/utility/routes";
 
 export default function Home() {
   const router = useRouter();

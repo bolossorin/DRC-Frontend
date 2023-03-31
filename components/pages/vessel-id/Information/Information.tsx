@@ -5,17 +5,17 @@ import { useRouter } from "next/router";
 import cn from "classnames";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { getSessionById } from "../../../../graphql/sessions/getSessionById";
-import { stopSession } from "../../../../graphql/sessions/stopSession";
+import { getSessionById } from "@/graphql/sessions/getSessionById";
+import { stopSession } from "@/graphql/sessions/stopSession";
 
 // components
-import { Button, H4, State } from "../../../common";
-import { StopVesselsModal } from "../../../common/Modals";
+import { Button, H4, State } from "@/components/common";
+import { StopVesselsModal } from "@/components/common/Modals";
 
 // assets
 import styles from "./Information.module.scss";
-import { ISession } from "../../../../graphql/types/session";
-import { inactiveSessionStatuses } from "../../../../utility/inactiveSessionStatuses";
+import { ISession } from "@/graphql/types/session";
+import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 
 interface IInformation {
   vessel: ISession | null;
@@ -41,7 +41,7 @@ export const Information = ({ vessel }: IInformation) => {
   return (
     <div className={cn("p-2 md:p-6 md:pb-0 w-full", styles.information)}>
       {isStopModal && (
-        <StopVesselsModal setIsOpen={setIsStopModal} vessels={[vessel?.id ?? ""]} onStop={stopSessions} />
+        <StopVesselsModal setIsOpen={setIsStopModal} vessels={vessel ? [vessel] : []} onStop={stopSessions} />
       )}
       <div className="px-2 md:px-6 pt-5 pb-2 bg-[#2F2F2F] rounded">
         <div className="flex flex-wrap gap-4 items-center justify-between mb-4">

@@ -4,16 +4,16 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import { getSessionById } from "../../graphql/sessions/getSessionById";
-
-import { useRegion } from "../../context/region";
+import { getSessionById } from "@/graphql/sessions/getSessionById";
+import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
+import { ISession } from "@/graphql/types/session";
+import { useRegion } from "@/context/region";
+import { routes } from "@/utility/routes";
 
 // components
-import { Layout, Paragraph, VesselTitle } from "../../components/common";
-import { routes } from "../../utility/routes";
-import { Connection, Experiments, Information } from "../../components/pages/vessel-id";
-import { onSessionsChange } from "../../graphql/sessions/onSessionsChange";
-import { ISession } from "../../graphql/types/session";
+import { Layout, Paragraph, VesselTitle } from "@/components/common";
+import { Connection, Experiments, Information } from "@/components/pages/vessel-id";
+
 
 export default function VesselID() {
   const router = useRouter();

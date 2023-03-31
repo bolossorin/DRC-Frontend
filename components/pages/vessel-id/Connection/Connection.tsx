@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { Code, H4, H5 } from "../../../common";
+import { Code, H4, H5 } from "@/components/common";
 
 export const Connection = () => {
   return (

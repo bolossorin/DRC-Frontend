@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 // libs
-import { Input, List } from "../../../common";
-import { IFilter } from "../../../../utility/types";
+import { Input, List } from "@/components/common";
+import { IFilter } from "@/utility/types";
 
 const searchValuesFilters: ({ title: string; value: string })[] = [
   { value: 'Vessel ID', title: 'Vessel ID' },
