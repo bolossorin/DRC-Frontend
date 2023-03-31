@@ -219,6 +219,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   inputValue={queueQuery}
                   onInputChange={(v) => setQueueQuery(v)}
                   isClearable={queueQuery.length > 0 || queue !== undefined}
+                  onFocus={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
                 />
               </div>
             )}
@@ -254,6 +255,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 onInputChange={(v) => setImageQuery(v)}
                 isLoading={availableImages === undefined}
                 isClearable={imageQuery.length > 0 || dockerImage !== undefined}
+                onFocus={() => setImageQuery(dockerImage ? dockerImage : '')}
               />
             </div>
           </div>
