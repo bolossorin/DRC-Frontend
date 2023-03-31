@@ -2,6 +2,9 @@
   &.animation {
     animation: showVessel 0.5s linear forwards;
   }
+  &:hover {
+    @apply relative z-20;
+  }
   :global {
     .cell {
       &.dockerimage {
