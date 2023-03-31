@@ -21,7 +21,7 @@ interface ICreateVessels {
   region: string;
 }
 
-const ClearIndicator = (props:any) => {
+const ClearIndicator = (props: any) => {
   const clearValue = () => {
     props.clearValue();
     props.selectProps.onClear && props.selectProps.onClear();
@@ -221,7 +221,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   }}
                   className="basic-single light w-full"
                   classNamePrefix="select"
-                  components={{ DropdownIndicator } as any}
+                  components={{ DropdownIndicator, ClearIndicator } as any}
                   placeholder="Select"
                   options={getQueues()}
                   value={queue ? {
