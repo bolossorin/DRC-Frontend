@@ -60,7 +60,7 @@ export const Notifications = ({ notifications }: INotifications) => {
         </div>
       </div>
       <div className="overflow-auto">
-        <div className="max-h-[540px]">
+        <div className="max-h-[540px] overflow-x-hidden">
           {notifications.length > 0 ? (
             notifications.map((data) => <Notification notification={data} key={data.id} onDismiss={() => dismissNotification(data.id)} />)
           ) : (
