@@ -21,7 +21,7 @@ interface ICreateVessels {
   region: string;
 }
 
-const ClearIndicator = (props) => {
+const ClearIndicator = (props:any) => {
   const clearValue = () => {
     props.clearValue();
     props.selectProps.onClear && props.selectProps.onClear();
