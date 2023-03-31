@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // libs
 import cn from "classnames";
-import Select from "react-select";
+import Select, { components } from "react-select";
 
 //  components
 import { Button, DropdownIndicator, H4, Input, Paragraph, PlusMinusInput, Radio } from "../../../common";
@@ -20,6 +20,21 @@ interface ICreateVessels {
   countVessels: number;
   region: string;
 }
+
+const ClearIndicator = (props) => {
+  const clearValue = () => {
+    props.clearValue();
+    props.selectProps.onClear && props.selectProps.onClear();
+  };
+
+  const innerProps = {
+    ...props.innerProps,
+    onMouseDown: clearValue,
+    onTouchEnd: clearValue
+  };
+
+  return <components.ClearIndicator {...props} innerProps={innerProps} />;
+};
 
 function useAvailableImages(query: string) {
   const { data } = useQuery<{ available_images: string[] }>(findImages, {
@@ -219,7 +234,8 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   inputValue={queueQuery}
                   onInputChange={(v) => setQueueQuery(v)}
                   isClearable={queueQuery.length > 0 || queue !== undefined}
-                  onFocus={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
+                  onMenuOpen={() => setQueueQuery(queue ? `${queue.queue} (${queue.free} free)` : '')}
+                  onClear={() => setQueueQuery('')}
                 />
               </div>
             )}
@@ -241,7 +257,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 }}
                 className="basic-single light w-full"
                 classNamePrefix="select"
-                components={{ DropdownIndicator } as any}
+                components={{ DropdownIndicator, ClearIndicator } as any}
                 placeholder="Select"
                 options={getDockerImages()}
                 value={{ label: dockerImage, value: dockerImage }}
@@ -255,7 +271,8 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 onInputChange={(v) => setImageQuery(v)}
                 isLoading={availableImages === undefined}
                 isClearable={imageQuery.length > 0 || dockerImage !== undefined}
-                onFocus={() => setImageQuery(dockerImage ? dockerImage : '')}
+                onMenuOpen={() => setImageQuery(dockerImage ? dockerImage : '')}
+                onClear={() => setImageQuery('')}
               />
             </div>
           </div>
