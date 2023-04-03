@@ -35,13 +35,9 @@ export default function VesselID() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
-        const updatedSessions = prev.session.map((session) => {
-          const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
-          if (updatedSession) return updatedSession;
-          return session;
-        });
+        const updatedSession = subscriptionSessions.find((s) => s.id === prev.session.id);
         return {
-          session: updatedSessions,
+          session: updatedSession ? updatedSession : prev.session,
         };
       },
     });
