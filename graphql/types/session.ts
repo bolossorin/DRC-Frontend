@@ -1,6 +1,6 @@
 export enum HostTypeEnum {
-  vm = 'vm',
-  workstation = 'workstation',
+  vm = "vm",
+  workstation = "workstation",
 }
 
 export interface Process {
@@ -46,6 +46,7 @@ export interface ISession {
   created_at: Date;
   ssh_config: string | null;
   ssh_command: string | null;
+  monitor_by_undertaker: boolean;
 }
 
 export interface CreateSessionArgs {
