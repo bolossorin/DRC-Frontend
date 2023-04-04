@@ -20,6 +20,7 @@ export const getSessions = gql`
       id
       fqdn
       container_id
+      storage_ids
       region
       vm_hostname
       user_id

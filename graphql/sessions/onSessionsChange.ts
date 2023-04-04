@@ -6,6 +6,7 @@ export const onSessionsChange = gql`
       id
       fqdn
       storage_ids
+      container_id
       region
       vm_hostname
       user_id
