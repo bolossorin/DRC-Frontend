@@ -53,7 +53,7 @@ export const Information = ({ vessel }: IInformation) => {
             <Button
               size="medium"
               classname="w-full sm:w-auto"
-              icon="/vs-code-white.svg"
+              icon="/vscode-alt.svg"
               color="blue"
               disabled={inactiveSessionStatuses.includes(vessel?.state ?? "")}
               href={"https://" + vessel?.fqdn}

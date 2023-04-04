@@ -130,12 +130,12 @@ export const Table = (
                     >
                       {!inactiveSessionStatuses.includes(row.state) ? (
                         <Link href={"https://" + row?.fqdn} target="_blank" className="flex items-center">
-                          <img className="w-4 mr-3" src="/vs-code.svg" alt="" />
+                          <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
                           <p>VS Code</p>
                         </Link>
                       ) : (
                         <>
-                          <img className="w-4 mr-3" src="/vs-code.svg" alt="" />
+                          <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
                           <p>VS Code</p>
                         </>
                       )}
