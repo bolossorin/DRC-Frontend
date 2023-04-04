@@ -4,41 +4,43 @@ import React, { useRef, useState } from "react";
 import { H6 } from "../H6/H6";
 
 interface ICode {
-  children: any
-  title: string
+  children: any;
+  title: string;
+  classname?: string;
 }
 
-export const Code = ({ children, title }: ICode) => {
+export const Code = ({ children, title, classname }: ICode) => {
   let textFef: any = useRef(null);
-  const [copiedText, setCopiedText] = useState('Click to copy');
+  const [copiedText, setCopiedText] = useState("Click to copy");
 
   return (
-    <div>
+    <div className={classname}>
       <H6>{title}</H6>
-      <div className='flex justify-between border border-[#686868] rounded'>
+      <div className="flex justify-between border border-[#686868] rounded">
         <div
           ref={textFef}
-          className='px-6 text-sm text-[#D9D9D9] py-3 overflow-hidden text-ellipsis whitespace-nowrap leading-[1.6]'>
+          className="px-6 text-sm text-[#D9D9D9] py-3 overflow-hidden text-ellipsis whitespace-nowrap leading-[1.6]"
+        >
           {children}
         </div>
         <div
           onClick={() => {
             navigator.clipboard.writeText(textFef.current.innerText);
-            setCopiedText('Copied');
+            setCopiedText("Copied");
             setTimeout(() => {
-              setCopiedText('Click to copy');
-            }, 500)
+              setCopiedText("Click to copy");
+            }, 500);
           }}
-          className='flex items-center justify-center border-l border-[#686868] px-6 py-4 transition-all cursor-pointer group'>
-          <div className='relative'>
-            <img className='w-4 min-w-[16px] select-none' src={'/copy.svg'} alt='' />
-            <span
-              className='hidden group-hover:block absolute left-0 top-0 -translate-y-full text-sm p-2 bg-[#686868] whitespace-nowrap rounded select-none pointer-events-none'>
+          className="flex items-center justify-center border-l border-[#686868] px-6 py-4 transition-all cursor-pointer group"
+        >
+          <div className="relative">
+            <img className="w-4 min-w-[16px] select-none" src={"/copy.svg"} alt="" />
+            <span className="hidden group-hover:block absolute left-0 top-0 -translate-y-full text-sm p-2 bg-[#686868] whitespace-nowrap rounded select-none pointer-events-none">
               {copiedText}
             </span>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

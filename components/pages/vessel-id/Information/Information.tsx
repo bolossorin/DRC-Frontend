@@ -91,12 +91,20 @@ export const Information = ({ vessel }: IInformation) => {
             <li>
               <>
                 <span>Modified at:</span>
-                {vessel?.modified_at ? new Date(vessel.modified_at).toLocaleString('en-US') : ""}
+                {vessel?.modified_at ? new Date(vessel.modified_at).toLocaleString("en-US") : ""}
               </>
             </li>
             <li>
               <span>IP:</span>
               {vessel?.tailscale_ip ?? ""}
+            </li>
+            <li>
+              <span>Monitored:</span>
+              {!vessel?.monitor_by_undertaker ? "true" : "false"}
+            </li>
+            <li>
+              <span>Privileged:</span>
+              {!vessel?.privileged ? "true" : "false"}
             </li>
             {/* <li>
               <span>Port:</span>22
@@ -106,7 +114,7 @@ export const Information = ({ vessel }: IInformation) => {
             <li className="flex items-start">
               <span className="!w-20">GPUs:</span>
               <ul>
-                {vessel?.gpu_ids?.map((id) => (
+                {vessel?.gpu_names?.map((id) => (
                   <li key={id}>{id}</li>
                 ))}
               </ul>

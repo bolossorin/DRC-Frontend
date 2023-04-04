@@ -14,12 +14,14 @@ import { routes } from "@/utility/routes";
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
 import { Connection, Experiments, Information } from "@/components/pages/vessel-id";
 
-
 export default function VesselID() {
   const router = useRouter();
   const [region] = useRegion();
 
-  const { data, subscribeToMore } = useQuery<{ session: ISession[]; my_sessions?: ISession[] }>(getSessionById, {
+  const { data, subscribeToMore } = useQuery<{
+    session: ISession;
+    my_sessions?: ISession[];
+  }>(getSessionById, {
     variables: {
       id: router.query.vessel_id,
     },
@@ -47,7 +49,7 @@ export default function VesselID() {
     return () => unsubscribe();
   }, [region]);
 
-  const session = data?.session?.[0] ?? null;
+  const session = data?.session ?? null;
   return (
     <Layout title="Vessel | Deep Render Cloud" description="Vessel | Deep Render Cloud" label={<VesselTitle />}>
       <div className="p-6 border-b border-[#686868]">
@@ -60,7 +62,7 @@ export default function VesselID() {
       </div>
       <div className="flex flex-wrap">
         <Information vessel={session} />
-        <Connection />
+        <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
         {/*<Experiments />*/}
       </div>
     </Layout>
