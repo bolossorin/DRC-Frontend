@@ -20,7 +20,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
         disabled={currentSelected.length <= 0 || !vsCodeLink}
         size="medium"
         classname="w-full sm:w-auto"
-        icon="/vs-code-white.svg"
+        icon="/vscode-alt.svg"
         href={"https://" + vsCodeLink}
         target="_blank"
         color="blue"
