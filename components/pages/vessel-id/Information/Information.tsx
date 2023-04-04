@@ -100,11 +100,11 @@ export const Information = ({ vessel }: IInformation) => {
             </li>
             <li>
               <span>Monitored:</span>
-              {!vessel?.monitor_by_undertaker ? "true" : "false"}
+              {!!vessel?.monitor_by_undertaker ? "true" : "false"}
             </li>
             <li>
               <span>Privileged:</span>
-              {!vessel?.privileged ? "true" : "false"}
+              {!!vessel?.privileged ? "true" : "false"}
             </li>
             {/* <li>
               <span>Port:</span>22
