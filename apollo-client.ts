@@ -1,8 +1,10 @@
-import { ApolloClient, createHttpLink, InMemoryCache, split } from "@apollo/client";
+import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, split, FetchResult, gql } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { getMainDefinition } from "@apollo/client/utilities";
+import { getMainDefinition, Observable } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
+import { GraphQLError } from "graphql";
 
 const httpLink = createHttpLink({
   uri: process.env.BACKEND_URL,
@@ -13,9 +15,39 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const setApolloAuthToken = async () => {
-  const { accessToken } = await fetch(window.location.origin + "/api/auth/token").then((res) => res.json());
+const errorLink = onError(({ networkError, forward, operation }) => {
+  if (networkError?.message === "Response not successful: Received status code 401") {
+    const observable = new Observable<FetchResult<Record<string, any>>>((observer) => {
+      // used an annonymous function for using an async function
+      (async () => {
+        try {
+          const { accessToken } = await fetch(window.location.origin + "/api/auth/refresh").then((res) => res.json());
 
+          if (!accessToken) {
+            throw new GraphQLError("Empty AccessToken");
+          }
+
+          setApolloAuthToken(accessToken);
+
+          // Retry the failed request
+          const subscriber = {
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          };
+
+          forward(operation).subscribe(subscriber);
+        } catch (err) {
+          observer.error(err);
+        }
+      })();
+    });
+
+    return observable;
+  }
+});
+
+const setApolloAuthToken = (accessToken: string) => {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: process.env.WEBSOCKET_URL as string,
@@ -41,7 +73,12 @@ export const setApolloAuthToken = async () => {
     },
   })).concat(splitLink);
 
-  client.setLink(link);
+  client.setLink(ApolloLink.from([errorLink, link]));
+};
+
+export const configureApolloClient = async () => {
+  const { accessToken } = await fetch(window.location.origin + "/api/auth/token").then((res) => res.json());
+  setApolloAuthToken(accessToken);
 };
 
 export default client;
