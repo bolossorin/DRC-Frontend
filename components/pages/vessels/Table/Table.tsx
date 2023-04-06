@@ -50,6 +50,7 @@ export const Table = (
   }: ITable) => {
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
+  const [isBottom, setIsBottom] = useState<boolean>(false);
 
   const isSelected = (id: string) => {
     for (const s of selected) {
@@ -94,7 +95,7 @@ export const Table = (
         <thead>
           <Row classname={styles.row}>
             <Cell classname="w-12">
-              <img className="opacity-50 w-4 h-4" src="/dots.svg" alt="" />
+              <img className="opacity-50 min-w-[16px] w-4 h-4" src="/dots.svg" alt="" />
             </Cell>
             <Cell classname="w-[40px] relative top-0.5">
               <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
@@ -110,13 +111,21 @@ export const Table = (
           {items ? items.map((row, index) => (
               <Row key={index}
                   classname={cn({ "!bg-[#3A3A3A]": isSelected(row.id) }, styles.row, { [styles.animation]: (row.state === 'starting' || row.state === 'requested') })}>
-                <Cell classname="!w-12 cursor-pointer relative overflow-visible group">
+                <Cell onMouseEnter={(e:any)=>{
+                  const positionByBottom = window.innerHeight - e.clientY;
+                  if (positionByBottom >= 200) {
+                    setIsBottom(false)
+                  } else {
+                    setIsBottom(true)
+                  }
+                }} classname="!w-12 cursor-pointer relative overflow-visible group">
                   <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
                   <ul
                     className={cn(
                       "hidden group-hover:block w-max absolute z-20 top-4 left-4 rounded border border-[#686868] bg-[#3D3C3C]",
                       listStyles.list,
-                      listStyles.small
+                      listStyles.small,
+                      { "-translate-y-full top-10" :isBottom}
                     )}
                   >
                     <StopButton

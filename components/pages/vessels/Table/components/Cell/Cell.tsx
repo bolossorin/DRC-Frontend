@@ -7,11 +7,12 @@ interface ICell {
   children: any
   classname?: string
   colspan?: number
+  onMouseEnter?: any
 }
 
-export const Cell: FC<ICell> = ({ children, classname, colspan }) => {
+export const Cell: FC<ICell> = ({ children, classname, colspan,onMouseEnter }) => {
   return (
-    <td colSpan={colspan} className={cn('px-2 py-7 text-sm text-[#D9D9D9] cell', classname)}>
+    <td onMouseEnter={onMouseEnter} colSpan={colspan} className={cn('px-2 py-7 text-sm text-[#D9D9D9] cell', classname)}>
       {children}
     </td>
   )
