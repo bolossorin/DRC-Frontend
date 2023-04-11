@@ -122,7 +122,7 @@ export const Table = (
                   <img className="opacity-50 group-hover:opacity-100 transition-all w-4 h-4" src="/dots.svg" alt="" />
                   <ul
                     className={cn(
-                      "hidden group-hover:block w-max absolute z-20 top-4 left-4 rounded border border-[#686868] bg-[#3D3C3C]",
+                      "hidden group-hover:block w-max absolute z-20 top-4 left-6 rounded border border-[#686868] bg-[#3D3C3C]",
                       listStyles.list,
                       listStyles.small,
                       { "-translate-y-full top-10" :isBottom}
@@ -166,7 +166,7 @@ export const Table = (
                 )}
               </Row>
             ))
-            : <Row>
+            : <Row classname='border-none'>
               <Cell colspan={columns.length + 2}>
                 <H4 classname="w-full text-center py-4">Loading...</H4>
               </Cell>
