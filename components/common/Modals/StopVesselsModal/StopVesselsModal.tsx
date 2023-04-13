@@ -1,18 +1,15 @@
-import { inactiveSessionStatuses } from '@/utility/inactiveSessionStatuses';
-import { SelectedVessel } from '@/components/pages/vessels/Table/Table';
+import React from "react";
+
+// libs
+import Link from "next/link";
 
 // components
 import { ModalLayout } from '../ModalLayout/ModalLayout';
-import { Paragraph } from '../../Paragraph/Paragraph';
+import { Paragraph } from '@/components/common';
 import { Button } from '../../Button/Button';
-
-
-const vessels = [
-  '“Super Super Long Vessel Name!!”',
-  '“Super Super Long Vessel Name!!”',
-  '“Super Super Long Vessel Name!!”',
-  '“Super Super Long Vessel Name!!”',
-];
+import { routes } from "@/utility/routes";
+import { inactiveSessionStatuses } from '@/utility/inactiveSessionStatuses';
+import { SelectedVessel } from '@/components/pages/vessels/Table/Table';
 
 interface IStopVesselsModal {
   vessels: SelectedVessel[];
@@ -28,7 +25,11 @@ export const StopVesselsModal = ({ setIsOpen, vessels, onStop }: IStopVesselsMod
         <ul className="list-disc max-w-[206px] mx-auto text-left">
           {vessels.filter(v => !inactiveSessionStatuses.includes(v.state)).map((vessel, index) => (
             <li className="text-xs text-[#D9D9D9] mb-2" key={index}>
-              {vessel.id}
+              <Link href={`${routes.vessels}/${vessel.id}`} legacyBehavior>
+                <a target="_blank" className="underline hover:no-underline">
+                  {vessel.name}
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
