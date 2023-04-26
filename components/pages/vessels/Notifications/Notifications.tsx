@@ -17,6 +17,8 @@ import { INotification } from "@/graphql/types/notification";
 //graphql
 import { dismissNotificationById } from "@/graphql/notifications/dismissNotificationById";
 import { dismissNotifications } from "@/graphql/notifications/dismissNotifications";
+import Link from "next/link";
+import { routes } from "@/utility/routes";
 
 interface INotifications {
   notifications: INotification[];
@@ -96,7 +98,7 @@ function Notification({ notification, onDismiss }: { notification: INotification
           <div className="w-6 mr-4">
             <Updated />
           </div>
-          State Updated
+          {notification.status}
           <div
             onClick={dismiss}
             className="w-3 ml-auto cursor-pointer opacity-50 transition-all hover:opacity-100"
@@ -104,13 +106,9 @@ function Notification({ notification, onDismiss }: { notification: INotification
             <img src="/close.svg" alt="" />
           </div>
         </div>
-        <Paragraph>{notification.title}</Paragraph>
-        {notification.status && (
-          <div className="flex flex-wrap items-center gap-3">
-            <Paragraph classname="!mb-0 text-[#D9D9D9]">has entered state</Paragraph>
-            <State fontSize="text-sm" state={notification.status} />
-          </div>
-        )}
+        <Link href={`${routes.vessels}/${notification.session_id}`}>
+          <Paragraph classname="hover:underline">{notification.title}</Paragraph>
+        </Link>
         {notification.description && (
           <Paragraph classname="!mb-0 text-[#D9D9D9] mt-2">{notification.description}</Paragraph>
         )}
