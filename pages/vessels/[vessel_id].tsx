@@ -43,7 +43,7 @@ export default function VesselID() {
     });
 
     return () => unsubscribe();
-  }, [region]);
+  }, [region, subscribeToMore]);
 
   const session = data?.session ?? null;
   return (

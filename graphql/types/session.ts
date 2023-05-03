@@ -14,8 +14,10 @@ export interface Process {
 
 export interface ISession {
   id: string;
-  avg_gpu_memory_util: string | null;
-  avg_gpu_util: string | null;
+  gpu_log: {
+    avg_util_percent: number;
+    avg_memory_util_percent: number;
+  } | null;
   user_id: string;
   host_type: HostTypeEnum;
   region: string;
