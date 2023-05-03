@@ -30,7 +30,7 @@ import { routes } from "@/utility/routes";
 import Link from "next/link";
 
 // assets
-import styles from '../../components/pages/vessels/index.module.scss';
+import styles from "../../components/pages/vessels/index.module.scss";
 
 export const sessionsTableColumns = [
   {
@@ -73,22 +73,30 @@ export const sessionsTableColumns = [
       <Cell key={key}>
         <ul className="list-disc">
           {item.gpu_names.map((gpu, index) => (
-            <li className="mx-4" key={`${gpu}-${index}`}>{gpu}</li>
+            <li className="mx-4" key={`${gpu}-${index}`}>
+              {gpu}
+            </li>
           ))}
         </ul>
       </Cell>
-    )
+    ),
   },
-  { label: "GPU Util", key: "avg_gpu_util" },
-  { label: "GPU Memory", key: "avg_gpu_memory_util" },
+  {
+    label: "GPU Util",
+    key: "avg_util_percent",
+    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_util_percent ?? 0}</Cell>,
+  },
+  {
+    label: "GPU Memory",
+    key: "avg_memory_util_percent",
+    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_memory_util_percent ?? 0}</Cell>,
+  },
   {
     label: "Created At",
     key: "created_at",
     renderCell: (item: ISession, key: string) => (
-      <Cell key={key}>
-        {new Date(item.created_at).toLocaleString("en-US")}
-      </Cell>
-    )
+      <Cell key={key}>{new Date(item.created_at).toLocaleString("en-US")}</Cell>
+    ),
   },
 ];
 
@@ -103,10 +111,14 @@ export default function Vessels() {
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(1);
 
-  const [sortBy,] = useState("modified_at");
+  const [sortBy] = useState("modified_at");
 
   const [columnSettings, setColumnSettings] = useState(
-    sessionsTableColumns.map((c) => ({ label: c.label, key: c.key, checked: true }))
+    sessionsTableColumns.map((c) => ({
+      label: c.label,
+      key: c.key,
+      checked: true,
+    }))
   );
 
   const [pagination, setPagination] = useState({
@@ -124,7 +136,9 @@ export default function Vessels() {
 
   const [region] = useRegion();
 
-  const { data, refetch, subscribeToMore } = useQuery<{ my_sessions: ISession[] }>(getSessions, {
+  const { data, refetch, subscribeToMore } = useQuery<{
+    my_sessions: ISession[];
+  }>(getSessions, {
     variables: {
       limit: 10000,
       offset: 0,
@@ -150,12 +164,12 @@ export default function Vessels() {
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
         const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
           const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
-          if (updatedSession) return { ...updatedSession, avg_gpu_memory_util: session.avg_gpu_memory_util, avg_gpu_util: session.avg_gpu_util };
+          if (updatedSession) return updatedSession;
           return session;
         });
         const newSessions = subscriptionSessions.filter(
           (session) => !prev.my_sessions.find((prev) => prev.id === session.id)
-        ).map(session => ({ ...session, avg_gpu_memory_util: '0', avg_gpu_util: '0' }));
+        );
         return {
           my_sessions: [...newSessions, ...updatedSessions],
         };
@@ -163,7 +177,7 @@ export default function Vessels() {
     });
 
     return () => unsubscribe();
-  }, [region]);
+  }, [region, subscribeToMore]);
 
   const [stopSessionMutation] = useMutation(stopSession, {
     onError: (errors) => console.log(errors),
@@ -183,7 +197,7 @@ export default function Vessels() {
     await Promise.all(requests);
     refetch();
     setIsStopModal(false);
-    setCurrentSelected([])
+    setCurrentSelected([]);
   };
 
   const [writeSession] = useMutation(createSession, {
@@ -287,7 +301,7 @@ export default function Vessels() {
       )}
       <div className={styles.table}>
         <Table
-          className='w-full'
+          className="w-full"
           items={paginatedSessions}
           columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
           selected={currentSelected}
