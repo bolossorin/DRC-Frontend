@@ -30,8 +30,10 @@ export const getSessions = gql`
       vm_hostname
       vm_id
       n_gpus
-      avg_gpu_util
-      avg_gpu_memory_util
+      gpu_log {
+        avg_util_percent
+        avg_memory_util_percent
+      }
       image
       name
       gpu_ids
