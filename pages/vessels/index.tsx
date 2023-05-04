@@ -31,6 +31,7 @@ import Link from "next/link";
 
 // assets
 import styles from "../../components/pages/vessels/index.module.scss";
+import { onSessionsLogsChange } from "@/graphql/sessions/onSessionsLogsChange";
 
 export const sessionsTableColumns = [
   {
@@ -156,7 +157,7 @@ export default function Vessels() {
   }, [data?.my_sessions, pagination]);
 
   useEffect(() => {
-    const unsubscribe = subscribeToMore({
+    const subscribeToSessions = subscribeToMore({
       document: onSessionsChange,
       variables: { region },
       updateQuery: (prev, { subscriptionData }) => {
@@ -164,7 +165,7 @@ export default function Vessels() {
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
         const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
           const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
-          if (updatedSession) return updatedSession;
+          if (updatedSession) return { ...updatedSession, gpu_log: session.gpu_log };
           return session;
         });
         const newSessions = subscriptionSessions.filter(
@@ -176,7 +177,34 @@ export default function Vessels() {
       },
     });
 
-    return () => unsubscribe();
+    const subscribeToLogs = subscribeToMore<{
+      my_logs: { session_id: string; avg_util_percent: number; avg_memory_util_percent: number }[];
+    }>({
+      document: onSessionsLogsChange,
+      variables: { region },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionLogs = subscriptionData.data?.my_logs ?? [];
+        const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
+          const updatedLogs = subscriptionLogs.find((log) => log.session_id === session.id);
+          if (updatedLogs)
+            return {
+              ...session,
+              gpu_log: {
+                avg_util_percent: updatedLogs.avg_util_percent,
+                avg_memory_util_percent: updatedLogs.avg_memory_util_percent,
+              },
+            };
+          return session;
+        });
+        return { my_sessions: updatedSessions };
+      },
+    });
+
+    return () => {
+      subscribeToSessions();
+      subscribeToLogs();
+    };
   }, [region, subscribeToMore]);
 
   const [stopSessionMutation] = useMutation(stopSession, {
