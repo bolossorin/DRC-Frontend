@@ -150,12 +150,12 @@ export default function Vessels() {
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
         const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
           const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
-          if (updatedSession) return updatedSession;
+          if (updatedSession) return { ...updatedSession, avg_gpu_memory_util: session.avg_gpu_memory_util, avg_gpu_util: session.avg_gpu_util };
           return session;
         });
         const newSessions = subscriptionSessions.filter(
           (session) => !prev.my_sessions.find((prev) => prev.id === session.id)
-        );
+        ).map(session => ({ ...session, avg_gpu_memory_util: '0', avg_gpu_util: '0' }));
         return {
           my_sessions: [...newSessions, ...updatedSessions],
         };
