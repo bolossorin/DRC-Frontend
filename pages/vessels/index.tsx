@@ -85,12 +85,12 @@ export const sessionsTableColumns = [
   {
     label: "GPU Util",
     key: "avg_util_percent",
-    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_util_percent ?? 0}</Cell>,
+    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_util_percent ?? 0}%</Cell>,
   },
   {
     label: "GPU Memory",
     key: "avg_memory_util_percent",
-    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_memory_util_percent ?? 0}</Cell>,
+    renderCell: (item: ISession, key: string) => <Cell key={key}>{item.gpu_log?.avg_memory_util_percent ?? 0}%</Cell>,
   },
   {
     label: "Created At",
@@ -163,7 +163,7 @@ export default function Vessels() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const subscriptionSessions = subscriptionData.data?.my_sessions ?? [];
-        const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
+        const updatedSessions: ISession[] = prev?.my_sessions?.map((session) => {
           const updatedSession = subscriptionSessions.find((s) => s.id === session.id);
           if (updatedSession) return { ...updatedSession, gpu_log: session.gpu_log };
           return session;
@@ -185,7 +185,7 @@ export default function Vessels() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const subscriptionLogs = subscriptionData.data?.my_logs ?? [];
-        const updatedSessions: ISession[] = prev.my_sessions.map((session) => {
+        const updatedSessions: ISession[] = prev?.my_sessions?.map((session) => {
           const updatedLogs = subscriptionLogs.find((log) => log.session_id === session.id);
           if (updatedLogs)
             return {
