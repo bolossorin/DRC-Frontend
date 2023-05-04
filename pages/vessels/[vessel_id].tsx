@@ -13,6 +13,7 @@ import { routes } from "@/utility/routes";
 // components
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
 import { Connection, Experiments, Information } from "@/components/pages/vessel-id";
+import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
 
 export default function VesselID() {
   const router = useRouter();
@@ -44,6 +45,32 @@ export default function VesselID() {
 
     return () => unsubscribe();
   }, [region, subscribeToMore]);
+
+  useEffect(() => {
+    const subscribeToLogs = subscribeToMore<{
+      log: { session_id: string; avg_util_percent: number; avg_memory_util_percent: number };
+    }>({
+      document: onSessionLogsChange,
+      variables: { session_id: router.query.vessel_id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionLogs = subscriptionData.data?.log;
+        const updatedSession = {
+          ...prev.session,
+          gpu_log: {
+            avg_util_percent: subscriptionLogs?.avg_util_percent ?? prev.session.gpu_log?.avg_util_percent,
+            avg_memory_util_percent:
+              subscriptionLogs?.avg_memory_util_percent ?? prev.session.gpu_log?.avg_util_percent,
+          },
+        };
+        return {
+          session: updatedSession,
+        };
+      },
+    });
+
+    return () => subscribeToLogs();
+  }, [router.query.vessel_id, subscribeToMore]);
 
   const session = data?.session ?? null;
   return (
