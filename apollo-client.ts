@@ -12,7 +12,17 @@ const httpLink = createHttpLink({
 
 const client = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Session: {
+        fields: {
+          gpu_log: {
+            merge: true,
+          },
+        },
+      },
+    },
+  }),
 });
 
 const errorLink = onError(({ networkError, forward, operation }) => {

@@ -131,11 +131,11 @@ export const Information = ({ vessel }: IInformation) => {
             </li>
             <li>
               <span>GPU Utilisation:</span>
-              {vessel?.gpu_log?.avg_util_percent ?? 0}
+              {vessel?.gpu_log?.avg_util_percent ?? 0}%
             </li>
             <li>
               <span>GPU Memory:</span>
-              {vessel?.gpu_log?.avg_memory_util_percent ?? 0}
+              {vessel?.gpu_log?.avg_memory_util_percent ?? 0}%
             </li>
           </ul>
         </div>
