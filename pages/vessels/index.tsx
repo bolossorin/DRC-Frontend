@@ -44,6 +44,7 @@ export const sessionsTableColumns = [
         </Link>
       </Cell>
     ),
+    hideByDefault: true,
   },
   {
     label: "Name",
@@ -68,7 +69,7 @@ export const sessionsTableColumns = [
   { label: "Queue", key: "queue" },
   { label: "Docker Image", key: "image" },
   {
-    label: "GPU’s",
+    label: "GPUs",
     key: "gpu_names",
     renderCell: (item: ISession, key: string) => (
       <Cell key={key}>
@@ -118,7 +119,7 @@ export default function Vessels() {
     sessionsTableColumns.map((c) => ({
       label: c.label,
       key: c.key,
-      checked: true,
+      checked: !c.hideByDefault,
     }))
   );
 
