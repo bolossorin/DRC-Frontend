@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import cn from "classnames";
 
 interface ICheckbox {
   classname?: any
@@ -6,9 +7,9 @@ interface ICheckbox {
   checked: boolean
 }
 
-export const Checkbox: FC<ICheckbox> = ({ onChange, checked }) => {
+export const Checkbox: FC<ICheckbox> = ({ onChange, checked, classname }) => {
   return (
-    <label className='flex cursor-pointer relative inline-flex group'>
+    <label className={cn('flex cursor-pointer relative inline-flex group', classname)}>
       <input className='bg-transparent peer' type='checkbox' onChange={onChange} checked={checked} hidden />
       <img
         className='hidden peer-checked:block absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%]'

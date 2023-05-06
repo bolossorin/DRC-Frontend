@@ -98,8 +98,8 @@ export const Table = (
           <Cell classname="w-12">
             <img className="opacity-50 min-w-[16px] w-4 h-4" src="/dots.svg" alt="" />
           </Cell>
-          <Cell classname="w-[40px] relative top-0.5">
-            <Checkbox onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
+          <Cell classname="w-[40px]">
+            <Checkbox classname="relative top-0.5" onChange={() => setSelectAll(!selectAll)} checked={selectAll} />
           </Cell>
           {columns.map((header) => (
             <Cell classname={header.label.toLowerCase().replaceAll(' ', '')} key={header.key}>
@@ -154,8 +154,9 @@ export const Table = (
                   <CopyButton content={row.ssh_command} label="Copy SSH Command" />
                 </ul>
               </Cell>
-              <Cell classname="w-[40px] relative top-0.5">
+              <Cell classname="w-[40px]">
                 <Checkbox
+                  classname="relative top-0.5"
                   onChange={handleSelect({ id: row.id, state: row.state, name: row.name })}
                   checked={isSelected(row.id)} />
               </Cell>
