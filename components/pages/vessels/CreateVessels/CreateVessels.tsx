@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // libs
 import cn from "classnames";
@@ -84,6 +84,9 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   const [privileged, setPrivileged] = useState(false);
   const [monitorByUndertaker, setMonitorByUndertaker] = useState(true);
 
+  const queueRef = useRef<any>(null)
+  const imageRef = useRef<any>(null)
+
   // Styles and animation
   const [marginRight, setMarginRight] = useState('mr-[-100%]');
   useEffect(() => {
@@ -134,7 +137,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   // Reset the queue value if the search result is empty.
   useEffect(() => {
     if (queues !== undefined && queues.length === 0)
-      setQueue(null)
+      setQueue({})
   }, [queues])
 
   // Select the first available docker image by default
@@ -169,6 +172,22 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
       free: item.free,
     }))
   }
+
+  useEffect(() => {
+    // clear "Queue" if select empty
+    if (queueRef.current) {
+      if (queueQuery.length <= 0 && queueRef.current.props.menuIsOpen) setQueue({})
+    }
+  }, [queueQuery]);
+
+  useEffect(() => {
+    // clear "Image" if select empty
+    if (imageRef.current) {
+      if (imageQuery.length <= 0 && imageRef.current.props.menuIsOpen) {
+        setDockerImage('')
+      }
+    }
+  }, [imageQuery]);
 
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
@@ -213,6 +232,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
               <div className="flex items-center gap-4 mb-6">
                 <Paragraph classname="!mb-0">Queue</Paragraph>
                 <Select
+                  ref={queueRef}
                   styles={{
                     input: (baseStyles) => ({
                       ...baseStyles,
@@ -225,21 +245,21 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                   placeholder="Select"
                   options={getQueues()}
                   value={queue ? {
-                    label: `${queue.queue} (${queue.free} free)`,
+                    label: queue.queue,
                     value: queue.queue,
                     free: queue.free
                   } : undefined}
-                  onChange={(option) => setQueue(option ? { queue: option.value, free: option.free } : null)}
+                  onChange={(option) => setQueue(option ? { queue: option.value, free: option.free } : {})}
                   isSearchable={true}
                   inputValue={queueQuery}
                   onInputChange={(v) => setQueueQuery(v)}
-                  isClearable={queueQuery.length > 0 || queue !== undefined}
+                  isClearable={queueQuery.length > 0 || !!queue?.queue}
                   onMenuOpen={() => {
-                    if (queue) setQueueQuery(`${queue.queue} (${queue.free} free)`)
+                    if (queue && queue.queue) setQueueQuery(queue.queue)
                   }}
                   // @ts-ignore
                   onClear={() => {
-                    setQueue(null);
+                    setQueue({});
                     setQueueQuery('');
                   }}
                 />
@@ -255,6 +275,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             <div className="flex items-center gap-3 md:gap-6 my-8">
               <Paragraph classname="!mb-0">Image</Paragraph>
               <Select
+                ref={imageRef}
                 styles={{
                   input: (baseStyles) => ({
                     ...baseStyles,
@@ -267,7 +288,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 placeholder="Select"
                 options={getDockerImages()}
                 value={{ label: dockerImage, value: dockerImage }}
-                onChange={(option) => setDockerImage(option?.value || null)}
+                onChange={(option) => setDockerImage(option?.value || '')}
                 isSearchable={true}
                 defaultValue={availableImages !== undefined && availableImages.length > 0 ? {
                   label: availableImages[0],
@@ -276,7 +297,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 inputValue={imageQuery}
                 onInputChange={(v) => setImageQuery(v)}
                 isLoading={availableImages === undefined}
-                isClearable={imageQuery.length > 0 || dockerImage !== undefined}
+                isClearable={imageQuery.length > 0 || !!dockerImage}
                 onMenuOpen={() => {
                   if (dockerImage) setImageQuery(dockerImage);
                 }}

@@ -1,4 +1,4 @@
 export interface IQueue {
-    free: number;
-    queue: string;
+    free?: number;
+    queue?: string;
 }
