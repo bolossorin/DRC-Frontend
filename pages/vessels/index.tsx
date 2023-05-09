@@ -74,7 +74,7 @@ export const sessionsTableColumns = [
     renderCell: (item: ISession, key: string) => (
       <Cell key={key}>
         <ul className="list-disc">
-          {item.gpu_names.map((gpu, index) => (
+          {item.gpu_names && item.gpu_names.map((gpu, index) => (
             <li className="mx-4" key={`${gpu}-${index}`}>
               {gpu}
             </li>
