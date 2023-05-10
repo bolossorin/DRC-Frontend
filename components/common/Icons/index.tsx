@@ -7,3 +7,4 @@ export { Updated } from "./Updated";
 export { MobileLogoIcon } from "./MobileLogoIcon";
 export { BurgerIcon } from "./BurgerIcon";
 export { CloseIcon } from "./CloseIcon";
+export { GraphIcon } from "./GraphIcon";
