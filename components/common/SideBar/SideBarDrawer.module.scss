@@ -1,0 +1,55 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+.overlayOpen {
+  opacity: 1;
+  z-index: 60;
+  visibility: visible;
+}
+
+.overlayHidden {
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  transition: 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.drawer {
+  top: 0;
+  flex: 1 0 auto;
+  height: 100%;
+  display: flex;
+  outline: 0;
+  z-index: 100;
+  position: fixed;
+  overflow-y: auto;
+  flex-direction: column;
+
+  flex-shrink: 0;
+
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.hidden {
+  width: 240px;
+  transform: translateX(-240px);
+  flex-shrink: 0;
+  transition: 325ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.animate {
+  visibility: visible;
+  transform: none;
+  box-shadow: 46px 0px 77px rgba(23, 23, 23, 0.5);
+}
+
+.left {
+  left: 0;
+  right: auto;
+}
