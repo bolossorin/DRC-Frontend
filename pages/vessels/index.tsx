@@ -74,11 +74,12 @@ export const sessionsTableColumns = [
     renderCell: (item: ISession, key: string) => (
       <Cell key={key}>
         <ul className="list-disc">
-          {item.gpu_names && item.gpu_names.map((gpu, index) => (
-            <li className="mx-4" key={`${gpu}-${index}`}>
-              {gpu}
-            </li>
-          ))}
+          {item.gpu_names &&
+            item.gpu_names.map((gpu, index) => (
+              <li className="mx-4 whitespace-nowrap" key={`${gpu}-${index}`}>
+                {gpu}
+              </li>
+            ))}
         </ul>
       </Cell>
     ),
@@ -97,7 +98,9 @@ export const sessionsTableColumns = [
     label: "Created At",
     key: "created_at",
     renderCell: (item: ISession, key: string) => (
-      <Cell key={key}>{new Date(item.created_at).toLocaleString("en-US")}</Cell>
+      <Cell classname="whitespace-nowrap" key={key}>
+        {new Date(item.created_at).toLocaleString("en-US")}
+      </Cell>
     ),
   },
 ];
@@ -330,7 +333,7 @@ export default function Vessels() {
       )}
       <div className={styles.table}>
         <Table
-          className="w-full"
+          className="w-full overflow-y-auto"
           items={paginatedSessions}
           columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}
           selected={currentSelected}
