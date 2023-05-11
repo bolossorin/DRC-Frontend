@@ -12,7 +12,7 @@ import { routes } from "@/utility/routes";
 
 // components
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
-import { Connection, Experiments, Information } from "@/components/pages/vessel-id";
+import { Monitoring, Connection, Experiments, Information } from "@/components/pages/vessel-id";
 import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
 
 export default function VesselID() {
@@ -87,6 +87,7 @@ export default function VesselID() {
         <Information vessel={session} />
         <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
         {/*<Experiments />*/}
+        <Monitoring gpuIds={session?.gpu_ids ?? []} />
       </div>
     </Layout>
   );
