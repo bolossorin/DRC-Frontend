@@ -32,7 +32,7 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
   const [interval, setInterval] = useState<Interval>(intervals[0]);
 
   return (
-    <div className="px-2 md:p-6 md:pl-2 md:pt-4 w-full">
+    <div className="px-2 pb-2 md:pb-4 md:px-6 w-full">
       <div className="p-2 md:p-6 bg-[#2F2F2F] rounded">
         <H4 classname="!mb-6 flex items-center gap-4">
           <GraphIcon classname="w-5" />
@@ -49,7 +49,7 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
             </div>
           ))}
         </div>
-        <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4">
           {gpuIds.map((id) => (
             <Chart key={id} gpuId={id} interval={interval.value} />
           ))}
