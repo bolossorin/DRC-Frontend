@@ -1,15 +1,6 @@
 // libs
 import { useQuery } from "@apollo/client";
-import {
-  Chart as ChartJS,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip } from "chart.js";
 import { Line } from "react-chartjs-2";
 
 // assets
@@ -18,7 +9,7 @@ import { IGpuLogHistory, IntervalValue } from "@/graphql/types/gpuLogHistory";
 import { useEffect } from "react";
 import { onGpuLogHistoryChange } from "@/graphql/gpu/onGpuLogHistoryChange";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip);
 
 const getOptions = (title: string) => ({
   responsive: true,
@@ -71,8 +62,8 @@ const getOptions = (title: string) => ({
     },
   },
   plugins: {
-    legeng: {
-      position: "top",
+    legend: {
+      display: false,
     },
     title: {
       display: true,
@@ -81,6 +72,9 @@ const getOptions = (title: string) => ({
       font: {
         size: 16,
         weight: "700",
+      },
+      padding: {
+        bottom: 35,
       },
     },
   },
@@ -146,12 +140,6 @@ export const Chart = ({ gpuId, interval }: IChart) => {
               data: filteredChartData?.map((data) => data.util_percent) ?? [],
               backgroundColor: "#88E207",
               borderColor: "#88E207",
-            },
-            {
-              label: "Memory util percent",
-              data: filteredChartData?.map((data) => data.memory_util_percent) ?? [],
-              backgroundColor: "#FFC36A",
-              borderColor: "#FFC36A",
             },
           ],
         }}
