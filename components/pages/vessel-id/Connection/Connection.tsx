@@ -12,7 +12,7 @@ interface IConnection {
 export const Connection = ({ sshConfig, sshCommand }: IConnection) => {
   const config = sshConfig ? sshConfig.split("\n") : null;
   return (
-    <div className="p-2 md:p-6 md:pr-2 md:pt-4 w-full 2xl:w-[34%] flex flex-col">
+    <div className="px-2 pb-2 md:px-6 2xl:pr-2 md:pt-4 w-full 2xl:pb-4 2xl:w-[34%] flex flex-col">
       <div className="p-2 md:p-6 bg-[#2F2F2F] rounded flex-1">
         <H4 classname="!mb-4 flex items-center">
           <img className="w-5 mr-4" src={"/link.svg"} alt="" />
