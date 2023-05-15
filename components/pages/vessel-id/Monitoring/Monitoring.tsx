@@ -9,8 +9,9 @@ import { GraphIcon } from "@/components/common/Icons";
 
 // assets
 import { ISession } from "@/graphql/types/session";
-import { Chart } from "../Chart/Chart";
+import { GPUChart } from "../GPUChart/GPUChart";
 import { IntervalValue } from "@/graphql/types/gpuLogHistory";
+import { CPUChart } from "../CPUChart/CPUChart";
 
 type Interval = { label: string; value: IntervalValue };
 
@@ -51,8 +52,9 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
         </div>
         <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
           {gpuIds.map((id) => (
-            <Chart key={id} gpuId={id} interval={interval.value} />
+            <GPUChart key={id} gpuId={id} interval={interval.value} />
           ))}
+          <CPUChart interval={interval.value} />
         </div>
       </div>
     </div>

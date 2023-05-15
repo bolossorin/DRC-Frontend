@@ -11,7 +11,7 @@ import { onGpuLogHistoryChange } from "@/graphql/gpu/onGpuLogHistoryChange";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip);
 
-const getOptions = (title: string, chartLabels: (string | null)[]) => {
+const getOptions = () => {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -32,13 +32,6 @@ const getOptions = (title: string, chartLabels: (string | null)[]) => {
             size: 11,
           },
           padding: 5,
-          callback: (value: string | number, index: number) => {
-            // to avoid overlapping the first label
-            if (index === 0 && chartLabels[chartLabels.length - 1] === null) {
-              return null;
-            }
-            return chartLabels[index];
-          },
         },
         grid: {
           drawOnChartArea: false,
@@ -75,7 +68,7 @@ const getOptions = (title: string, chartLabels: (string | null)[]) => {
       },
       title: {
         display: true,
-        text: `GPU ${title} Usage`,
+        text: "CPU Usage",
         color: "#F6F6F6",
         font: {
           size: 16,
@@ -89,7 +82,7 @@ const getOptions = (title: string, chartLabels: (string | null)[]) => {
   };
 };
 
-const getTimeLabel = (timestamp: string, interval: IntervalValue) => {
+const getTimeLabel = (timestamp: string | number, interval: IntervalValue) => {
   const date = new Date(timestamp);
 
   if (interval === "seven_day") {
@@ -101,55 +94,26 @@ const getTimeLabel = (timestamp: string, interval: IntervalValue) => {
 };
 
 interface IChart {
-  gpuId: string;
   interval: IntervalValue;
 }
 
-export const Chart = ({ gpuId, interval }: IChart) => {
-  const { data, subscribeToMore } = useQuery<{ gpu_log_history: IGpuLogHistory }>(getGpuLogHistory, {
-    variables: {
-      gpu_id: gpuId,
-      interval,
-    },
-    fetchPolicy: "network-only",
-  });
+const timestamp = new Array(20).fill(0).map((_, i) => new Date().getTime() + i * 120000);
 
-  useEffect(() => {
-    const unsubscribe = subscribeToMore({
-      document: onGpuLogHistoryChange,
-      variables: { gpu_id: gpuId, interval },
-      updateQuery: (prev, { subscriptionData }) => {
-        return { gpu_log_history: subscriptionData?.data?.gpu_log_history ?? prev };
-      },
-    });
+const data = new Array(20).fill(0).map(() => Math.random() * 100);
 
-    return () => unsubscribe();
-  }, [gpuId, interval, subscribeToMore]);
-
-  const timestamps = data?.gpu_log_history?.timestamp?.map((data) => getTimeLabel(data, interval));
-
-  // replace duplicate timestamp data
-  const reversedTimestamps = [...(timestamps ?? [])].reverse();
-
-  const chartLabels = reversedTimestamps
-    ?.map((timestamp, index) => {
-      if (!reversedTimestamps?.includes(timestamp, index + 1)) {
-        return timestamp;
-      }
-      return null;
-    })
-    .reverse();
+export const CPUChart = ({ interval }: IChart) => {
+  const timestamps = timestamp?.map((data) => getTimeLabel(data, interval));
 
   return (
     <div className="border border-[#686868] rounded p-5 pt-6 h-[292px]">
       <Line
-        options={getOptions(data?.gpu_log_history?.name ?? "", chartLabels)}
+        options={getOptions()}
         data={{
           labels: timestamps ?? [],
           datasets: [
             {
               label: "Util percent",
-              data: data?.gpu_log_history?.util_percent ?? [],
+              data: data,
               backgroundColor: "#88E207",
               borderColor: "#88E207",
             },
