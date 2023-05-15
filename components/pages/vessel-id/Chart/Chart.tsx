@@ -11,74 +11,83 @@ import { onGpuLogHistoryChange } from "@/graphql/gpu/onGpuLogHistoryChange";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip);
 
-const getOptions = (title: string) => ({
-  responsive: true,
-  maintainAspectRatio: false,
-  elements: {
-    point: {
-      radius: 1,
-    },
-  },
-  scales: {
-    x: {
-      offset: true,
-      border: {
-        color: "#A4A4A4",
+const getOptions = (title: string, chartLabels: (string | null)[]) => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    elements: {
+      point: {
+        radius: 1,
       },
-      ticks: {
-        color: "#F7F7F7",
-        font: {
-          size: 11,
+    },
+    scales: {
+      x: {
+        offset: true,
+        border: {
+          color: "#A4A4A4",
         },
-        padding: 5,
+        ticks: {
+          color: "#F7F7F7",
+          font: {
+            size: 11,
+          },
+          padding: 5,
+          callback: (value: string | number, index: number) => {
+            // to avoid overlapping the first label
+            if (index === 0 && chartLabels[chartLabels.length - 1] === null) {
+              return null;
+            }
+            return chartLabels[index];
+          },
+        },
+        grid: {
+          drawOnChartArea: false,
+          color: "#A4A4A4",
+        },
       },
-      grid: {
-        drawOnChartArea: false,
-        color: "#A4A4A4",
-      },
-    },
 
-    y: {
-      min: 0,
-      max: 100,
-      offset: true,
-      border: {
-        color: "#A4A4A4",
-      },
-      grid: {
-        drawOnChartArea: false,
-        color: "#A4A4A4",
-      },
-      ticks: {
-        color: "#F7F7F7",
-        font: {
-          size: 11,
+      y: {
+        min: 0,
+        max: 100,
+        offset: true,
+        border: {
+          color: "#A4A4A4",
         },
-        padding: 5,
-        stepSize: 20,
-        count: 5,
-        callback: (value: number | string) => `${value}%`,
+        grid: {
+          drawOnChartArea: false,
+          color: "#A4A4A4",
+        },
+        ticks: {
+          color: "#F7F7F7",
+          font: {
+            size: 11,
+          },
+          padding: 5,
+          stepSize: 20,
+          count: 5,
+          callback: (value: number | string) => `${value}%`,
+        },
       },
     },
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: `GPU ${title} Usage`,
-      color: "#F6F6F6",
-      font: {
-        size: 16,
-        weight: "700",
+    plugins: {
+      legend: {
+        display: false,
       },
-      padding: {
-        bottom: 35,
+      title: {
+        display: true,
+        text: `GPU ${title} Usage`,
+        color: "#F6F6F6",
+        font: {
+          size: 16,
+          weight: "700",
+        },
+        padding: {
+          bottom: 35,
+        },
       },
     },
-  },
-});
+  };
+};
 
 const getTimeLabel = (timestamp: string, interval: IntervalValue) => {
   const date = new Date(timestamp);
@@ -117,27 +126,30 @@ export const Chart = ({ gpuId, interval }: IChart) => {
     return () => unsubscribe();
   }, [gpuId, interval, subscribeToMore]);
 
-  const chartData = data?.gpu_log_history?.timestamp?.map((t, i) => ({
-    util_percent: data?.gpu_log_history?.util_percent[i],
-    timestamp: getTimeLabel(t, interval),
-    memory_util_percent: data?.gpu_log_history?.memory_util_percent[i],
-  }));
+  const timestamps = data?.gpu_log_history?.timestamp?.map((data) => getTimeLabel(data, interval));
 
-  // remove duplicate timestamp data
-  const timestamps = chartData?.map((data) => data.timestamp);
+  // replace duplicate timestamp data
+  const reversedTimestamps = [...(timestamps ?? [])].reverse();
 
-  const filteredChartData = chartData?.filter(({ timestamp }, index) => !timestamps?.includes(timestamp, index + 1));
+  const chartLabels = reversedTimestamps
+    ?.map((timestamp, index) => {
+      if (!reversedTimestamps?.includes(timestamp, index + 1)) {
+        return timestamp;
+      }
+      return null;
+    })
+    .reverse();
 
   return (
     <div className="border border-[#686868] rounded p-5 pt-6 h-[292px]">
       <Line
-        options={getOptions(data?.gpu_log_history?.name ?? "")}
+        options={getOptions(data?.gpu_log_history?.name ?? "", chartLabels)}
         data={{
-          labels: filteredChartData?.map((data) => data.timestamp) ?? [],
+          labels: timestamps ?? [],
           datasets: [
             {
               label: "Util percent",
-              data: filteredChartData?.map((data) => data.util_percent) ?? [],
+              data: data?.gpu_log_history?.util_percent ?? [],
               backgroundColor: "#88E207",
               borderColor: "#88E207",
             },
