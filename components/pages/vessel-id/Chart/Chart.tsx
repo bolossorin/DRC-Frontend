@@ -89,7 +89,7 @@ const getOptions = (title: string) => ({
 const getTimeLabel = (timestamp: string, interval: IntervalValue) => {
   const date = new Date(timestamp);
 
-  if (interval === "one_day" || interval === "seven_day") {
+  if (interval === "seven_day") {
     return `${date.getDate()}/${date.getMonth() + 1}`;
   }
   const hours = date.getHours();
@@ -135,7 +135,7 @@ export const Chart = ({ gpuId, interval }: IChart) => {
   const filteredChartData = chartData?.filter(({ timestamp }, index) => !timestamps?.includes(timestamp, index + 1));
 
   return (
-    <div className="border border-[#686868] rounded p-5 pt-6 h-[352px]">
+    <div className="border border-[#686868] rounded p-5 pt-6 h-[292px]">
       <Line
         options={getOptions(data?.gpu_log_history?.name ?? "")}
         data={{
