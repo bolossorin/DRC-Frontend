@@ -123,22 +123,33 @@ export const Chart = ({ gpuId, interval }: IChart) => {
     return () => unsubscribe();
   }, [gpuId, interval, subscribeToMore]);
 
+  const chartData = data?.gpu_log_history?.timestamp?.map((t, i) => ({
+    util_percent: data?.gpu_log_history?.util_percent[i],
+    timestamp: getTimeLabel(t, interval),
+    memory_util_percent: data?.gpu_log_history?.memory_util_percent[i],
+  }));
+
+  // remove duplicate timestamp data
+  const timestamps = chartData?.map((data) => data.timestamp);
+
+  const filteredChartData = chartData?.filter(({ timestamp }, index) => !timestamps?.includes(timestamp, index + 1));
+
   return (
     <div className="border border-[#686868] rounded p-5 pt-6 h-[352px]">
       <Line
         options={getOptions(data?.gpu_log_history?.name ?? "")}
         data={{
-          labels: data?.gpu_log_history?.timestamp?.map((t) => getTimeLabel(t, interval)) ?? [],
+          labels: filteredChartData?.map((data) => data.timestamp) ?? [],
           datasets: [
             {
               label: "Util percent",
-              data: data?.gpu_log_history?.util_percent ?? [],
+              data: filteredChartData?.map((data) => data.util_percent) ?? [],
               backgroundColor: "#88E207",
               borderColor: "#88E207",
             },
             {
               label: "Memory util percent",
-              data: data?.gpu_log_history?.memory_util_percent ?? [],
+              data: filteredChartData?.map((data) => data.memory_util_percent) ?? [],
               backgroundColor: "#FFC36A",
               borderColor: "#FFC36A",
             },
