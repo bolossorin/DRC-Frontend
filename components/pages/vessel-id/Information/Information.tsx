@@ -114,8 +114,8 @@ export const Information = ({ vessel }: IInformation) => {
             <li className="flex items-start">
               <span className="!w-20">GPUs:</span>
               <ul>
-                {vessel?.gpu_names?.map((id) => (
-                  <li key={id}>{id}</li>
+                {vessel?.gpu_names?.map((id, i) => (
+                  <li key={i}>{id}</li>
                 ))}
               </ul>
             </li>

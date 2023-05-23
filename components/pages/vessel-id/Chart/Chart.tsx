@@ -15,11 +15,14 @@ import { Line } from "react-chartjs-2";
 // assets
 import { getGpuLogHistory } from "@/graphql/gpu/getGpuLogHistory";
 import { IGpuLogHistory, IntervalValue } from "@/graphql/types/gpuLogHistory";
+import { useEffect } from "react";
+import { onGpuLogHistoryChange } from "@/graphql/gpu/onGpuLogHistoryChange";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
 const getOptions = (title: string) => ({
   responsive: true,
+  maintainAspectRatio: false,
   elements: {
     point: {
       radius: 1,
@@ -75,9 +78,6 @@ const getOptions = (title: string) => ({
       display: true,
       text: `GPU ${title} Usage`,
       color: "#F6F6F6",
-      padding: {
-        bottom: 40,
-      },
       font: {
         size: 16,
         weight: "700",
@@ -102,7 +102,7 @@ interface IChart {
 }
 
 export const Chart = ({ gpuId, interval }: IChart) => {
-  const { data } = useQuery<{ gpu_log_history: IGpuLogHistory }>(getGpuLogHistory, {
+  const { data, subscribeToMore } = useQuery<{ gpu_log_history: IGpuLogHistory }>(getGpuLogHistory, {
     variables: {
       gpu_id: gpuId,
       interval,
@@ -110,8 +110,20 @@ export const Chart = ({ gpuId, interval }: IChart) => {
     fetchPolicy: "network-only",
   });
 
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: onGpuLogHistoryChange,
+      variables: { gpu_id: gpuId, interval },
+      updateQuery: (prev, { subscriptionData }) => {
+        return { gpu_log_history: subscriptionData?.data?.gpu_log_history ?? prev };
+      },
+    });
+
+    return () => unsubscribe();
+  }, [gpuId, interval, subscribeToMore]);
+
   return (
-    <div className="border border-[#686868] rounded p-5 pt-6">
+    <div className="border border-[#686868] rounded p-5 pt-6 h-[352px]">
       <Line
         options={getOptions(data?.gpu_log_history?.name ?? "")}
         data={{
