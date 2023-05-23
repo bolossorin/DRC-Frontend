@@ -92,8 +92,9 @@ const getTimeLabel = (timestamp: string, interval: IntervalValue) => {
   if (interval === "one_day" || interval === "seven_day") {
     return `${date.getDate()}/${date.getMonth() + 1}`;
   }
-
-  return `${date.getHours()}:${date.getMinutes()}`;
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}`;
 };
 
 interface IChart {
