@@ -49,7 +49,7 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
             </div>
           ))}
         </div>
-        <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4">
+        <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
           {gpuIds.map((id) => (
             <Chart key={id} gpuId={id} interval={interval.value} />
           ))}
