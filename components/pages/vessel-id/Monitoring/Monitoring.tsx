@@ -8,11 +8,9 @@ import { H4 } from "@/components/common";
 import { GraphIcon } from "@/components/common/Icons";
 
 // assets
-import styles from "./Experiments.module.scss";
 import { ISession } from "@/graphql/types/session";
 import { Chart } from "../Chart/Chart";
-
-type IntervalValue = "five_min" | "fifteen_min" | "one_hour" | "three_hour" | "six_hour" | "one_day" | "seven_day";
+import { IntervalValue } from "@/graphql/types/gpuLogHistory";
 
 type Interval = { label: string; value: IntervalValue };
 
@@ -27,11 +25,11 @@ const intervals: Interval[] = [
 ];
 
 interface IMonitoring {
-  gpuIds?: ISession["gpu_ids"];
+  gpuIds: ISession["gpu_ids"];
 }
 
 export const Monitoring = ({ gpuIds }: IMonitoring) => {
-  const [interval, setInterval] = useState<Interval>(intervals[2]);
+  const [interval, setInterval] = useState<Interval>(intervals[0]);
 
   return (
     <div className="px-2 md:p-6 md:pl-2 md:pt-4 w-full">
@@ -42,22 +40,19 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
         </H4>
         <div className="flex lg:gap-16 md:gap-10 gap-2 items-center mt-6 py-3 md:px-[30px] px-3 border border-[#686868] rounded w-max">
           {intervals.map((i) => (
-            <div key={i.value} className={cn("cursor-pointer", interval.value === i.value && "text-[#88E207]")}>
+            <div
+              key={i.value}
+              onClick={() => setInterval(i)}
+              className={cn("cursor-pointer", interval.value === i.value && "text-[#88E207]")}
+            >
               {i.label}
             </div>
           ))}
         </div>
-        <div className="max-w-[464px] h-[292px]">
-          <Chart />
-        </div>
-        <div className="max-w-[464px]">
-          <Chart />
-        </div>
-        <div className="max-w-[464px]">
-          <Chart />
-        </div>
-        <div className="max-w-[464px]">
-          <Chart />
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {gpuIds.map((id) => (
+            <Chart key={id} gpuId={id} interval={interval.value} />
+          ))}
         </div>
       </div>
     </div>

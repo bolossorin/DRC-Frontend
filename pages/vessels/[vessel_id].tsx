@@ -87,7 +87,7 @@ export default function VesselID() {
         <Information vessel={session} />
         <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
         {/*<Experiments />*/}
-        <Monitoring />
+        <Monitoring gpuIds={session?.gpu_ids ?? []} />
       </div>
     </Layout>
   );
