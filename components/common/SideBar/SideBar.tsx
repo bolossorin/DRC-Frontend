@@ -13,6 +13,7 @@ import {
   MobileLogoIcon,
   VesselIcon,
   BurgerIcon,
+  HardwareIcon,
 } from "../Icons";
 import { SideBarDrawer } from "./SideBarDrawer";
 
@@ -27,7 +28,7 @@ const links = [
   //{ icon: <AdminIcon />, title: 'Admin', link: '#' },
   { icon: <VesselIcon />, title: "Vessels", link: routes.vessels },
   //{ icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
-  //{ icon: <HardwareIcon />, title: 'Hardware', link: routes.hardware },
+  { icon: <HardwareIcon />, title: "Hardware", link: routes.hardware },
   { icon: <LogOutIcon />, title: "Log Out", link: "/api/auth/logout" },
 ];
 
@@ -45,7 +46,7 @@ export const SideBar: FC = () => {
 
   return (
     <>
-      <div className='block lg:hidden'>
+      <div className="block lg:hidden">
         <SideBarDrawer
           open={openMenu}
           onClose={() => setOpenMenu(false)}
@@ -61,36 +62,45 @@ export const SideBar: FC = () => {
           styles.sideBar
         )}
       >
-        <Link href='/vessels' className='hidden lg:inline'>
-          <img className='w-[116px] mx-10 mb-2' src={"/logo.svg"} alt='' />
+        <Link href="/vessels" className="hidden lg:inline">
+          <img className="w-[116px] mx-10 mb-2" src={"/logo.svg"} alt="" />
         </Link>
-        <div className='block lg:hidden' onClick={() => setOpenMenu(true)}>
+        <div className="block lg:hidden" onClick={() => setOpenMenu(true)}>
           <BurgerIcon />
         </div>
         {/* Previously, there was a link to the profile: <a href={routes.myProfile} className="mx-10 group hover:opacity-80 transition-all" > */}
-        <div className='mx-10 my-10 text-center hidden lg:block'>
-          <div className='w-20 h-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto relative'>
-            <img src={user.picture} alt='' className='object-cover' />
+        <div className="mx-10 my-10 text-center hidden lg:block">
+          <div className="w-20 h-20 mb-6 rounded-full overflow-hidden mb-4 mx-auto relative">
+            <img src={user.picture} alt="" className="object-cover" />
           </div>
-          <H5 classname='font-medium flex items-center justify-center'>
-            <span className='w-2 h-2 rounded-full bg-[#88E207] mr-3'></span>
+          <H5 classname="font-medium flex items-center justify-center">
+            <span className="w-2 h-2 rounded-full bg-[#88E207] mr-3"></span>
             {user.name}
           </H5>
-          <H6 classname='text-[#D9D9D9] font-medium'>{data?.my_user.job_title || ""}</H6>
+          <H6 classname="text-[#D9D9D9] font-medium">
+            {data?.my_user.job_title || ""}
+          </H6>
         </div>
-        <ul className='pt-2 pb-12'>
+        <ul className="pt-2 pb-12">
           {links.map((link) => (
-            <li key={link.title} className={cn({ [styles.active]: router.asPath === link.link })}>
+            <li
+              key={link.title}
+              className={cn({ [styles.active]: router.asPath === link.link })}
+            >
               <Link href={link.link} legacyBehavior>
-                <a className={cn("flex items-center block lg:px-10 px-5 lg:py-5 py-4 transition-all")}>
-                  <span className='w-6 lg:w-5 lg:mr-5'>{link.icon}</span>
-                  <span className='hidden lg:inline'>{link.title}</span>
+                <a
+                  className={cn(
+                    "flex items-center block lg:px-10 px-5 lg:py-5 py-4 transition-all"
+                  )}
+                >
+                  <span className="w-6 lg:w-5 lg:mr-5">{link.icon}</span>
+                  <span className="hidden lg:inline">{link.title}</span>
                 </a>
               </Link>
             </li>
           ))}
         </ul>
-        <Link href='/vessels' className='inline lg:hidden'>
+        <Link href="/vessels" className="inline lg:hidden">
           <MobileLogoIcon />
         </Link>
       </div>
@@ -102,5 +112,5 @@ export const SideBar: FC = () => {
  * Invisible block taking up space under the menu.
  */
 function Placeholder() {
-  return <div className='shrink-0 lg:w-80 w-16' />;
+  return <div className="shrink-0 lg:w-80 w-16" />;
 }
