@@ -18,7 +18,7 @@ interface IUserProps {
 export const Usage: FC<IUserProps> = ({ queueUsage, sessionsOverview }) => {
   const [showTab, setShowTab] = useState(1);
   return (
-    <div className={"flex-1 border border-[#414040] rounded overflow-auto"}>
+    <div className={"flex-1 border border-[#414040] rounded overflow-visible"}>
       <div className="min-w-[500px]">
         <div className="flex items-center justify-between text-center border-b border-[#414040]">
           <H5
