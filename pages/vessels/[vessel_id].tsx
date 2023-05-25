@@ -86,7 +86,7 @@ export default function VesselID() {
       <div className="flex flex-wrap">
         <Information vessel={session} />
         <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
-        <Experiments />
+        {/* <Experiments /> */}
         <Monitoring gpuIds={session?.gpu_ids ?? []} />
       </div>
     </Layout>
