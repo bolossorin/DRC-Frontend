@@ -54,7 +54,7 @@ export const Monitoring = ({ gpuIds }: IMonitoring) => {
           {gpuIds.map((id) => (
             <GPUChart key={id} gpuId={id} interval={interval.value} />
           ))}
-          <CPUChart interval={interval.value} />
+          {/* <CPUChart interval={interval.value} /> */}
         </div>
       </div>
     </div>
