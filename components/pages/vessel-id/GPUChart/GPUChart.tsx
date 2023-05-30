@@ -34,7 +34,8 @@ const getOptions = (title: string, chartLabels: (string | null)[]) => {
           padding: 5,
           callback: (value: string | number, index: number) => {
             // to avoid overlapping the first label
-            if (index === 0 && chartLabels[chartLabels.length - 1] === null) {
+            const otherLabels = chartLabels.filter((l) => l !== chartLabels[index] && l !== null);
+            if (index === 0 && otherLabels.length > 1 && chartLabels[chartLabels.length - 1] === null) {
               return null;
             }
             return chartLabels[index];
@@ -106,7 +107,7 @@ interface IChart {
 }
 
 export const GPUChart = ({ gpuId, interval }: IChart) => {
-  const { data, subscribeToMore } = useQuery<{ gpu_log_history: IGpuLogHistory }>(getGpuLogHistory, {
+  const { data, subscribeToMore, loading } = useQuery<{ gpu_log_history: IGpuLogHistory }>(getGpuLogHistory, {
     variables: {
       gpu_id: gpuId,
       interval,
@@ -139,6 +140,10 @@ export const GPUChart = ({ gpuId, interval }: IChart) => {
       return null;
     })
     .reverse();
+
+  if (loading) {
+    return <div className="border border-[#686868] rounded h-[292px] flex justify-center items-center">Loading...</div>;
+  }
 
   if (!data || data?.gpu_log_history === null) {
     return null;
