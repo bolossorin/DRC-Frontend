@@ -34,10 +34,18 @@ interface ITable<T> {
 export interface SelectedElement {
   id: string;
   state: string;
+  name: string;
 }
 
 export const Table = <
-  T extends { id: string; state: string; fqdn?: string | null; ssh_config?: string | null; ssh_command?: string | null }
+  T extends {
+    id: string;
+    name?: string;
+    state: string;
+    fqdn?: string | null;
+    ssh_config?: string | null;
+    ssh_command?: string | null;
+  }
 >({
   items,
   columns,
@@ -73,7 +81,7 @@ export const Table = <
 
   useEffect(() => {
     if (selectAll) {
-      if (items) setCurrentSelected(items.map((x) => ({ id: x.id, state: x.state })));
+      if (items) setCurrentSelected(items.map((x) => ({ id: x.id, state: x.state, name: x?.name || x.id })));
       return;
     }
     setCurrentSelected([]);
@@ -167,7 +175,7 @@ export const Table = <
                 <Cell classname="w-[40px]">
                   <Checkbox
                     classname="relative top-0.5"
-                    onChange={handleSelect({ id: row.id, state: row.state })}
+                    onChange={handleSelect({ id: row.id, state: row.state, name: row?.name || row.id })}
                     checked={isSelected(row.id)}
                   />
                 </Cell>
