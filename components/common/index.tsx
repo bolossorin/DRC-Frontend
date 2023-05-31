@@ -19,3 +19,4 @@ export { Code } from "./Code/Code";
 export { VesselTitle } from "./VesselTitle/VesselTitle";
 export { LoadingSpinner } from "./LoadingSpinner/LoadingSpinner";
 export { Dropdown } from "./Dropdown/Dropdown";
+export { Iteration } from "./Iteration/Iteration";

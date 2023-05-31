@@ -1,0 +1,179 @@
+// libs
+import React, { useEffect, useState } from "react";
+
+// hooks
+import { useQuery } from "@apollo/client";
+import { useRegion } from "@/context/region";
+
+// components
+import { H2, Iteration, Layout, State } from "@/components/common";
+import { Actions, Cell, Filters, Pagination, Table, TableSetting } from "@/components/pages/vessels";
+import Link from "next/link";
+
+// assets
+import styles from "../components/pages/vessels/index.module.scss";
+import { routes } from "@/utility/routes";
+import { getExperiments } from "@/graphql/experiments/getExperiments";
+
+// types
+import { SelectedElement } from "@/components/pages/vessels/Table/Table";
+import { IFilter } from "@/utility/types";
+import { IExperiment } from "@/graphql/types/experiment";
+
+export const experimentsTableColumns = [
+  {
+    label: "Experiment ID",
+    key: "id",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
+          {item.id}
+        </Link>
+      </Cell>
+    ),
+    hideByDefault: false,
+  },
+  {
+    label: "State",
+    key: "state",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <State state={item.state} />
+      </Cell>
+    ),
+  },
+  {
+    label: "Created",
+    key: "created_at",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell classname="whitespace-nowrap" key={key}>
+        {new Date(item.created_at).toLocaleString("en-US")}
+      </Cell>
+    ),
+  },
+  {
+    label: "Iteration",
+    key: "gpu_names",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Iteration iterCurrent={item.iter_current} iterEnd={item.iter_end} />
+      </Cell>
+    ),
+  },
+  {
+    label: "Vessel ID",
+    key: "session_id",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Link href={`${routes.vessels}/${item.session_id}`} className="hover:underline">
+          {item.id}
+        </Link>
+      </Cell>
+    ),
+  },
+];
+
+export default function Experiments() {
+  const [region] = useRegion();
+
+  const { data } = useQuery<{ my_experiments: IExperiment[] }>(getExperiments, {
+    variables: {
+      limit: 10000,
+      offset: 0,
+      region,
+    },
+  });
+
+  const [isStopModal, setIsStopModal] = useState(false);
+  const [isCreateExperiment, setIsCreateExperiment] = useState(false);
+  const [filters, setFilters] = useState<IFilter[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<SelectedElement[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+
+  const [columnSettings, setColumnSettings] = useState(
+    experimentsTableColumns.map((c) => ({
+      label: c.label,
+      key: c.key,
+      checked: !c.hideByDefault,
+    }))
+  );
+
+  const [pagination, setPagination] = useState({
+    limit: 10,
+    offset: 0,
+  });
+
+  const [paginatedExperiments, setPaginatedExperiments] = useState<IExperiment[] | null>([]);
+
+  useEffect(() => {
+    const experiments = data?.my_experiments.slice(pagination.offset, pagination.offset + pagination.limit);
+    if (experiments) setPaginatedExperiments(experiments);
+  }, [data?.my_experiments, pagination]);
+
+  const handlePageChange = (offset: number) => {
+    setPagination((prev) => ({ ...prev, offset }));
+  };
+
+  const handleChangePageLimit = (limit: number) => {
+    setPagination({ offset: 0, limit });
+  };
+
+  return (
+    <Layout
+      title="Experiments | Deep Render Cloud"
+      description="Experiments | Deep Render Cloud"
+      label={<H2 classname="!mb-0">Experiments</H2>}
+    >
+      <div className="px-8 pt-6 pb-5 flex flex-wrap items-center justify-between gap-6">
+        {/*<Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />*/}
+        <div className="grow" />
+        <div className="flex flex-wrap items-center gap-4 md:gap-10">
+          <Actions
+            currentSelected={currentSelected}
+            setIsStopModal={setIsStopModal}
+            setIsCreateVessels={setIsCreateExperiment}
+            vsCodeLink={""}
+          />
+          <Pagination
+            totalCount={data?.my_experiments.length ?? 0}
+            limit={pagination.limit}
+            offset={pagination.offset}
+            onPageChange={handlePageChange}
+          />
+          <div className="relative z-10 w-6 group">
+            <img
+              className="opacity-50 group-hover:opacity-100 cursor-pointer transition-all"
+              src="/setting.svg"
+              alt=""
+            />
+            <TableSetting
+              onPageLimitChange={handleChangePageLimit}
+              pageLimit={pagination.limit}
+              columnSettings={columnSettings}
+              setColumnSettingsList={setColumnSettings}
+            />
+          </div>
+        </div>
+      </div>
+      {filters.length > 0 && (
+        <div className="px-6 pb-6">
+          <Filters filters={filters} setFilters={setFilters} />
+        </div>
+      )}
+      <div className={styles.table}>
+        <Table<IExperiment>
+          className="w-full overflow-y-auto"
+          items={paginatedExperiments}
+          columns={experimentsTableColumns.filter(
+            (column) => !!columnSettings.find((s) => s.key === column.key)?.checked
+          )}
+          selected={currentSelected}
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
+          setCurrentSelected={setCurrentSelected}
+          onSessionStop={(id: string) => {}}
+        />
+      </div>
+    </Layout>
+  );
+}
