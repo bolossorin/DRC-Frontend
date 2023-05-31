@@ -29,6 +29,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     const regionData = localStorage.getItem("region");
     if (regionData) {
       setRegion(regionData);
+    } else {
+      setRegion("uk-south-1");
     }
   }, []);
 
