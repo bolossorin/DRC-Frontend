@@ -30,6 +30,7 @@ export const Iteration: FC<IIteration> = ({ iterCurrent, iterEnd }) => {
             ],
           }}
           options={{
+            events: [],
             plugins: {
               legend: {
                 display: false,
