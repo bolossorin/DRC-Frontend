@@ -1,13 +1,13 @@
 import React from "react";
 
-import { SelectedVessel } from "../Table/Table";
+import { SelectedElement } from "../Table/Table";
 import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 
 // components
 import { Button } from "@/components/common";
 
 interface IActions {
-  currentSelected: SelectedVessel[];
+  currentSelected: SelectedElement[];
   setIsStopModal: (value: boolean) => void;
   setIsCreateVessels: (value: boolean) => void;
   vsCodeLink: string | undefined;
@@ -50,9 +50,9 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
   );
 };
 
-function hasRunningVessels(selectedVessels: SelectedVessel[]): boolean {
+function hasRunningVessels(selectedVessels: SelectedElement[]): boolean {
   for (const v of selectedVessels) {
-    if (!inactiveSessionStatuses.includes(v.state)) return true
+    if (!inactiveSessionStatuses.includes(v.state)) return true;
   }
-  return false
+  return false;
 }

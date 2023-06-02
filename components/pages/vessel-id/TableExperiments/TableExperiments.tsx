@@ -10,7 +10,7 @@ ChartJS.register(ArcElement);
 
 // components
 import { Cell, CelHeader, Row } from "../../vessels";
-import { State } from "@/components/common";
+import { Iteration, State } from "@/components/common";
 import { routes } from "@/utility/routes";
 
 // assets
@@ -95,39 +95,7 @@ export const TableExperiments = () => {
               </StyledCell>
               <StyledCell>{row.created}</StyledCell>
               <StyledCell>
-                <div className="flex items-center">
-                  <div className="relative w-[36px] h-[36px] mr-2">
-                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px]">
-                      {((row.iteration1 / row.iteration2) * 100).toFixed(0)}%
-                    </span>
-                    <Doughnut
-                      data={{
-                        datasets: [
-                          {
-                            data: [row.iteration1, row.iteration2],
-                            backgroundColor: ["#D9D9D9", "#88E207"],
-                            hoverOffset: 4,
-                            borderWidth: 0,
-                            // @ts-ignore
-                            cutout: "80%",
-                          },
-                        ],
-                      }}
-                      options={{
-                        plugins: {
-                          legend: {
-                            display: false,
-                          },
-                          title: {
-                            display: false,
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                  {new Intl.NumberFormat("en-US").format(row.iteration1)} /{" "}
-                  {new Intl.NumberFormat("en-US").format(row.iteration2)}
-                </div>
+                <Iteration iterCurrent={row.iteration1} iterEnd={row.iteration2} />
               </StyledCell>
             </Row>
           ))}

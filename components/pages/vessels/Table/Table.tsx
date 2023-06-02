@@ -10,7 +10,6 @@ import { Checkbox, H4 } from "@/components/common";
 import { StopVesselsModal } from "@/components/common/Modals";
 
 // assets
-import { ISession } from "@/graphql/types/session";
 import listStyles from "@/components/common/List/List.module.scss";
 import { inactiveSessionStatuses } from "@/utility/inactiveSessionStatuses";
 import styles from "./Table.module.scss";
@@ -21,24 +20,33 @@ interface IColumn<T> {
   renderCell?: (item: T, key: string) => React.ReactNode;
 }
 
-interface ITable {
-  items: ISession[] | null;
-  columns: IColumn<ISession>[];
-  selected: SelectedVessel[];
-  setCurrentSelected: (value: SelectedVessel[] | ((v: SelectedVessel[]) => SelectedVessel[])) => void;
+interface ITable<T> {
+  items: T[] | null;
+  columns: IColumn<T>[];
+  selected: SelectedElement[];
+  setCurrentSelected: (value: SelectedElement[] | ((v: SelectedElement[]) => SelectedElement[])) => void;
   selectAll: boolean;
   setSelectAll: (value: boolean) => void;
   onSessionStop: (id: string) => void;
   className: string;
 }
 
-export interface SelectedVessel {
+export interface SelectedElement {
   id: string;
   state: string;
   name: string;
 }
 
-export const Table = ({
+export const Table = <
+  T extends {
+    id: string;
+    name?: string;
+    state: string;
+    fqdn?: string | null;
+    ssh_config?: string | null;
+    ssh_command?: string | null;
+  }
+>({
   items,
   columns,
   selected,
@@ -47,7 +55,7 @@ export const Table = ({
   setCurrentSelected,
   onSessionStop,
   className,
-}: ITable) => {
+}: ITable<T>) => {
   const [isStopModal, setIsStopModal] = useState(false);
   const [vesselId, setVesselId] = useState<string>("");
   const [isBottom, setIsBottom] = useState<boolean>(false);
@@ -59,11 +67,11 @@ export const Table = ({
     return false;
   };
 
-  const handleSelect = (vessel: SelectedVessel) => () => {
+  const handleSelect = (vessel: SelectedElement) => () => {
     if (isSelected(vessel.id)) {
-      return setCurrentSelected((prev: SelectedVessel[]) => prev.filter((x) => x.id !== vessel.id));
+      return setCurrentSelected((prev: SelectedElement[]) => prev.filter((x) => x.id !== vessel.id));
     }
-    setCurrentSelected((prev: SelectedVessel[]) => [...prev, vessel]);
+    setCurrentSelected((prev: SelectedElement[]) => [...prev, vessel]);
   };
 
   const handleOpenStopVesselModal = (id: string) => {
@@ -73,7 +81,7 @@ export const Table = ({
 
   useEffect(() => {
     if (selectAll) {
-      if (items) setCurrentSelected(items.map((x) => ({ id: x.id, state: x.state, name: x.name })));
+      if (items) setCurrentSelected(items.map((x) => ({ id: x.id, state: x.state, name: x?.name || x.id })));
       return;
     }
     setCurrentSelected([]);
@@ -140,32 +148,34 @@ export const Table = ({
                       onClick={() => handleOpenStopVesselModal(row.id)}
                       disabled={inactiveSessionStatuses.includes(row.state)}
                     />
-                    <li
-                      className={cn(
-                        "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",
-                        inactiveSessionStatuses.includes(row.state) && "opacity-50 cursor-default hover:bg-inherit"
-                      )}
-                    >
-                      {!inactiveSessionStatuses.includes(row.state) ? (
-                        <Link href={"https://" + row?.fqdn} target="_blank" className="flex items-center">
-                          <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
-                          <p>VS Code</p>
-                        </Link>
-                      ) : (
-                        <>
-                          <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
-                          <p>VS Code</p>
-                        </>
-                      )}
-                    </li>
-                    <CopyButton content={row.ssh_config} label="Copy SSH Config" />
-                    <CopyButton content={row.ssh_command} label="Copy SSH Command" />
+                    {row?.fqdn !== undefined && (
+                      <li
+                        className={cn(
+                          "flex items-center border-b border-b-[#686868] hover:bg-[#535353] transition-all cursor-pointer select-none",
+                          inactiveSessionStatuses.includes(row.state) && "opacity-50 cursor-default hover:bg-inherit"
+                        )}
+                      >
+                        {!inactiveSessionStatuses.includes(row.state) ? (
+                          <Link href={"https://" + row?.fqdn} target="_blank" className="flex items-center">
+                            <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
+                            <p>VS Code</p>
+                          </Link>
+                        ) : (
+                          <>
+                            <img className="w-4 mr-3" src="/vscode-alt.svg" alt="" />
+                            <p>VS Code</p>
+                          </>
+                        )}
+                      </li>
+                    )}
+                    {row.ssh_config !== undefined && <CopyButton content={row.ssh_config} label="Copy SSH Config" />}
+                    {row.ssh_command !== undefined && <CopyButton content={row.ssh_command} label="Copy SSH Command" />}
                   </ul>
                 </Cell>
                 <Cell classname="w-[40px]">
                   <Checkbox
                     classname="relative top-0.5"
-                    onChange={handleSelect({ id: row.id, state: row.state, name: row.name })}
+                    onChange={handleSelect({ id: row.id, state: row.state, name: row?.name || row.id })}
                     checked={isSelected(row.id)}
                   />
                 </Cell>
@@ -174,7 +184,7 @@ export const Table = ({
                     renderCell(row, key)
                   ) : (
                     <Cell classname={cn(label.toLowerCase().replaceAll(" ", ""), "whitespace-nowrap")} key={key}>
-                      {row[key as keyof ISession]}
+                      {row[key as keyof T]}
                     </Cell>
                   )
                 )}

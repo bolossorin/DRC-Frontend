@@ -1,6 +1,7 @@
 export const routes = {
-  login: '/login',
-  vessels: '/vessels',
-  myProfile: '/my-profile',
-  hardware: '/hardware'
-}
+  login: "/login",
+  vessels: "/vessels",
+  myProfile: "/my-profile",
+  hardware: "/hardware",
+  experiments: "/experiments",
+};
