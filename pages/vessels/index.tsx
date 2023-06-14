@@ -6,7 +6,7 @@ import { stopSession } from "@/graphql/sessions/stopSession";
 import { createSession } from "@/graphql/sessions/createSession";
 import { CreateSessionArgs, ISession } from "@/graphql/types/session";
 import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
-import { SelectedVessel } from "@/components/pages/vessels/Table/Table";
+import { SelectedElement } from "@/components/pages/vessels/Table/Table";
 
 // components
 import { Layout, State, VesselTitle } from "@/components/common";
@@ -107,7 +107,7 @@ export const sessionsTableColumns = [
 
 export default function Vessels() {
   const [selectAll, setSelectAll] = useState<boolean>(false);
-  const [currentSelected, setCurrentSelected] = useState<SelectedVessel[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<SelectedElement[]>([]);
   const [filters, setFilters] = useState<IFilter[]>([]);
   const [isStopModal, setIsStopModal] = useState(false);
   const [isAddedModal, setIsAddedModal] = useState(false);
@@ -332,7 +332,7 @@ export default function Vessels() {
         </div>
       )}
       <div className={styles.table}>
-        <Table
+        <Table<ISession>
           className="w-full overflow-y-auto"
           items={paginatedSessions}
           columns={sessionsTableColumns.filter((column) => !!columnSettings.find((s) => s.key === column.key)?.checked)}

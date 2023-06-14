@@ -14,6 +14,7 @@ import {
   VesselIcon,
   BurgerIcon,
   HardwareIcon,
+  ExperimentsIcon,
 } from "../Icons";
 import { SideBarDrawer } from "./SideBarDrawer";
 
@@ -27,7 +28,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const links = [
   //{ icon: <AdminIcon />, title: 'Admin', link: '#' },
   { icon: <VesselIcon />, title: "Vessels", link: routes.vessels },
-  //{ icon: <ExperimentsIcon />, title: 'Experiments', link: '#' },
+  { icon: <ExperimentsIcon />, title: "Experiments", link: routes.experiments },
   { icon: <HardwareIcon />, title: "Hardware", link: routes.hardware },
   { icon: <LogOutIcon />, title: "Log Out", link: "/api/auth/logout" },
 ];
@@ -77,22 +78,13 @@ export const SideBar: FC = () => {
             <span className="w-2 h-2 rounded-full bg-[#88E207] mr-3"></span>
             {user.name}
           </H5>
-          <H6 classname="text-[#D9D9D9] font-medium">
-            {data?.my_user.job_title || ""}
-          </H6>
+          <H6 classname="text-[#D9D9D9] font-medium">{data?.my_user.job_title || ""}</H6>
         </div>
         <ul className="pt-2 pb-12">
           {links.map((link) => (
-            <li
-              key={link.title}
-              className={cn({ [styles.active]: router.asPath === link.link })}
-            >
+            <li key={link.title} className={cn({ [styles.active]: router.asPath === link.link })}>
               <Link href={link.link} legacyBehavior>
-                <a
-                  className={cn(
-                    "flex items-center block lg:px-10 px-5 lg:py-5 py-4 transition-all"
-                  )}
-                >
+                <a className={cn("flex items-center block lg:px-10 px-5 lg:py-5 py-4 transition-all")}>
                   <span className="w-6 lg:w-5 lg:mr-5">{link.icon}</span>
                   <span className="hidden lg:inline">{link.title}</span>
                 </a>
