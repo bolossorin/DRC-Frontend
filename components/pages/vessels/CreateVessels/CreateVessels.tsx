@@ -30,7 +30,7 @@ const ClearIndicator = (props: any) => {
   const innerProps = {
     ...props.innerProps,
     onMouseDown: clearValue,
-    onTouchEnd: clearValue
+    onTouchEnd: clearValue,
   };
 
   return <components.ClearIndicator {...props} innerProps={innerProps} />;
@@ -43,18 +43,18 @@ function useAvailableImages(query: string) {
     },
     fetchPolicy: "network-only",
   });
-  return data?.available_images
+  return data?.available_images;
 }
 
 function useQueues(computeType: "gpu" | "cpu", region: string) {
   const { data } = useQuery<{ available_queues: IQueue[] }>(getQueues, {
     variables: {
       computeType,
-      region
+      region,
     },
     fetchPolicy: "network-only",
   });
-  return data?.available_queues
+  return data?.available_queues;
 }
 
 export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, createVessels, region }: ICreateVessels) => {
@@ -71,27 +71,29 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   const [queueQuery, setQueueQuery] = useState("");
 
   const [isShowAdvanced, setIsShowAdvanced] = useState(false);
-  const [vessels, setVessels] = useState<CreateSessionArgs[]>([{
-    label: "",
-    n_gpus: countGPUs,
-    queue: queue?.queue ?? "",
-    image: dockerImage ?? "",
-    privileged: false,
-    monitor_by_undertaker: true,
-  }]);
+  const [vessels, setVessels] = useState<CreateSessionArgs[]>([
+    {
+      label: "",
+      n_gpus: countGPUs,
+      queue: queue?.queue ?? "",
+      image: dockerImage ?? "",
+      privileged: false,
+      monitor_by_undertaker: true,
+    },
+  ]);
 
   // Advanced
   const [privileged, setPrivileged] = useState(false);
   const [monitorByUndertaker, setMonitorByUndertaker] = useState(true);
 
-  const queueRef = useRef<any>(null)
-  const imageRef = useRef<any>(null)
+  const queueRef = useRef<any>(null);
+  const imageRef = useRef<any>(null);
 
   // Styles and animation
-  const [marginRight, setMarginRight] = useState('mr-[-100%]');
+  const [marginRight, setMarginRight] = useState("mr-[-100%]");
   useEffect(() => {
-    setMarginRight('mr-[0%]');
-  }, [])
+    setMarginRight("mr-[0%]");
+  }, []);
 
   const handleChangeVesselsCount = (value: number) => {
     if (value > countVessels) {
@@ -136,20 +138,17 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
 
   // Reset the queue value if the search result is empty.
   useEffect(() => {
-    if (queues !== undefined && queues.length === 0)
-      setQueue({})
-  }, [queues])
+    if (queues !== undefined && queues.length === 0) setQueue({});
+  }, [queues]);
 
   // Select the first available docker image by default
   useEffect(() => {
-    if (availableImages === undefined)
-      return
-    if (dockerImage === null)
-      setDockerImage(availableImages[0])
-  }, [availableImages])
+    if (availableImages === undefined) return;
+    if (dockerImage === null) setDockerImage(availableImages[0]);
+  }, [availableImages]);
 
   const handleClose = () => {
-    setMarginRight('mr-[-100%]')
+    setMarginRight("mr-[-100%]");
     setTimeout(() => {
       setIsOpen(false);
       setCountVessels(1);
@@ -157,26 +156,26 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
   };
 
   const getDockerImages = () => {
-    if (availableImages === undefined) return []
-    return availableImages.map(item => ({
+    if (availableImages === undefined) return [];
+    return availableImages.map((item) => ({
       label: item,
       value: item,
-    }))
-  }
+    }));
+  };
 
   const getQueues = () => {
-    if (queues === undefined) return []
-    return queues.map(item => ({
+    if (queues === undefined) return [];
+    return queues.map((item) => ({
       label: `${item.queue} (${item.free} free)`,
       value: item.queue,
       free: item.free,
-    }))
-  }
+    }));
+  };
 
   useEffect(() => {
     // clear "Queue" if select empty
     if (queueRef.current) {
-      if (queueQuery.length <= 0 && queueRef.current.props.menuIsOpen) setQueue({})
+      if (queueQuery.length <= 0 && queueRef.current.props.menuIsOpen) setQueue({});
     }
   }, [queueQuery]);
 
@@ -184,16 +183,19 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
     // clear "Image" if select empty
     if (imageRef.current) {
       if (imageQuery.length <= 0 && imageRef.current.props.menuIsOpen) {
-        setDockerImage('')
+        setDockerImage("");
       }
     }
   }, [imageQuery]);
+
+  const totalGpus = vessels.reduce((acc, val) => acc + val.n_gpus, 0);
 
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
       <div onClick={handleClose} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />
       <div
-        className={`w-full h-full relative z-20 max-w-[478px] bg-[#282828] overflow-auto ml-auto ${marginRight} transition-all`}>
+        className={`w-full h-full relative z-20 max-w-[478px] bg-[#282828] overflow-auto ml-auto ${marginRight} transition-all`}
+      >
         <div className="py-7 px-5 md:px-10 flex items-center border-b border-[#686868]">
           <img className="w-8 mr-3 md:mr-7" src="/cube-green.svg" alt="" />
           <H4 classname="!mb-0">Create Vessels</H4>
@@ -228,47 +230,55 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
               <Paragraph classname="!mb-0">Number of GPUs</Paragraph>
               <PlusMinusInput value={countGPUs} setValue={setCountGPUs} minValue={0} />
             </div>
-            {queues === undefined || queues.length > 0 && (
-              <div className="flex items-center gap-4 mb-6">
-                <Paragraph classname="!mb-0">Queue</Paragraph>
-                <Select
-                  ref={queueRef}
-                  styles={{
-                    input: (baseStyles) => ({
-                      ...baseStyles,
-                      color: 'white',
-                    }),
-                  }}
-                  className="basic-single light w-full"
-                  classNamePrefix="select"
-                  components={{ DropdownIndicator, ClearIndicator } as any}
-                  placeholder="Select"
-                  options={getQueues()}
-                  value={queue ? {
-                    label: queue.queue,
-                    value: queue.queue,
-                    free: queue.free
-                  } : undefined}
-                  onChange={(option) => setQueue(option ? { queue: option.value, free: option.free } : {})}
-                  isSearchable={true}
-                  inputValue={queueQuery}
-                  onInputChange={(v) => setQueueQuery(v)}
-                  isClearable={queueQuery.length > 0 || !!queue?.queue}
-                  onMenuOpen={() => {
-                    if (queue && queue.queue) setQueueQuery(queue.queue)
-                  }}
-                  // @ts-ignore
-                  onClear={() => {
-                    setQueue({});
-                    setQueueQuery('');
-                  }}
-                />
-              </div>
+            {queues === undefined ||
+              (queues.length > 0 && (
+                <div className="flex items-center gap-4 mb-6">
+                  <Paragraph classname="!mb-0">Queue</Paragraph>
+                  <Select
+                    ref={queueRef}
+                    styles={{
+                      input: (baseStyles) => ({
+                        ...baseStyles,
+                        color: "white",
+                      }),
+                    }}
+                    className="basic-single light w-full"
+                    classNamePrefix="select"
+                    components={{ DropdownIndicator, ClearIndicator } as any}
+                    placeholder="Select"
+                    options={getQueues()}
+                    value={
+                      queue
+                        ? {
+                            label: queue.queue,
+                            value: queue.queue,
+                            free: queue.free,
+                          }
+                        : undefined
+                    }
+                    onChange={(option) => setQueue(option ? { queue: option.value, free: option.free } : {})}
+                    isSearchable={true}
+                    inputValue={queueQuery}
+                    onInputChange={(v) => setQueueQuery(v)}
+                    isClearable={queueQuery.length > 0 || !!queue?.queue}
+                    onMenuOpen={() => {
+                      if (queue && queue.queue) setQueueQuery(queue.queue);
+                    }}
+                    // @ts-ignore
+                    onClear={() => {
+                      setQueue({});
+                      setQueueQuery("");
+                    }}
+                  />
+                </div>
+              ))}
+            {queues !== undefined && queues.length === 0 && countGPUs === 0 && (
+              <p>No CPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>
             )}
-            {queues !== undefined && queues.length === 0 && countGPUs === 0 &&
-              <p>No CPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
-            {queues !== undefined && queues.length === 0 && countGPUs > 0 &&
-              <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>}
+            {queues !== undefined && queues.length === 0 && countGPUs > 0 && (
+              <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>
+            )}
+            {queue?.free && totalGpus > queue.free && <p>Not enough GPU compute.</p>}
           </div>
           <div className="mb-10">
             <H4>3. Docker</H4>
@@ -279,7 +289,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 styles={{
                   input: (baseStyles) => ({
                     ...baseStyles,
-                    color: 'white',
+                    color: "white",
                   }),
                 }}
                 className="basic-single light w-full"
@@ -288,12 +298,16 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 placeholder="Select"
                 options={getDockerImages()}
                 value={{ label: dockerImage, value: dockerImage }}
-                onChange={(option) => setDockerImage(option?.value || '')}
+                onChange={(option) => setDockerImage(option?.value || "")}
                 isSearchable={true}
-                defaultValue={availableImages !== undefined && availableImages.length > 0 ? {
-                  label: availableImages[0],
-                  value: availableImages[0]
-                } : undefined}
+                defaultValue={
+                  availableImages !== undefined && availableImages.length > 0
+                    ? {
+                        label: availableImages[0],
+                        value: availableImages[0],
+                      }
+                    : undefined
+                }
                 inputValue={imageQuery}
                 onInputChange={(v) => setImageQuery(v)}
                 isLoading={availableImages === undefined}
@@ -303,8 +317,8 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
                 }}
                 // @ts-ignore
                 onClear={() => {
-                  setDockerImage('');
-                  setImageQuery('');
+                  setDockerImage("");
+                  setImageQuery("");
                 }}
               />
             </div>
@@ -360,7 +374,13 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             size="medium"
             color="green"
             onClick={() => createVessels(vessels)}
-            disabled={dockerImage === null || dockerImage === "" || queue === null || queue.queue === ""}
+            disabled={
+              dockerImage === null ||
+              dockerImage === "" ||
+              queue === null ||
+              queue.queue === "" ||
+              totalGpus > (queue?.free ?? 0)
+            }
           >
             Create
           </Button>
