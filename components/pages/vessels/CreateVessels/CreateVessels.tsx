@@ -278,7 +278,11 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
             {queues !== undefined && queues.length === 0 && countGPUs > 0 && (
               <p>No GPU compute currently available. Ask the MLOPs team to start a cloud instance for you.</p>
             )}
-            {queue?.free && totalGpus > queue.free && <p>Not enough GPU compute.</p>}
+            {queue?.free && totalGpus > queue.free && (
+              <p>
+                Not enough GPU compute. The maximum available GPUs in the {`${queue.queue}`} queue is: {`${queue.free}`}
+              </p>
+            )}
           </div>
           <div className="mb-10">
             <H4>3. Docker</H4>
