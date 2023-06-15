@@ -21,7 +21,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
         size="medium"
         classname="w-full sm:w-auto"
         icon="/vscode-alt.svg"
-        href={"https://" + vsCodeLink}
+        href={"https://staging.deeprender.dev/"}
         target="_blank"
         color="blue"
       >
