@@ -19,18 +19,12 @@ import { getExperiments } from "@/graphql/experiments/getExperiments";
 import { SelectedElement } from "@/components/pages/vessels/Table/Table";
 import { IFilter } from "@/utility/types";
 import { IExperiment } from "@/graphql/types/experiment";
+import { timeAgo } from "@/utility/timeAgo";
 
 export const experimentsTableColumns = [
   {
     label: "Experiment ID",
     key: "id",
-    renderCell: (item: IExperiment, key: string) => (
-      <Cell key={key}>
-        <Link href={`${routes.vessels}/${item.id}`} className="hover:underline">
-          {item.id}
-        </Link>
-      </Cell>
-    ),
     hideByDefault: false,
   },
   {
@@ -47,7 +41,7 @@ export const experimentsTableColumns = [
     key: "created_at",
     renderCell: (item: IExperiment, key: string) => (
       <Cell classname="whitespace-nowrap" key={key}>
-        {new Date(item.created_at).toLocaleString("en-US")}
+        {timeAgo(item.created_at)}
       </Cell>
     ),
   },
