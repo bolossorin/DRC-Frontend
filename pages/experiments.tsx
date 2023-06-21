@@ -23,9 +23,13 @@ import { timeAgo } from "@/utility/timeAgo";
 
 export const experimentsTableColumns = [
   {
-    label: "Experiment ID",
-    key: "id",
+    label: "Experiment Name",
+    key: "experiment_name",
     hideByDefault: false,
+  },
+  {
+    label: "Project",
+    key: "project_name",
   },
   {
     label: "State",
@@ -55,12 +59,23 @@ export const experimentsTableColumns = [
     ),
   },
   {
+    label: "Vessel Name",
+    key: "vessel_label",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Link href={`${routes.vessels}/${item.session_id}`} className="hover:underline">
+          {item.vessel_label}
+        </Link>
+      </Cell>
+    ),
+  },
+  {
     label: "Vessel ID",
     key: "session_id",
     renderCell: (item: IExperiment, key: string) => (
       <Cell key={key}>
         <Link href={`${routes.vessels}/${item.session_id}`} className="hover:underline">
-          {item.id}
+          {item.session_id}
         </Link>
       </Cell>
     ),
