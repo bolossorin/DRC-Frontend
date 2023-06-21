@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 
 // libs
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { getSessionById } from "@/graphql/sessions/getSessionById";
 import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
 import { ISession } from "@/graphql/types/session";
 import { useRegion } from "@/context/region";
-import { routes } from "@/utility/routes";
 
 // components
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
@@ -76,12 +74,13 @@ export default function VesselID() {
   return (
     <Layout title="Vessel | Deep Render Cloud" description="Vessel | Deep Render Cloud" label={<VesselTitle />}>
       <div className="p-6 border-b border-[#686868]">
-        <Link href={routes.vessels} legacyBehavior>
-          <a className="inline-flex items-center transition-all cursor-pointer hover:opacity-70">
-            <img className="w-2 mr-2.5" src={"/arrow.svg"} alt="" />
-            <Paragraph classname="!text-base !mb-0">Back</Paragraph>
-          </a>
-        </Link>
+        <a
+          className="inline-flex items-center transition-all cursor-pointer hover:opacity-70"
+          onClick={() => router.back()}
+        >
+          <img className="w-2 mr-2.5" src={"/arrow.svg"} alt="" />
+          <Paragraph classname="!text-base !mb-0">Back</Paragraph>
+        </a>
       </div>
       <div className="flex flex-wrap">
         <Information vessel={session} />
