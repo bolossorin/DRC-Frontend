@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 // libs
 import cn from "classnames";
@@ -11,8 +11,13 @@ import { TableExperiments } from "../";
 
 // assets
 import styles from "./Experiments.module.scss";
+import { IExperiment } from "@/graphql/types/experiment";
 
-export const Experiments = () => {
+interface IExperimentsProps {
+  experiments: IExperiment[];
+}
+
+export const Experiments: FC<IExperimentsProps> = ({ experiments }) => {
   const [filters, setFilters] = useState<IFilter[]>([]);
 
   return (
@@ -30,7 +35,7 @@ export const Experiments = () => {
             <Filters filters={filters} setFilters={setFilters} />
           </div>
         </div>
-        <TableExperiments />
+        <TableExperiments experiments={experiments} />
       </div>
     </div>
   );

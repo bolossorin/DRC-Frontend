@@ -1,9 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 
 // libs
 import Link from "next/link";
 import cn from "classnames";
-import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement } from "chart.js";
 
 ChartJS.register(ArcElement);
@@ -15,6 +14,8 @@ import { routes } from "@/utility/routes";
 
 // assets
 import styles from "./TableExperiments.module.scss";
+import { IExperiment } from "@/graphql/types/experiment";
+import { timeAgo } from "@/utility/timeAgo";
 
 const headers = ["Name", "Project", "State", "Created", "Iteration"];
 
@@ -70,7 +71,11 @@ const StyledCellHeader = ({ children }: { children: React.ReactNode }) => (
   </CelHeader>
 );
 
-export const TableExperiments = () => {
+interface ITableExperimentsProps {
+  experiments: IExperiment[];
+}
+
+export const TableExperiments: FC<ITableExperimentsProps> = ({ experiments }) => {
   return (
     <div className="mt-6 overflow-auto border border-[#686868] rounded-[4px]">
       <table className={cn("w-full", styles.tableExperiments)}>
@@ -82,20 +87,16 @@ export const TableExperiments = () => {
           </Row>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {experiments.map((row, index) => (
             <Row key={index}>
-              <StyledCell>
-                <Link href={`${routes.vessels}/${row.name}`} legacyBehavior>
-                  <a className="underline hover:text-[#F6F6F6]">{row.name}</a>
-                </Link>
-              </StyledCell>
-              <StyledCell>{row.project}</StyledCell>
+              <StyledCell>{row.experiment_name}</StyledCell>
+              <StyledCell>{row.project_name}</StyledCell>
               <StyledCell>
                 <State state={row.state} />
               </StyledCell>
-              <StyledCell>{row.created}</StyledCell>
+              <StyledCell>{timeAgo(row.created_at)}</StyledCell>
               <StyledCell>
-                <Iteration iterCurrent={row.iteration1} iterEnd={row.iteration2} />
+                <Iteration iterCurrent={row.iter_current} iterEnd={row.iter_end} />
               </StyledCell>
             </Row>
           ))}

@@ -1,6 +1,7 @@
 export interface IExperiment {
   id: string;
   session_id: string;
+  region: string;
   project_name: string;
   experiment_name: string;
   vessel_label: string;
