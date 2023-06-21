@@ -4,7 +4,6 @@ export const getExperimentById = gql`
   query getExperimentById($session_id: String) {
     my_experiments(session_id: $session_id) {
       id
-      region
       project_name
       experiment_name
       vessel_label

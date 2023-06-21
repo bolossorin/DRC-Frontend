@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const onExperimentsChange = gql`
-  subscription onExperimentsChange($region: String!) {
-    my_experiments(region: $region) {
+  subscription onExperimentsChange {
+    my_experiments {
       id
       session_id
       wandb_id
@@ -20,6 +20,7 @@ export const onExperimentsChange = gql`
       user_id
       created_at
       modified_at
+      vessel_label
     }
   }
 `;
