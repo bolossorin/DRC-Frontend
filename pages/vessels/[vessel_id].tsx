@@ -14,7 +14,7 @@ import { Monitoring, Connection, Experiments, Information } from "@/components/p
 import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
 import { IExperiment } from "@/graphql/types/experiment";
 import { getExperimentById } from "@/graphql/experiments/getExperimentById";
-import { onExperimentsChange } from "@/graphql/experiments/onExperimentsChange";
+import { onExperimentChange } from "@/graphql/experiments/onExperimentChange";
 
 export default function VesselID() {
   const router = useRouter();
@@ -80,7 +80,7 @@ export default function VesselID() {
     });
 
     const unsubscribeFromExperiments = subscribeToExperiments({
-      document: onExperimentsChange,
+      document: onExperimentChange,
       variables: { session_id: router.query.vessel_id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
