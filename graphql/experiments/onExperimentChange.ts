@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const onExperimentChange = gql`
-  subscription onExperimentChange($session_id: String!) {
+  subscription onExperimentChange($session_id: UUID!) {
     my_session_experiments(session_id: $session_id) {
       id
       session_id
