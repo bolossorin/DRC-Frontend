@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { getSessionById } from "@/graphql/sessions/getSessionById";
 import { onSessionsChange } from "@/graphql/sessions/onSessionsChange";
+import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
 import { ISession } from "@/graphql/types/session";
 import { useRegion } from "@/context/region";
 
 // components
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
 import { Monitoring, Connection, Experiments, Information } from "@/components/pages/vessel-id";
-import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
 
 export default function VesselID() {
   const router = useRouter();
@@ -85,7 +85,7 @@ export default function VesselID() {
       <div className="flex flex-wrap">
         <Information vessel={session} />
         <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
-        {/* <Experiments /> */}
+        <Experiments sessionId={router.query.vessel_id as string} />
         <Monitoring gpuIds={session?.gpu_ids ?? []} />
       </div>
     </Layout>

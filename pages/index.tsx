@@ -1,5 +1,5 @@
 // libs
-import Head from 'next/head'
+import Head from "next/head";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -10,8 +10,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push(routes.vessels)
-  }, [])
+    router.push(routes.vessels);
+  }, []);
 
   return (
     <>
@@ -19,13 +19,13 @@ export default function Home() {
         <title>Home | Deep Render Cloud</title>
         <meta name="description" content="Home | Deep Render Cloud" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <main>
         <section>
-          <div className='container' />
+          <div className="container" />
         </section>
       </main>
     </>
-  )
+  );
 }
