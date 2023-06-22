@@ -17,4 +17,5 @@ export function timeAgo(input: string) {
       return formatter.format(Math.round(delta), key as keyof typeof ranges);
     }
   }
+  return "just now";
 }

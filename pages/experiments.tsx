@@ -14,6 +14,7 @@ import Link from "next/link";
 import styles from "../components/pages/vessels/index.module.scss";
 import { routes } from "@/utility/routes";
 import { getExperiments } from "@/graphql/experiments/getExperiments";
+import { onExperimentsChange } from "@/graphql/experiments/onExperimentsChange";
 
 // types
 import { SelectedElement } from "@/components/pages/vessels/Table/Table";
@@ -85,7 +86,7 @@ export const experimentsTableColumns = [
 export default function Experiments() {
   const [region] = useRegion();
 
-  const { data } = useQuery<{ my_experiments: IExperiment[] }>(getExperiments, {
+  const { data, subscribeToMore } = useQuery<{ my_experiments: IExperiment[] }>(getExperiments, {
     variables: {
       limit: 10000,
       offset: 0,
@@ -118,6 +119,29 @@ export default function Experiments() {
     const experiments = data?.my_experiments.slice(pagination.offset, pagination.offset + pagination.limit);
     if (experiments) setPaginatedExperiments(experiments);
   }, [data?.my_experiments, pagination]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: onExperimentsChange,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionExperiments = subscriptionData.data?.my_experiments ?? [];
+        const updatedExperiments: IExperiment[] = prev?.my_experiments?.map((experiment) => {
+          const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
+          if (updatedExperiment) return updatedExperiment;
+          return experiment;
+        });
+        const newExperiments = subscriptionExperiments.filter(
+          (experiment) => !prev.my_experiments.find((prev) => prev.id === experiment.id)
+        );
+        return {
+          my_experiments: [...newExperiments, ...updatedExperiments],
+        };
+      },
+    });
+
+    return () => unsubscribe();
+  }, [subscribeToMore]);
 
   const handlePageChange = (offset: number) => {
     setPagination((prev) => ({ ...prev, offset }));

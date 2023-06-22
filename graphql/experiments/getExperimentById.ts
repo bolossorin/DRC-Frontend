@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const getExperiments = gql`
-  query getExperiments($state: [VesselStateEnum], $limit: Int, $offset: Int, $region: String, $text: String) {
-    my_experiments(limit: $limit, state: $state, offset: $offset, text: $text, region: $region) {
+export const getExperimentById = gql`
+  query getExperimentById($session_id: String) {
+    my_experiments(session_id: $session_id) {
       id
       project_name
       experiment_name
