@@ -12,6 +12,9 @@ import { useRegion } from "@/context/region";
 import { Layout, Paragraph, VesselTitle } from "@/components/common";
 import { Monitoring, Connection, Experiments, Information } from "@/components/pages/vessel-id";
 import { onSessionLogsChange } from "@/graphql/sessions/onSessionLogsChange";
+import { IExperiment } from "@/graphql/types/experiment";
+import { getExperimentById } from "@/graphql/experiments/getExperimentById";
+import { onExperimentsChange } from "@/graphql/experiments/onExperimentsChange";
 
 export default function VesselID() {
   const router = useRouter();
@@ -23,6 +26,15 @@ export default function VesselID() {
   }>(getSessionById, {
     variables: {
       id: router.query.vessel_id,
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const { data: experimentsData, subscribeToMore: subscribeToExperiments } = useQuery<{
+    my_experiments: IExperiment[];
+  }>(getExperimentById, {
+    variables: {
+      session_id: router.query.vessel_id,
     },
     fetchPolicy: "network-only",
   });
@@ -67,8 +79,31 @@ export default function VesselID() {
       },
     });
 
-    return () => subscribeToLogs();
-  }, [router.query.vessel_id, subscribeToMore]);
+    const unsubscribeFromExperiments = subscribeToExperiments({
+      document: onExperimentsChange,
+      variables: { session_id: router.query.vessel_id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const subscriptionExperiments = subscriptionData.data?.my_experiments ?? [];
+        const updatedExperiments: IExperiment[] = prev?.my_experiments?.map((experiment) => {
+          const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
+          if (updatedExperiment) return updatedExperiment;
+          return experiment;
+        });
+        const newExperiments = subscriptionExperiments.filter(
+          (experiment) => !prev.my_experiments.find((prev) => prev.id === experiment.id)
+        );
+        return {
+          my_experiments: [...newExperiments, ...updatedExperiments],
+        };
+      },
+    });
+
+    return () => {
+      unsubscribeFromExperiments();
+      subscribeToLogs();
+    };
+  }, [router.query.vessel_id, subscribeToExperiments, subscribeToMore]);
 
   const session = data?.session ?? null;
   return (
@@ -85,7 +120,7 @@ export default function VesselID() {
       <div className="flex flex-wrap">
         <Information vessel={session} />
         <Connection sshCommand={session?.ssh_command} sshConfig={session?.ssh_config} />
-        {/* <Experiments /> */}
+        <Experiments experiments={experimentsData?.my_experiments ?? []} />
         <Monitoring gpuIds={session?.gpu_ids ?? []} />
       </div>
     </Layout>
