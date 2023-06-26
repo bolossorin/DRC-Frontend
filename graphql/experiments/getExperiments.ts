@@ -4,7 +4,6 @@ export const getExperiments = gql`
   query getExperiments($state: [VesselStateEnum], $limit: Int, $offset: Int, $region: String, $text: String) {
     my_experiments(limit: $limit, state: $state, offset: $offset, text: $text, region: $region) {
       id
-      region
       project_name
       experiment_name
       vessel_label

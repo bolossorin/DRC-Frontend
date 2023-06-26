@@ -8,6 +8,7 @@ export const onExperimentChange = gql`
       wandb_id
       pid
       state
+      vessel_label
       iter_current
       iter_end
       repo_url

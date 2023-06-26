@@ -123,7 +123,6 @@ export default function Experiments() {
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: onExperimentsChange,
-      variables: { region },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const subscriptionExperiments = subscriptionData.data?.my_experiments ?? [];
@@ -142,7 +141,7 @@ export default function Experiments() {
     });
 
     return () => unsubscribe();
-  }, [region, subscribeToMore]);
+  }, [subscribeToMore]);
 
   const handlePageChange = (offset: number) => {
     setPagination((prev) => ({ ...prev, offset }));
