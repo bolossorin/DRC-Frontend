@@ -49,10 +49,10 @@
   }
   &.stopped {
     span {
-      @apply text-[#FFA1A2];
+      @apply text-[#FF5A5B];
     }
     .icon {
-      @apply bg-[#FFA1A2];
+      @apply bg-[#FF5A5B];
     }
   }
   &.idle {

@@ -62,7 +62,7 @@ const rows: {
 ];
 
 const StyledCell = ({ children }: { children: React.ReactNode }) => (
-  <Cell classname="!px-6 !py-4 text-ellipsis overflow-hidden whitespace-nowrap max-w-[204px]">{children}</Cell>
+  <Cell classname="!px-6 !py-[14px] text-ellipsis overflow-hidden whitespace-nowrap max-w-[204px]">{children}</Cell>
 );
 
 const StyledCellHeader = ({ children }: { children: React.ReactNode }) => (
@@ -89,7 +89,11 @@ export const TableExperiments: FC<ITableExperimentsProps> = ({ experiments }) =>
         <tbody>
           {experiments.map((row, index) => (
             <Row key={index}>
-              <StyledCell>{row.experiment_name}</StyledCell>
+              <StyledCell>
+                <span className="underline text-[#D9D9D9] hover:text-[#F6F6F6] cursor-pointer">
+                  {row.experiment_name}
+                </span>
+              </StyledCell>
               <StyledCell>{row.project_name}</StyledCell>
               <StyledCell>
                 <State state={row.state} />

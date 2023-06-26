@@ -24,17 +24,20 @@
     @apply bg-[#535353] hover:bg-[#5e5c5c];
   }
   &.green {
-    @apply bg-[#47A000] text-white hover:bg-[#50B400];
+    @apply bg-[#47A000] text-white hover:bg-[#50B400] active:outline active:outline-1 active:outline-[#F6F6F6];
   }
   &.red {
-    @apply bg-[#DF4949] text-white hover:bg-[#BE3F3F];
+    @apply bg-[#BE3F3F] text-white hover:bg-[#DF4949] active:outline active:outline-1 active:outline-[#F6F6F6];
   }
 
   &.blue {
-    @apply bg-[#2A63B2] text-white hover:bg-[#3A80E2];
+    @apply bg-[#2A63B2] text-white hover:bg-[#3A80E2] active:outline active:outline-1 active:outline-[#F6F6F6];
   }
   &:disabled {
     @apply bg-[#474747] text-[#C0C0C0];
+    & img {
+      @apply opacity-60;
+    }
     pointer-events: none;
   }
 }
