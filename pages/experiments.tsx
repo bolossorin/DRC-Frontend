@@ -161,12 +161,7 @@ export default function Experiments() {
         {/*<Search placeholder="Search for vessels by attribute..." setFilters={setFilters} filters={filters} />*/}
         <div className="grow" />
         <div className="flex flex-wrap items-center gap-4 md:gap-10">
-          <Actions
-            currentSelected={currentSelected}
-            setIsStopModal={setIsStopModal}
-            setIsCreateVessels={setIsCreateExperiment}
-            vsCodeLink={""}
-          />
+          <Actions currentSelected={currentSelected} setIsStopModal={setIsStopModal} hideVsCode />
           <Pagination
             totalCount={data?.my_experiments.length ?? 0}
             limit={pagination.limit}

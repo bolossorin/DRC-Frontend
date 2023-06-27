@@ -9,24 +9,27 @@ import { Button } from "@/components/common";
 interface IActions {
   currentSelected: SelectedElement[];
   setIsStopModal: (value: boolean) => void;
-  setIsCreateVessels: (value: boolean) => void;
-  vsCodeLink: string | undefined;
+  setIsCreateVessels?: (value: boolean) => void;
+  vsCodeLink?: string | undefined;
+  hideVsCode?: boolean;
 }
 
-export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, vsCodeLink }: IActions) => {
+export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, vsCodeLink, hideVsCode }: IActions) => {
   return (
     <>
-      <Button
-        disabled={currentSelected.length <= 0 || !vsCodeLink}
-        size="medium"
-        classname="w-full sm:w-auto"
-        icon="/vscode-alt.svg"
-        href={"https://staging.deeprender.dev/"}
-        target="_blank"
-        color="blue"
-      >
-        VS Code
-      </Button>
+      {!hideVsCode && (
+        <Button
+          disabled={currentSelected.length <= 0 || !vsCodeLink}
+          size="medium"
+          classname="w-full sm:w-auto"
+          icon="/vscode-alt.svg"
+          href={"https://staging.deeprender.dev/"}
+          target="_blank"
+          color="blue"
+        >
+          VS Code
+        </Button>
+      )}
       <Button
         onClick={() => setIsStopModal(true)}
         disabled={currentSelected.length <= 0 || !hasRunningVessels(currentSelected)}
@@ -37,15 +40,17 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
       >
         Stop
       </Button>
-      <Button
-        onClick={() => setIsCreateVessels(true)}
-        size="medium"
-        classname="text-[#C0C0C0] w-full sm:w-auto"
-        icon="/plus.svg"
-        color="green"
-      >
-        Create
-      </Button>
+      {setIsCreateVessels && (
+        <Button
+          onClick={() => setIsCreateVessels(true)}
+          size="medium"
+          classname="text-[#C0C0C0] w-full sm:w-auto"
+          icon="/plus.svg"
+          color="green"
+        >
+          Create
+        </Button>
+      )}
     </>
   );
 };
