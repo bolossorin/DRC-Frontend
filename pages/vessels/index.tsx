@@ -115,6 +115,8 @@ export default function Vessels() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateVessels, setIsCreateVessels] = useState(false);
   const [countVessels, setCountVessels] = useState(1);
+  const [isStopping, setIsStopping] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   const [sortBy] = useState("modified_at");
 
@@ -216,6 +218,7 @@ export default function Vessels() {
   });
 
   const stopSessions = async () => {
+    setIsStopping(true);
     const requests: Promise<any>[] = [];
     currentSelected.forEach((session) =>
       requests.push(
@@ -229,6 +232,7 @@ export default function Vessels() {
     await Promise.all(requests);
     refetch();
     setIsStopModal(false);
+    setIsStopping(false);
     setCurrentSelected([]);
   };
 
@@ -237,6 +241,7 @@ export default function Vessels() {
   });
 
   const createSessions = async (sessionsData: CreateSessionArgs[]) => {
+    setIsCreating(true);
     const requests: Promise<any>[] = [];
     sessionsData.forEach((s) =>
       requests.push(
@@ -258,9 +263,11 @@ export default function Vessels() {
     if (!result.some((r) => r.errors)) {
       setIsAddedModal(true);
       setIsCreateVessels(false);
+      setIsCreating(false);
     } else {
       setIsAddedErrorModal(true);
       setErrorMessage(result[0].errors.message);
+      setIsCreating(false);
     }
   };
 
@@ -303,6 +310,8 @@ export default function Vessels() {
             currentSelected={currentSelected}
             setIsStopModal={setIsStopModal}
             setIsCreateVessels={setIsCreateVessels}
+            isStopping={isStopping}
+            isCreating={isCreating}
             vsCodeLink={getVsCodeLink()}
           />
           <Pagination

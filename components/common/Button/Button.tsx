@@ -3,6 +3,9 @@ import { FC } from "react";
 // libs
 import cn from "classnames";
 
+// components
+import { ButtonLoadingSpinnerIcon } from "../Icons";
+
 // assets
 import styles from "./Button.module.scss";
 import Link from "next/link";
@@ -16,10 +19,22 @@ interface IButton {
   color: "green" | "grey" | "red" | "blue" | "lightGrey";
   href?: string;
   target?: string;
+  loading?: boolean;
   onClick?: () => void;
 }
 
-export const Button: FC<IButton> = ({ icon, classname, children, size, onClick, color, disabled, href, target }) => {
+export const Button: FC<IButton> = ({
+  icon,
+  classname,
+  children,
+  size,
+  onClick,
+  color,
+  disabled,
+  href,
+  target,
+  loading,
+}) => {
   return href && !disabled ? (
     <Link
       href={href}
@@ -48,7 +63,7 @@ export const Button: FC<IButton> = ({ icon, classname, children, size, onClick, 
         classname
       )}
     >
-      {icon && <img src={icon} alt="" />}
+      {icon && loading ? <ButtonLoadingSpinnerIcon classname="w-5 h-5 fill-white mr-2.5" /> : <img src={icon} alt="" />}
       {children}
     </button>
   );

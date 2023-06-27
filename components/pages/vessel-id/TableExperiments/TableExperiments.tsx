@@ -66,7 +66,7 @@ const StyledCell = ({ children }: { children: React.ReactNode }) => (
 );
 
 const StyledCellHeader = ({ children }: { children: React.ReactNode }) => (
-  <CelHeader classname="!text-base text-[#F6F6F6] !px-6 !py-4" isSort>
+  <CelHeader classname="!text-base text-light !px-6 !py-4" isSort>
     {children}
   </CelHeader>
 );
@@ -90,9 +90,7 @@ export const TableExperiments: FC<ITableExperimentsProps> = ({ experiments }) =>
           {experiments.map((row, index) => (
             <Row key={index}>
               <StyledCell>
-                <span className="underline text-[#D9D9D9] hover:text-[#F6F6F6] cursor-pointer">
-                  {row.experiment_name}
-                </span>
+                <span className="underline text-text hover:text-light cursor-pointer">{row.experiment_name}</span>
               </StyledCell>
               <StyledCell>{row.project_name}</StyledCell>
               <StyledCell>

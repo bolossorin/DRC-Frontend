@@ -8,13 +8,23 @@ import { Button } from "@/components/common";
 
 interface IActions {
   currentSelected: SelectedElement[];
-  setIsStopModal: (value: boolean) => void;
-  setIsCreateVessels?: (value: boolean) => void;
   vsCodeLink?: string | undefined;
   hideVsCode?: boolean;
+  isStopping?: boolean;
+  isCreating?: boolean;
+  setIsStopModal: (value: boolean) => void;
+  setIsCreateVessels?: (value: boolean) => void;
 }
 
-export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, vsCodeLink, hideVsCode }: IActions) => {
+export const Actions = ({
+  currentSelected,
+  setIsStopModal,
+  setIsCreateVessels,
+  vsCodeLink,
+  hideVsCode,
+  isStopping,
+  isCreating,
+}: IActions) => {
   return (
     <>
       {!hideVsCode && (
@@ -37,6 +47,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
         classname="w-full sm:w-auto"
         icon="/stop-empty.svg"
         color="red"
+        loading={isStopping}
       >
         Stop
       </Button>
@@ -47,6 +58,7 @@ export const Actions = ({ currentSelected, setIsStopModal, setIsCreateVessels, v
           classname="text-[#C0C0C0] w-full sm:w-auto"
           icon="/plus.svg"
           color="green"
+          loading={isCreating}
         >
           Create
         </Button>
