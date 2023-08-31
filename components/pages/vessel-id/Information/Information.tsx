@@ -56,7 +56,7 @@ export const Information = ({ vessel }: IInformation) => {
               icon="/vscode-alt.svg"
               color="blue"
               disabled={inactiveSessionStatuses.includes(vessel?.state ?? "")}
-              href={"https://staging.deeprender.dev/"}
+              href={"https://" + vessel?.fqdn}
               target="_blank"
             >
               VS Code

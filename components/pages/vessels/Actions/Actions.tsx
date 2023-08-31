@@ -33,7 +33,7 @@ export const Actions = ({
           size="medium"
           classname="w-full sm:w-auto"
           icon="/vscode-alt.svg"
-          href={"https://staging.deeprender.dev/"}
+          href={"https://" + vsCodeLink}
           target="_blank"
           color="blue"
         >
