@@ -190,6 +190,7 @@ export const CreateVessels = ({ setIsOpen, setCountVessels, countVessels, create
 
   const totalGpus = vessels.reduce((acc, val) => acc + val.n_gpus, 0);
 
+  
   return (
     <div className="fixed z-50 left-0 top-0 h-full w-full">
       <div onClick={handleClose} className="bg-black/40 absolute left-0 top-0 z-10 w-full h-full" />

@@ -27,6 +27,14 @@ export const experimentsTableColumns = [
     label: "Experiment Name",
     key: "experiment_name",
     hideByDefault: false,
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Link href={`${item.wandb_url}`} className="hover:underline">
+          {item.experiment_name}
+        </Link>
+      </Cell>
+    ),
+    
   },
   {
     label: "Project",
@@ -132,8 +140,11 @@ export default function Experiments() {
           return experiment;
         });
         const newExperiments = subscriptionExperiments.filter(
-          (experiment) => !prev.my_experiments.find((prev) => prev.id === experiment.id)
-        );
+          (experiment) => {
+            if(!prev.my_experiments) return null;
+            else{!prev.my_experiments.find((prev) => prev.id === experiment.id)}
+          }
+          );
         return {
           my_experiments: [...newExperiments, ...updatedExperiments],
         };

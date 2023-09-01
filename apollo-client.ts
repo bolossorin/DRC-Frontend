@@ -25,10 +25,11 @@ const client = new ApolloClient({
   }),
 });
 
+let retryCount = 0;
+
 const errorLink = onError(({ networkError, forward, operation }) => {
   if (networkError?.message === "Response not successful: Received status code 401") {
     const observable = new Observable<FetchResult<Record<string, any>>>((observer) => {
-      // used an annonymous function for using an async function
       (async () => {
         try {
           const { accessToken } = await fetch(window.location.origin + "/api/auth/refresh").then((res) => res.json());
@@ -39,16 +40,23 @@ const errorLink = onError(({ networkError, forward, operation }) => {
 
           setApolloAuthToken(accessToken);
 
-          // Retry the failed request
           const subscriber = {
             next: observer.next.bind(observer),
             error: observer.error.bind(observer),
             complete: observer.complete.bind(observer),
           };
 
+          // Retry the failed request
           forward(operation).subscribe(subscriber);
         } catch (err) {
-          observer.error(err);
+          retryCount++;
+          if (retryCount < 5) {
+            setTimeout(() => {
+              forward(operation).subscribe(observer);
+            }, 5000);
+          } else {
+            observer.error(err);
+          }
         }
       })();
     });
@@ -57,9 +65,42 @@ const errorLink = onError(({ networkError, forward, operation }) => {
   }
 });
 
+// const errorLink = onError(({ networkError, forward, operation }) => {
+//   if (networkError?.message === "Response not successful: Received status code 401") {
+//     const observable = new Observable<FetchResult<Record<string, any>>>((observer) => {
+//       // used an annonymous function for using an async function
+//       (async () => {
+//         try {
+//           const { accessToken } = await fetch(window.location.origin + "/api/auth/refresh").then((res) => res.json());
+
+//           if (!accessToken) {
+//             throw new GraphQLError("Empty AccessToken");
+//           }
+
+//           setApolloAuthToken(accessToken);
+
+//           // Retry the failed request
+//           const subscriber = {
+//             next: observer.next.bind(observer),
+//             error: observer.error.bind(observer),
+//             complete: observer.complete.bind(observer),
+//           };
+
+//           forward(operation).subscribe(subscriber);
+//         } catch (err) {
+//           observer.error(err);
+//         }
+//       })();
+//     });
+
+//     return observable;
+//   }
+// });
+
 const setApolloAuthToken = (accessToken: string) => {
   const wsLink = new GraphQLWsLink(
     createClient({
+      lazy: true,
       url: process.env.WEBSOCKET_URL as string,
       connectionParams: {
         token: accessToken ? `Bearer ${accessToken}` : "",

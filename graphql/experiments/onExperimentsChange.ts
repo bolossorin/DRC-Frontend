@@ -6,6 +6,7 @@ export const onExperimentsChange = gql`
       id
       session_id
       wandb_id
+      wandb_url
       pid
       state
       iter_current

@@ -21,7 +21,7 @@ export const Iteration: FC<IIteration> = ({ iterCurrent, iterEnd }) => {
             datasets: [
               {
                 data: [iterCurrent, iterEnd],
-                backgroundColor: ["#D9D9D9", "#88E207"],
+                backgroundColor: ["#88E207", "#D9D9D9",],
                 hoverOffset: 4,
                 borderWidth: 0,
                 // @ts-ignore

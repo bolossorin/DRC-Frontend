@@ -46,7 +46,10 @@ export const Experiments: FC<IExperimentsProps> = ({ sessionId }) => {
           return experiment;
         });
         const newExperiments = subscriptionExperiments.filter(
-          (experiment) => !prev.my_experiments.find((prev) => prev.id === experiment.id)
+          (experiment) => {
+            if(!prev.my_experiments) return null;
+            else{!prev.my_experiments.find((prev) => prev.id === experiment.id)}
+          }
         );
         return {
           my_experiments: [...newExperiments, ...updatedExperiments],
@@ -65,7 +68,7 @@ export const Experiments: FC<IExperimentsProps> = ({ sessionId }) => {
         </H4>
         <div className="flex items-start">
           <div className={cn("max-w-[224px]", styles.search)}>
-            <Search placeholder="Search" setFilters={setFilters} filters={filters} />
+            {/* <Search placeholder="Search" setFilters={setFilters} filters={filters} /> */}
           </div>
           <div className="px-6">
             <Filters filters={filters} setFilters={setFilters} />

@@ -14,6 +14,7 @@ export interface IExperiment {
   run_command: string;
   user_id: string;
   wandb_id: string;
+  wandb_url: string;
   created_at: string;
   modified_at: string;
 }

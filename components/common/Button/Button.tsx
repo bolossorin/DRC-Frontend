@@ -63,7 +63,9 @@ export const Button: FC<IButton> = ({
         classname
       )}
     >
-      {icon && loading ? <ButtonLoadingSpinnerIcon classname="w-5 h-5 fill-white mr-2.5" /> : <img src={icon} alt="" />}
+      
+      {icon && icon !== '' && (loading ? <ButtonLoadingSpinnerIcon classname="w-5 h-5 fill-white mr-2.5" /> : <img src={icon} alt="" />)}
+
       {children}
     </button>
   );
