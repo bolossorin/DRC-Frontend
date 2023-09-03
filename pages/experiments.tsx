@@ -39,6 +39,14 @@ export const experimentsTableColumns = [
   {
     label: "Project",
     key: "project_name",
+    renderCell: (item: IExperiment, key: string) => (
+      <Cell key={key}>
+        <Link href={`${item.wandb_project_url}`} className="hover:underline">
+          {item.wandb_project_url}
+        </Link>
+      </Cell>
+    ),
+
   },
   {
     label: "State",
@@ -133,27 +141,32 @@ export default function Experiments() {
       document: onExperimentsChange,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
+  
         const subscriptionExperiments = subscriptionData.data?.my_experiments ?? [];
-        const updatedExperiments: IExperiment[] = prev?.my_experiments?.map((experiment) => {
-          const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
-          if (updatedExperiment) return updatedExperiment;
-          return experiment;
+  
+        let updatedExperiments: IExperiment[] = [];
+  
+        if (prev?.my_experiments) {
+          updatedExperiments = prev.my_experiments.map((experiment) => {
+            const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
+            if (updatedExperiment) return updatedExperiment;
+            return experiment;
+          });
+        }
+  
+        const newExperiments = subscriptionExperiments.filter((experiment) => {
+          return !prev?.my_experiments?.find((prevExperiment) => prevExperiment.id === experiment.id);
         });
-        const newExperiments = subscriptionExperiments.filter(
-          (experiment) => {
-            if(!prev.my_experiments) return null;
-            else{!prev.my_experiments.find((prev) => prev.id === experiment.id)}
-          }
-          );
+  
         return {
-          my_experiments: [...newExperiments, ...updatedExperiments],
+          my_experiments: [...newExperiments, ...(Array.isArray(updatedExperiments) ? updatedExperiments : [])],
         };
       },
     });
-
+  
     return () => unsubscribe();
   }, [subscribeToMore]);
-
+  
   const handlePageChange = (offset: number) => {
     setPagination((prev) => ({ ...prev, offset }));
   };

@@ -88,19 +88,47 @@ export const TableExperiments: FC<ITableExperimentsProps> = ({ experiments }) =>
         </thead>
         <tbody>
           {experiments.map((row, index) => (
+
             <Row key={index}>
               <StyledCell>
-                <span className="underline text-text hover:text-light cursor-pointer">{row.experiment_name}</span>
+                <a href={row.wandb_url} target="_blank" rel="noopener noreferrer">
+                  <span className="hover:underline text-text hover:text-light cursor-pointer">
+                    {row.experiment_name}
+                  </span>
+                </a>
               </StyledCell>
-              <StyledCell>{row.project_name}</StyledCell>
+              <StyledCell>
+                <a href={row.wandb_project_url} target="_blank" rel="noopener noreferrer">
+                <span className="hover:underline text-text hover:text-light cursor-pointer">
+                  {row.project_name}
+                  </span>
+                </a>
+              </StyledCell>
               <StyledCell>
                 <State state={row.state} />
               </StyledCell>
-              <StyledCell>{timeAgo(row.created_at)}</StyledCell>
+              <StyledCell>
+                {timeAgo(row.created_at)}
+              </StyledCell>
               <StyledCell>
                 <Iteration iterCurrent={row.iter_current} iterEnd={row.iter_end} />
               </StyledCell>
             </Row>
+
+
+            // <Row key={index}>
+            //   <StyledCell>
+            //     <span className="underline text-text hover:text-light cursor-pointer">{row.experiment_name}</span>
+            //   </StyledCell>
+            //   <StyledCell>{row.project_name}</StyledCell>
+            //   <StyledCell>
+            //     <State state={row.state} />
+            //   </StyledCell>
+            //   <StyledCell>{timeAgo(row.created_at)}</StyledCell>
+            //   <StyledCell>
+            //     <Iteration iterCurrent={row.iter_current} iterEnd={row.iter_end} />
+            //   </StyledCell>
+            // </Row>
           ))}
         </tbody>
       </table>

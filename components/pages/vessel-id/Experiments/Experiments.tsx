@@ -33,31 +33,39 @@ export const Experiments: FC<IExperimentsProps> = ({ sessionId }) => {
 
   const [filters, setFilters] = useState<IFilter[]>([]);
 
+
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: onExperimentChange,
       variables: { session_id: sessionId },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
+  
         const subscriptionExperiments = subscriptionData.data?.my_session_experiments ?? [];
-        const updatedExperiments: IExperiment[] = prev?.my_experiments?.map((experiment) => {
-          const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
-          if (updatedExperiment) return updatedExperiment;
-          return experiment;
+  
+        let updatedExperiments: IExperiment[] = [];
+  
+        if (prev?.my_experiments) {
+          updatedExperiments = prev.my_experiments.map((experiment) => {
+            const updatedExperiment = subscriptionExperiments.find((s) => s.id === experiment.id);
+            if (updatedExperiment) return updatedExperiment;
+            return experiment;
+          });
+        }
+  
+        const newExperiments = subscriptionExperiments.filter((experiment) => {
+          return !prev?.my_experiments?.find((prevExperiment) => prevExperiment.id === experiment.id);
         });
-        const newExperiments = subscriptionExperiments.filter(
-          (experiment) => {
-            if(!prev.my_experiments) return null;
-            else{!prev.my_experiments.find((prev) => prev.id === experiment.id)}
-          }
-        );
+  
         return {
-          my_experiments: [...newExperiments, ...updatedExperiments],
+          my_experiments: [...newExperiments, ...(Array.isArray(updatedExperiments) ? updatedExperiments : [])],
         };
       },
     });
+  
     return () => unsubscribe();
   }, [sessionId, subscribeToMore]);
+  
 
   return (
     <div className="px-2 md:px-6 2xl:pl-2 md:pt-2 2xl:py-4 md:pb-4 pb-2 w-full 2xl:w-[66%]">
