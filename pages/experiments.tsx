@@ -42,7 +42,7 @@ export const experimentsTableColumns = [
     renderCell: (item: IExperiment, key: string) => (
       <Cell key={key}>
         <Link href={`${item.wandb_project_url}`} className="hover:underline">
-          {item.wandb_project_url}
+          {item.project_name}
         </Link>
       </Cell>
     ),
