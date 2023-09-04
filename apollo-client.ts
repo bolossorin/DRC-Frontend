@@ -25,10 +25,13 @@ const client = new ApolloClient({
   }),
 });
 
+let retryCount = 0;
+
+let isConnected = true;
+
 const errorLink = onError(({ networkError, forward, operation }) => {
   if (networkError?.message === "Response not successful: Received status code 401") {
     const observable = new Observable<FetchResult<Record<string, any>>>((observer) => {
-      // used an annonymous function for using an async function
       (async () => {
         try {
           const { accessToken } = await fetch(window.location.origin + "/api/auth/refresh").then((res) => res.json());
@@ -39,31 +42,57 @@ const errorLink = onError(({ networkError, forward, operation }) => {
 
           setApolloAuthToken(accessToken);
 
-          // Retry the failed request
           const subscriber = {
             next: observer.next.bind(observer),
             error: observer.error.bind(observer),
             complete: observer.complete.bind(observer),
           };
 
+          // Retry the failed request
           forward(operation).subscribe(subscriber);
         } catch (err) {
-          observer.error(err);
+          retryCount++;
+          if (retryCount < 5) {
+            setTimeout(() => {
+              forward(operation).subscribe(observer);
+            }, 5000);
+          } else {
+            observer.error(err);
+          }
         }
       })();
     });
 
     return observable;
   }
+  else if (networkError) {
+    console.log('Network error detected. Attempting to reconnect...');
+    isConnected = false; 
+
+    const tryReconnect = async () => {
+      if (!isConnected) { 
+        console.log('Starting reconnection attempt...'); 
+        await configureApolloClient();
+        setTimeout(tryReconnect, 5000); // Wait 5 seconds before the next reconnection attempt
+      }
+    };
+
+    tryReconnect(); // Start the reconnection attempts
+  }
+
 });
+
+
 
 const setApolloAuthToken = (accessToken: string) => {
   const wsLink = new GraphQLWsLink(
     createClient({
+      lazy: true,
       url: process.env.WEBSOCKET_URL as string,
       connectionParams: {
         token: accessToken ? `Bearer ${accessToken}` : "",
       },
+      
     })
   );
 
@@ -87,8 +116,17 @@ const setApolloAuthToken = (accessToken: string) => {
 };
 
 export const configureApolloClient = async () => {
-  const { accessToken } = await fetch(window.location.origin + "/api/auth/token").then((res) => res.json());
-  setApolloAuthToken(accessToken);
+  try {
+    const { accessToken } = await fetch(window.location.origin + "/api/auth/token").then((res) => res.json());
+    setApolloAuthToken(accessToken);
+    isConnected = true;
+    console.log('Connection to websocket server successful!'); 
+  } catch (error) {
+    isConnected = false; 
+    console.log('Reconnection failed. Will retry.'); 
+  }
 };
+
+
 
 export default client;

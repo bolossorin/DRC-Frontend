@@ -61,7 +61,7 @@ export const TableSetting = ({
     >
       <H5 classname="p-4 !mb-0 !text-white border-b border-[#686868]">Table Settings</H5>
       <div className="flex items-center justify-between p-4 border-b border-[#686868]">
-        <Paragraph classname="!mb-0 !text-white">Vessels per Page</Paragraph>
+        <Paragraph classname="!mb-0 !text-white">Items per Page</Paragraph>
         <div className="max-w-[80px]">
           <Select
             // @ts-ignore

@@ -17,6 +17,8 @@ export const onExperimentChange = gql`
       run_command
       error_message
       experiment_name
+      wandb_url
+      wandb_project_url
       project_name
       user_id
       created_at

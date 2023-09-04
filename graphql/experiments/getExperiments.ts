@@ -18,6 +18,8 @@ export const getExperiments = gql`
       run_command
       user_id
       wandb_id
+      wandb_url
+      wandb_project_url
       created_at
       modified_at
     }
