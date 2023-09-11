@@ -24,7 +24,7 @@ export const Connection = ({ sshConfig, sshCommand }: IConnection) => {
             {sshCommand ? sshCommand : ""}
           </Code>
         </div>
-        <Code title="Config" classname={cn(!sshConfig && "opacity-50")}>
+        <Code title="Config" classname={cn(!sshConfig && "opacity-50")} code_content={sshConfig}>
           {config?.map((el, i) => {
             const [key, value] = el.trim().split(" ");
             return (

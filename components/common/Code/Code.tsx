@@ -7,9 +7,10 @@ interface ICode {
   children: any;
   title: string;
   classname?: string;
+  code_content? : string | null;
 }
 
-export const Code = ({ children, title, classname }: ICode) => {
+export const Code = ({ children, title, classname, code_content }: ICode) => {
   let textFef: any = useRef(null);
   const [copiedText, setCopiedText] = useState("Click to copy");
 
@@ -25,7 +26,10 @@ export const Code = ({ children, title, classname }: ICode) => {
         </div>
         <div
           onClick={() => {
-            navigator.clipboard.writeText(textFef.current.innerText);
+            navigator.clipboard.writeText(textFef.current);
+            let text_to_copy = code_content ? code_content : textFef.current.innerText;
+            navigator.clipboard.writeText(text_to_copy);
+            // navigator.clipboard.writeText(textFef.current.innerText);
             setCopiedText("Copied");
             setTimeout(() => {
               setCopiedText("Click to copy");
