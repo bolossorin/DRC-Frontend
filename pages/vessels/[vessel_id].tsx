@@ -14,6 +14,8 @@ import { Layout, Paragraph, VesselTitle } from "@/components/common";
 import { Monitoring, Connection, Experiments, Information } from "@/components/pages/vessel-id";
 
 export default function VesselID() {
+
+
   const router = useRouter();
   const [region] = useRegion();
 
@@ -45,6 +47,8 @@ export default function VesselID() {
   }, [region, subscribeToMore]);
 
   useEffect(() => {
+
+
     const subscribeToLogs = subscribeToMore<{
       log: { session_id: string; avg_util_percent: number; avg_memory_util_percent: number };
     }>({
@@ -71,6 +75,7 @@ export default function VesselID() {
   }, [router.query.vessel_id, subscribeToMore]);
 
   const session = data?.session ?? null;
+
   return (
     <Layout title="Vessel | Deep Render Cloud" description="Vessel | Deep Render Cloud" label={<VesselTitle />}>
       <div className="p-6 border-b border-[#686868]">
